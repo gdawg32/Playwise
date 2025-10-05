@@ -1,0 +1,667 @@
+{# templates/team_compare.html #}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Team Comparison - {{ match.home_team.name }} vs {{ match.away_team.name }}{% endblock %}
+
+{% block namespace %}team-compare{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    
+    main {
+        padding-top: 100px;
+    }
+    
+    .compare-wrapper {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+    }
+    
+    .team-header-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.08);
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .team-header-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #6366f1, #7c3aed, #3b82f6);
+    }
+    
+    .team-logo {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border-radius: 20px;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+        padding: 0.75rem;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .team-logo:hover {
+        transform: scale(1.05);
+    }
+    
+    .vs-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        color: white;
+        font-weight: 800;
+        font-size: 1.25rem;
+        border-radius: 50%;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    
+    .radar-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .radar-card:hover {
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.12);
+        border-color: rgba(124, 58, 237, 0.2);
+    }
+    
+    .stats-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.08);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+    
+    .stats-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .stats-table thead th {
+        padding: 1rem;
+        text-align: center;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .stats-table thead th:first-child {
+        text-align: left;
+    }
+    
+    .stats-table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .stats-table tbody tr:hover {
+        background: rgba(124, 58, 237, 0.02);
+    }
+    
+    .stats-table tbody td {
+        padding: 1rem;
+        color: #334155;
+        font-weight: 500;
+        font-size: 0.9375rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .stats-table tbody td:first-child {
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    /* Winner highlighting */
+    .stat-winner {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.08));
+        color: #059669;
+        font-weight: 700;
+        position: relative;
+    }
+    
+    .stat-winner::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #10b981, #059669);
+        border-radius: 0 4px 4px 0;
+    }
+    
+    .stat-loser {
+        background: rgba(239, 68, 68, 0.05);
+        color: #94a3b8;
+        font-weight: 500;
+    }
+    
+    .stat-neutral {
+        color: #64748b;
+        font-weight: 600;
+    }
+    
+    /* Trophy icon for winner */
+    .winner-icon {
+        display: inline-block;
+        margin-left: 0.5rem;
+        font-size: 1rem;
+        animation: bounceIn 0.6s ease-out;
+    }
+    
+    @keyframes bounceIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.3);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    
+    .stats-table tbody tr.section-header td {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.08));
+        font-weight: 800;
+        color: #7c3aed;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.875rem 1rem;
+        text-align: left;
+        border-top: 2px solid rgba(124, 58, 237, 0.2);
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 28px;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        border-radius: 4px;
+    }
+    
+    .info-note {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+        border-left: 4px solid #7c3aed;
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-top: 1.5rem;
+        font-size: 0.875rem;
+        color: #64748b;
+        line-height: 1.6;
+    }
+    
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        color: white;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+    
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+    }
+    
+    /* Legend */
+    .stats-legend {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.03));
+        border-radius: 12px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8125rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+    
+    .legend-box {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+    }
+    
+    .legend-box.winner {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.2));
+        border: 2px solid #10b981;
+    }
+    
+    .legend-box.loser {
+        background: rgba(239, 68, 68, 0.1);
+        border: 2px solid #f3f4f6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="compare-wrapper mt-6">
+    <!-- Team Header -->
+    <div class="team-header-card" data-aos="fade-down">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <!-- Home Team -->
+            <div class="flex items-center gap-6 flex-1">
+                {% if match.home_team.logo %}
+                    <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo">
+                {% else %}
+                    <div class="team-logo flex items-center justify-center text-4xl">🏠</div>
+                {% endif %}
+                <div>
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Home Team</div>
+                    <h2 class="text-3xl font-extrabold gradient-text">{{ match.home_team.name }}</h2>
+                </div>
+            </div>
+            
+            <!-- VS Badge & Match Info -->
+            <div class="flex flex-col items-center gap-3">
+                <div class="vs-badge">VS</div>
+                <div class="text-center">
+                    <div class="text-sm font-semibold text-gray-500">Season {{ season }}</div>
+                    <div class="text-xs text-gray-400 mt-1">Matchweek {{ match.matchweek }}</div>
+                </div>
+            </div>
+            
+            <!-- Away Team -->
+            <div class="flex items-center gap-6 flex-1 justify-end">
+                <div class="text-right">
+                    <div class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Away Team</div>
+                    <h2 class="text-3xl font-extrabold gradient-text">{{ match.away_team.name }}</h2>
+                </div>
+                {% if match.away_team.logo %}
+                    <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo">
+                {% else %}
+                    <div class="team-logo flex items-center justify-center text-4xl">✈️</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left: Radar Chart (Takes 2 columns) -->
+        <div class="lg:col-span-2 radar-card" data-aos="fade-right">
+            <h3 class="section-title">Performance Radar</h3>
+            <div style="height:500px; position: relative;">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <div class="info-note">
+                <svg class="w-5 h-5 inline-block text-playwise-purple mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <strong>About this chart:</strong> Values are normalized (0-1 scale) for visual comparison. Higher values indicate better performance. Hover over data points to see raw statistics.
+            </div>
+        </div>
+        
+        <!-- Right: Stats Table -->
+        <div class="stats-card" data-aos="fade-left">
+            <h3 class="section-title">Season Statistics</h3>
+
+            
+            <div class="overflow-y-auto" style="max-height: 600px;">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>{{ match.home_team.name|truncatewords:2 }}</th>
+                            <th>{{ match.away_team.name|truncatewords:2 }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- General Stats -->
+                        <tr class="section-header">
+                            <td colspan="3">
+                                <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                General
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Matches Played</td>
+                            <td class="stat-neutral">{{ home_stats.matches }}</td>
+                            <td class="stat-neutral">{{ away_stats.matches }}</td>
+                        </tr>
+                        <tr>
+                            <td>Total Points</td>
+                            <td class="{% if home_stats.points > away_stats.points %}stat-winner{% elif home_stats.points < away_stats.points %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.points }}{% if home_stats.points > away_stats.points %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.points > home_stats.points %}stat-winner{% elif away_stats.points < home_stats.points %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.points }}{% if away_stats.points > home_stats.points %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Points Per Game</td>
+                            <td class="{% if home_stats.ppg > away_stats.ppg %}stat-winner{% elif home_stats.ppg < away_stats.ppg %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.ppg|default:"—" }}{% if home_stats.ppg > away_stats.ppg %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.ppg > home_stats.ppg %}stat-winner{% elif away_stats.ppg < home_stats.ppg %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.ppg|default:"—" }}{% if away_stats.ppg > home_stats.ppg %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Goals -->
+                        <tr class="section-header">
+                            <td colspan="3">
+                                <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                                Goals
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Goals For</td>
+                            <td class="{% if home_stats.goals_for > away_stats.goals_for %}stat-winner{% elif home_stats.goals_for < away_stats.goals_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.goals_for|default:"—" }}{% if home_stats.goals_for > away_stats.goals_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.goals_for > home_stats.goals_for %}stat-winner{% elif away_stats.goals_for < home_stats.goals_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.goals_for|default:"—" }}{% if away_stats.goals_for > home_stats.goals_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Goals Against</td>
+                            <td class="{% if home_stats.goals_against < away_stats.goals_against %}stat-winner{% elif home_stats.goals_against > away_stats.goals_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.goals_against|default:"—" }}{% if home_stats.goals_against < away_stats.goals_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.goals_against < home_stats.goals_against %}stat-winner{% elif away_stats.goals_against > home_stats.goals_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.goals_against|default:"—" }}{% if away_stats.goals_against < home_stats.goals_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avg Goals For</td>
+                            <td class="{% if home_stats.avg_gf > away_stats.avg_gf %}stat-winner{% elif home_stats.avg_gf < away_stats.avg_gf %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.avg_gf|default:"—" }}{% if home_stats.avg_gf > away_stats.avg_gf %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.avg_gf > home_stats.avg_gf %}stat-winner{% elif away_stats.avg_gf < home_stats.avg_gf %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.avg_gf|default:"—" }}{% if away_stats.avg_gf > home_stats.avg_gf %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avg Goals Against</td>
+                            <td class="{% if home_stats.avg_ga < away_stats.avg_ga %}stat-winner{% elif home_stats.avg_ga > away_stats.avg_ga %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.avg_ga|default:"—" }}{% if home_stats.avg_ga < away_stats.avg_ga %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.avg_ga < home_stats.avg_ga %}stat-winner{% elif away_stats.avg_ga > home_stats.avg_ga %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.avg_ga|default:"—" }}{% if away_stats.avg_ga < home_stats.avg_ga %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Expected Goals (xG) -->
+                        <tr class="section-header">
+                            <td colspan="3">
+                                <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                                Expected Goals (xG)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>xG For</td>
+                            <td class="{% if home_stats.xg_for > away_stats.xg_for %}stat-winner{% elif home_stats.xg_for < away_stats.xg_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.xg_for|default:"—" }}{% if home_stats.xg_for > away_stats.xg_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.xg_for > home_stats.xg_for %}stat-winner{% elif away_stats.xg_for < home_stats.xg_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.xg_for|default:"—" }}{% if away_stats.xg_for > home_stats.xg_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>xG Against</td>
+                            <td class="{% if home_stats.xg_against < away_stats.xg_against %}stat-winner{% elif home_stats.xg_against > away_stats.xg_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.xg_against|default:"—" }}{% if home_stats.xg_against < away_stats.xg_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.xg_against < home_stats.xg_against %}stat-winner{% elif away_stats.xg_against > home_stats.xg_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.xg_against|default:"—" }}{% if away_stats.xg_against < home_stats.xg_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avg xG For</td>
+                            <td class="{% if home_stats.avg_xg_for > away_stats.avg_xg_for %}stat-winner{% elif home_stats.avg_xg_for < away_stats.avg_xg_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.avg_xg_for|default:"—" }}{% if home_stats.avg_xg_for > away_stats.avg_xg_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.avg_xg_for > home_stats.avg_xg_for %}stat-winner{% elif away_stats.avg_xg_for < home_stats.avg_xg_for %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.avg_xg_for|default:"—" }}{% if away_stats.avg_xg_for > home_stats.avg_xg_for %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avg xG Against</td>
+                            <td class="{% if home_stats.avg_xg_against < away_stats.avg_xg_against %}stat-winner{% elif home_stats.avg_xg_against > away_stats.avg_xg_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.avg_xg_against|default:"—" }}{% if home_stats.avg_xg_against < away_stats.avg_xg_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.avg_xg_against < home_stats.avg_xg_against %}stat-winner{% elif away_stats.avg_xg_against > home_stats.avg_xg_against %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.avg_xg_against|default:"—" }}{% if away_stats.avg_xg_against < home_stats.avg_xg_against %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Defense -->
+                        <tr class="section-header">
+                            <td colspan="3">
+                                <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                Defense
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Clean Sheets</td>
+                            <td class="{% if home_stats.clean_sheets > away_stats.clean_sheets %}stat-winner{% elif home_stats.clean_sheets < away_stats.clean_sheets %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.clean_sheets|default:"—" }} <span class="text-xs">({{ home_stats.clean_sheet_pct|default:"—" }}%)</span>{% if home_stats.clean_sheets > away_stats.clean_sheets %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.clean_sheets > home_stats.clean_sheets %}stat-winner{% elif away_stats.clean_sheets < home_stats.clean_sheets %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.clean_sheets|default:"—" }} <span class="text-xs">({{ away_stats.clean_sheet_pct|default:"—" }}%)</span>{% if away_stats.clean_sheets > home_stats.clean_sheets %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Efficiency -->
+                        <tr class="section-header">
+                            <td colspan="3">
+                                <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                Efficiency
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Conversion Rate</td>
+                            <td class="{% if home_stats.conversion > away_stats.conversion %}stat-winner{% elif home_stats.conversion < away_stats.conversion %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ home_stats.conversion|default:"—" }}{% if home_stats.conversion > away_stats.conversion %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                            <td class="{% if away_stats.conversion > home_stats.conversion %}stat-winner{% elif away_stats.conversion < home_stats.conversion %}stat-loser{% else %}stat-neutral{% endif %}">
+                                {{ away_stats.conversion|default:"—" }}{% if away_stats.conversion > home_stats.conversion %}<span class="winner-icon"></span>{% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6">
+                <a href="{% url 'manager_dashboard' %}" class="back-btn w-full justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script>
+window.addEventListener('load', function() {
+    const labels = {{ radar_labels|safe }};
+    const homeNorm = {{ home_metrics_norm|safe }};
+    const awayNorm = {{ away_metrics_norm|safe }};
+    const homeRaw = {{ home_metrics_raw|safe }};
+    const awayRaw = {{ away_metrics_raw|safe }};
+
+    function fmtRaw(v) {
+        if (v === null || v === undefined) return "—";
+        if (Number.isInteger(v)) return v.toString();
+        return (Math.round(v * 100) / 100).toFixed(2);
+    }
+
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: "{{ match.home_team.name }}",
+                data: homeNorm,
+                fill: true,
+                backgroundColor: 'rgba(124, 58, 237, 0.15)',
+                borderColor: '#7c3aed',
+                pointBackgroundColor: '#7c3aed',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                borderWidth: 3,
+            },
+            {
+                label: "{{ match.away_team.name }}",
+                data: awayNorm,
+                fill: true,
+                backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                borderColor: '#3b82f6',
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 3,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                borderWidth: 3,
+            }
+        ]
+    };
+
+    const config = {
+        type: 'radar',
+        data,
+        options: {
+            scales: {
+                r: { 
+                    beginAtZero: true, 
+                    min: 0, 
+                    max: 1, 
+                    ticks: { 
+                        stepSize: 0.25,
+                        color: '#64748b',
+                        font: { size: 12, weight: '600' },
+                        backdropColor: 'transparent'
+                    },
+                    grid: {
+                        color: '#e2e8f0'
+                    },
+                    angleLines: {
+                        color: '#e2e8f0'
+                    },
+                    pointLabels: {
+                        color: '#334155',
+                        font: { size: 13, weight: '600' }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 16,
+                    cornerRadius: 12,
+                    titleFont: { size: 15, weight: 'bold' },
+                    bodyFont: { size: 14 },
+                    callbacks: {
+                        label: function(context) {
+                            const idx = context.dataIndex;
+                            const ds = context.datasetIndex;
+                            const label = context.dataset.label || "";
+                            const rawVal = ds === 0 ? homeRaw[idx] : awayRaw[idx];
+                            return `${label}: ${context.formattedValue} (raw: ${fmtRaw(rawVal)})`;
+                        }
+                    }
+                },
+                legend: { 
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { size: 14, weight: '600' }
+                    }
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    };
+
+    if (window._teamCompareRadar) window._teamCompareRadar.destroy();
+    window._teamCompareRadar = new Chart(document.getElementById('radarChart').getContext('2d'), config);
+});
+</script>
+{% endblock %}

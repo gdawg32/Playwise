@@ -1,0 +1,321 @@
+league,season,team,game,date,time,round,day,venue,result,GF,GA,opponent,xG,xGA,Poss,Attendance,Captain,Formation,Opp Formation,Referee,match_report,Notes,hometeam,awayteam,matchweek
+ENG-Premier League,2526,Bournemouth,2025-10-03 Bournemouth-Fulham,2025-10-03,20:00:00,Matchweek 7,Fri,Home,,,,Fulham,,,,,,,,,,,Bournemouth,Fulham,7
+ENG-Premier League,2526,Arsenal,2025-10-04 Arsenal-West Ham,2025-10-04,15:00:00,Matchweek 7,Sat,Home,,,,West Ham,,,,,,,,,,,Arsenal,West Ham,7
+ENG-Premier League,2526,Chelsea,2025-10-04 Chelsea-Liverpool,2025-10-04,17:30:00,Matchweek 7,Sat,Home,,,,Liverpool,,,,,,,,,,,Chelsea,Liverpool,7
+ENG-Premier League,2526,Leeds United,2025-10-04 Leeds United-Tottenham,2025-10-04,12:30:00,Matchweek 7,Sat,Home,,,,Tottenham,,,,,,,,,,,Leeds United,Tottenham,7
+ENG-Premier League,2526,Manchester Utd,2025-10-04 Manchester Utd-Sunderland,2025-10-04,15:00:00,Matchweek 7,Sat,Home,,,,Sunderland,,,,,,,,,,,Manchester Utd,Sunderland,7
+ENG-Premier League,2526,Aston Villa,2025-10-05 Aston Villa-Burnley,2025-10-05,14:00:00,Matchweek 7,Sun,Home,,,,Burnley,,,,,,,,,,,Aston Villa,Burnley,7
+ENG-Premier League,2526,Brentford,2025-10-05 Brentford-Manchester City,2025-10-05,16:30:00,Matchweek 7,Sun,Home,,,,Manchester City,,,,,,,,,,,Brentford,Manchester City,7
+ENG-Premier League,2526,Brighton,2025-10-05 Wolves-Brighton,2025-10-05,14:00:00,Matchweek 7,Sun,Away,,,,Wolves,,,,,,,,,,,Wolves,Brighton,7
+ENG-Premier League,2526,Crystal Palace,2025-10-05 Everton-Crystal Palace,2025-10-05,14:00:00,Matchweek 7,Sun,Away,,,,Everton,,,,,,,,,,,Everton,Crystal Palace,7
+ENG-Premier League,2526,Newcastle Utd,2025-10-05 Newcastle Utd-Nott'ham Forest,2025-10-05,14:00:00,Matchweek 7,Sun,Home,,,,Nott'ham Forest,,,,,,,,,,,Newcastle Utd,Nott'ham Forest,7
+ENG-Premier League,2526,Arsenal,2025-10-18 Fulham-Arsenal,2025-10-18,17:30:00,Matchweek 8,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Arsenal,8
+ENG-Premier League,2526,Bournemouth,2025-10-18 Crystal Palace-Bournemouth,2025-10-18,15:00:00,Matchweek 8,Sat,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Bournemouth,8
+ENG-Premier League,2526,Brighton,2025-10-18 Brighton-Newcastle Utd,2025-10-18,15:00:00,Matchweek 8,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Brighton,Newcastle Utd,8
+ENG-Premier League,2526,Burnley,2025-10-18 Burnley-Leeds United,2025-10-18,15:00:00,Matchweek 8,Sat,Home,,,,Leeds United,,,,,,,,,,,Burnley,Leeds United,8
+ENG-Premier League,2526,Chelsea,2025-10-18 Nott'ham Forest-Chelsea,2025-10-18,12:30:00,Matchweek 8,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Chelsea,8
+ENG-Premier League,2526,Everton,2025-10-18 Manchester City-Everton,2025-10-18,15:00:00,Matchweek 8,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Everton,8
+ENG-Premier League,2526,Sunderland,2025-10-18 Sunderland-Wolves,2025-10-18,15:00:00,Matchweek 8,Sat,Home,,,,Wolves,,,,,,,,,,,Sunderland,Wolves,8
+ENG-Premier League,2526,Aston Villa,2025-10-19 Tottenham-Aston Villa,2025-10-19,14:00:00,Matchweek 8,Sun,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Aston Villa,8
+ENG-Premier League,2526,Liverpool,2025-10-19 Liverpool-Manchester Utd,2025-10-19,16:30:00,Matchweek 8,Sun,Home,,,,Manchester Utd,,,,,,,,,,,Liverpool,Manchester Utd,8
+ENG-Premier League,2526,Brentford,2025-10-20 West Ham-Brentford,2025-10-20,20:00:00,Matchweek 8,Mon,Away,,,,West Ham,,,,,,,,,,,West Ham,Brentford,8
+ENG-Premier League,2526,Leeds United,2025-10-24 Leeds United-West Ham,2025-10-24,20:00:00,Matchweek 9,Fri,Home,,,,West Ham,,,,,,,,,,,Leeds United,West Ham,9
+ENG-Premier League,2526,Brentford,2025-10-25 Brentford-Liverpool,2025-10-25,20:00:00,Matchweek 9,Sat,Home,,,,Liverpool,,,,,,,,,,,Brentford,Liverpool,9
+ENG-Premier League,2526,Brighton,2025-10-25 Manchester Utd-Brighton,2025-10-25,17:30:00,Matchweek 9,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Brighton,9
+ENG-Premier League,2526,Chelsea,2025-10-25 Chelsea-Sunderland,2025-10-25,15:00:00,Matchweek 9,Sat,Home,,,,Sunderland,,,,,,,,,,,Chelsea,Sunderland,9
+ENG-Premier League,2526,Fulham,2025-10-25 Newcastle Utd-Fulham,2025-10-25,15:00:00,Matchweek 9,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Fulham,9
+ENG-Premier League,2526,Arsenal,2025-10-26 Arsenal-Crystal Palace,2025-10-26,14:00:00,Matchweek 9,Sun,Home,,,,Crystal Palace,,,,,,,,,,,Arsenal,Crystal Palace,9
+ENG-Premier League,2526,Aston Villa,2025-10-26 Aston Villa-Manchester City,2025-10-26,14:00:00,Matchweek 9,Sun,Home,,,,Manchester City,,,,,,,,,,,Aston Villa,Manchester City,9
+ENG-Premier League,2526,Bournemouth,2025-10-26 Bournemouth-Nott'ham Forest,2025-10-26,14:00:00,Matchweek 9,Sun,Home,,,,Nott'ham Forest,,,,,,,,,,,Bournemouth,Nott'ham Forest,9
+ENG-Premier League,2526,Burnley,2025-10-26 Wolves-Burnley,2025-10-26,14:00:00,Matchweek 9,Sun,Away,,,,Wolves,,,,,,,,,,,Wolves,Burnley,9
+ENG-Premier League,2526,Everton,2025-10-26 Everton-Tottenham,2025-10-26,16:30:00,Matchweek 9,Sun,Home,,,,Tottenham,,,,,,,,,,,Everton,Tottenham,9
+ENG-Premier League,2526,Arsenal,2025-11-01 Burnley-Arsenal,2025-11-01,15:00:00,Matchweek 10,Sat,Away,,,,Burnley,,,,,,,,,,,Burnley,Arsenal,10
+ENG-Premier League,2526,Aston Villa,2025-11-01 Liverpool-Aston Villa,2025-11-01,20:00:00,Matchweek 10,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Aston Villa,10
+ENG-Premier League,2526,Brentford,2025-11-01 Crystal Palace-Brentford,2025-11-01,15:00:00,Matchweek 10,Sat,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Brentford,10
+ENG-Premier League,2526,Brighton,2025-11-01 Brighton-Leeds United,2025-11-01,15:00:00,Matchweek 10,Sat,Home,,,,Leeds United,,,,,,,,,,,Brighton,Leeds United,10
+ENG-Premier League,2526,Chelsea,2025-11-01 Tottenham-Chelsea,2025-11-01,17:30:00,Matchweek 10,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Chelsea,10
+ENG-Premier League,2526,Fulham,2025-11-01 Fulham-Wolves,2025-11-01,15:00:00,Matchweek 10,Sat,Home,,,,Wolves,,,,,,,,,,,Fulham,Wolves,10
+ENG-Premier League,2526,Manchester Utd,2025-11-01 Nott'ham Forest-Manchester Utd,2025-11-01,15:00:00,Matchweek 10,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Manchester Utd,10
+ENG-Premier League,2526,Bournemouth,2025-11-02 Manchester City-Bournemouth,2025-11-02,16:30:00,Matchweek 10,Sun,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Bournemouth,10
+ENG-Premier League,2526,Newcastle Utd,2025-11-02 West Ham-Newcastle Utd,2025-11-02,14:00:00,Matchweek 10,Sun,Away,,,,West Ham,,,,,,,,,,,West Ham,Newcastle Utd,10
+ENG-Premier League,2526,Everton,2025-11-03 Sunderland-Everton,2025-11-03,20:00:00,Matchweek 10,Mon,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Everton,10
+ENG-Premier League,2526,Arsenal,2025-11-08 Sunderland-Arsenal,2025-11-08,17:30:00,Matchweek 11,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Arsenal,11
+ENG-Premier League,2526,Burnley,2025-11-08 West Ham-Burnley,2025-11-08,15:00:00,Matchweek 11,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Burnley,11
+ENG-Premier League,2526,Chelsea,2025-11-08 Chelsea-Wolves,2025-11-08,20:00:00,Matchweek 11,Sat,Home,,,,Wolves,,,,,,,,,,,Chelsea,Wolves,11
+ENG-Premier League,2526,Everton,2025-11-08 Everton-Fulham,2025-11-08,15:00:00,Matchweek 11,Sat,Home,,,,Fulham,,,,,,,,,,,Everton,Fulham,11
+ENG-Premier League,2526,Manchester Utd,2025-11-08 Tottenham-Manchester Utd,2025-11-08,12:30:00,Matchweek 11,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Manchester Utd,11
+ENG-Premier League,2526,Aston Villa,2025-11-09 Aston Villa-Bournemouth,2025-11-09,14:00:00,Matchweek 11,Sun,Home,,,,Bournemouth,,,,,,,,,,,Aston Villa,Bournemouth,11
+ENG-Premier League,2526,Brentford,2025-11-09 Brentford-Newcastle Utd,2025-11-09,14:00:00,Matchweek 11,Sun,Home,,,,Newcastle Utd,,,,,,,,,,,Brentford,Newcastle Utd,11
+ENG-Premier League,2526,Brighton,2025-11-09 Crystal Palace-Brighton,2025-11-09,14:00:00,Matchweek 11,Sun,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Brighton,11
+ENG-Premier League,2526,Leeds United,2025-11-09 Nott'ham Forest-Leeds United,2025-11-09,14:00:00,Matchweek 11,Sun,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Leeds United,11
+ENG-Premier League,2526,Liverpool,2025-11-09 Manchester City-Liverpool,2025-11-09,16:30:00,Matchweek 11,Sun,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Liverpool,11
+ENG-Premier League,2526,Bournemouth,2025-11-22 Bournemouth-West Ham,2025-11-22,15:00:00,Matchweek 12,Sat,Home,,,,West Ham,,,,,,,,,,,Bournemouth,West Ham,12
+ENG-Premier League,2526,Brentford,2025-11-22 Brighton-Brentford,2025-11-22,15:00:00,Matchweek 12,Sat,Away,,,,Brighton,,,,,,,,,,,Brighton,Brentford,12
+ENG-Premier League,2526,Burnley,2025-11-22 Burnley-Chelsea,2025-11-22,12:30:00,Matchweek 12,Sat,Home,,,,Chelsea,,,,,,,,,,,Burnley,Chelsea,12
+ENG-Premier League,2526,Crystal Palace,2025-11-22 Wolves-Crystal Palace,2025-11-22,15:00:00,Matchweek 12,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Crystal Palace,12
+ENG-Premier League,2526,Fulham,2025-11-22 Fulham-Sunderland,2025-11-22,15:00:00,Matchweek 12,Sat,Home,,,,Sunderland,,,,,,,,,,,Fulham,Sunderland,12
+ENG-Premier League,2526,Liverpool,2025-11-22 Liverpool-Nott'ham Forest,2025-11-22,15:00:00,Matchweek 12,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Liverpool,Nott'ham Forest,12
+ENG-Premier League,2526,Manchester City,2025-11-22 Newcastle Utd-Manchester City,2025-11-22,17:30:00,Matchweek 12,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Manchester City,12
+ENG-Premier League,2526,Arsenal,2025-11-23 Arsenal-Tottenham,2025-11-23,16:30:00,Matchweek 12,Sun,Home,,,,Tottenham,,,,,,,,,,,Arsenal,Tottenham,12
+ENG-Premier League,2526,Aston Villa,2025-11-23 Leeds United-Aston Villa,2025-11-23,14:00:00,Matchweek 12,Sun,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Aston Villa,12
+ENG-Premier League,2526,Everton,2025-11-24 Manchester Utd-Everton,2025-11-24,20:00:00,Matchweek 12,Mon,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Everton,12
+ENG-Premier League,2526,Bournemouth,2025-11-29 Sunderland-Bournemouth,2025-11-29,15:00:00,Matchweek 13,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Bournemouth,13
+ENG-Premier League,2526,Brentford,2025-11-29 Brentford-Burnley,2025-11-29,15:00:00,Matchweek 13,Sat,Home,,,,Burnley,,,,,,,,,,,Brentford,Burnley,13
+ENG-Premier League,2526,Everton,2025-11-29 Everton-Newcastle Utd,2025-11-29,17:30:00,Matchweek 13,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Everton,Newcastle Utd,13
+ENG-Premier League,2526,Fulham,2025-11-29 Tottenham-Fulham,2025-11-29,20:00:00,Matchweek 13,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Fulham,13
+ENG-Premier League,2526,Leeds United,2025-11-29 Manchester City-Leeds United,2025-11-29,15:00:00,Matchweek 13,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Leeds United,13
+ENG-Premier League,2526,Arsenal,2025-11-30 Chelsea-Arsenal,2025-11-30,16:30:00,Matchweek 13,Sun,Away,,,,Chelsea,,,,,,,,,,,Chelsea,Arsenal,13
+ENG-Premier League,2526,Aston Villa,2025-11-30 Aston Villa-Wolves,2025-11-30,14:05:00,Matchweek 13,Sun,Home,,,,Wolves,,,,,,,,,,,Aston Villa,Wolves,13
+ENG-Premier League,2526,Brighton,2025-11-30 Nott'ham Forest-Brighton,2025-11-30,14:05:00,Matchweek 13,Sun,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Brighton,13
+ENG-Premier League,2526,Crystal Palace,2025-11-30 Crystal Palace-Manchester Utd,2025-11-30,12:00:00,Matchweek 13,Sun,Home,,,,Manchester Utd,,,,,,,,,,,Crystal Palace,Manchester Utd,13
+ENG-Premier League,2526,Liverpool,2025-11-30 West Ham-Liverpool,2025-11-30,14:05:00,Matchweek 13,Sun,Away,,,,West Ham,,,,,,,,,,,West Ham,Liverpool,13
+ENG-Premier League,2526,Arsenal,2025-12-03 Arsenal-Brentford,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Brentford,,,,,,,,,,,Arsenal,Brentford,14
+ENG-Premier League,2526,Aston Villa,2025-12-03 Brighton-Aston Villa,2025-12-03,20:00:00,Matchweek 14,Wed,Away,,,,Brighton,,,,,,,,,,,Brighton,Aston Villa,14
+ENG-Premier League,2526,Bournemouth,2025-12-03 Bournemouth-Everton,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Everton,,,,,,,,,,,Bournemouth,Everton,14
+ENG-Premier League,2526,Burnley,2025-12-03 Burnley-Crystal Palace,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Crystal Palace,,,,,,,,,,,Burnley,Crystal Palace,14
+ENG-Premier League,2526,Chelsea,2025-12-03 Leeds United-Chelsea,2025-12-03,20:00:00,Matchweek 14,Wed,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Chelsea,14
+ENG-Premier League,2526,Fulham,2025-12-03 Fulham-Manchester City,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Manchester City,,,,,,,,,,,Fulham,Manchester City,14
+ENG-Premier League,2526,Liverpool,2025-12-03 Liverpool-Sunderland,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Sunderland,,,,,,,,,,,Liverpool,Sunderland,14
+ENG-Premier League,2526,Manchester Utd,2025-12-03 Manchester Utd-West Ham,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,West Ham,,,,,,,,,,,Manchester Utd,West Ham,14
+ENG-Premier League,2526,Newcastle Utd,2025-12-03 Newcastle Utd-Tottenham,2025-12-03,20:00:00,Matchweek 14,Wed,Home,,,,Tottenham,,,,,,,,,,,Newcastle Utd,Tottenham,14
+ENG-Premier League,2526,Nott'ham Forest,2025-12-03 Wolves-Nott'ham Forest,2025-12-03,20:00:00,Matchweek 14,Wed,Away,,,,Wolves,,,,,,,,,,,Wolves,Nott'ham Forest,14
+ENG-Premier League,2526,Arsenal,2025-12-06 Aston Villa-Arsenal,2025-12-06,15:00:00,Matchweek 15,Sat,Away,,,,Aston Villa,,,,,,,,,,,Aston Villa,Arsenal,15
+ENG-Premier League,2526,Bournemouth,2025-12-06 Bournemouth-Chelsea,2025-12-06,15:00:00,Matchweek 15,Sat,Home,,,,Chelsea,,,,,,,,,,,Bournemouth,Chelsea,15
+ENG-Premier League,2526,Brentford,2025-12-06 Tottenham-Brentford,2025-12-06,15:00:00,Matchweek 15,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Brentford,15
+ENG-Premier League,2526,Brighton,2025-12-06 Brighton-West Ham,2025-12-06,15:00:00,Matchweek 15,Sat,Home,,,,West Ham,,,,,,,,,,,Brighton,West Ham,15
+ENG-Premier League,2526,Burnley,2025-12-06 Newcastle Utd-Burnley,2025-12-06,15:00:00,Matchweek 15,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Burnley,15
+ENG-Premier League,2526,Crystal Palace,2025-12-06 Fulham-Crystal Palace,2025-12-06,15:00:00,Matchweek 15,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Crystal Palace,15
+ENG-Premier League,2526,Everton,2025-12-06 Everton-Nott'ham Forest,2025-12-06,15:00:00,Matchweek 15,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Everton,Nott'ham Forest,15
+ENG-Premier League,2526,Leeds United,2025-12-06 Leeds United-Liverpool,2025-12-06,15:00:00,Matchweek 15,Sat,Home,,,,Liverpool,,,,,,,,,,,Leeds United,Liverpool,15
+ENG-Premier League,2526,Manchester City,2025-12-06 Manchester City-Sunderland,2025-12-06,15:00:00,Matchweek 15,Sat,Home,,,,Sunderland,,,,,,,,,,,Manchester City,Sunderland,15
+ENG-Premier League,2526,Manchester Utd,2025-12-06 Wolves-Manchester Utd,2025-12-06,15:00:00,Matchweek 15,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Manchester Utd,15
+ENG-Premier League,2526,Arsenal,2025-12-13 Arsenal-Wolves,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Wolves,,,,,,,,,,,Arsenal,Wolves,16
+ENG-Premier League,2526,Aston Villa,2025-12-13 West Ham-Aston Villa,2025-12-13,15:00:00,Matchweek 16,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Aston Villa,16
+ENG-Premier League,2526,Bournemouth,2025-12-13 Manchester Utd-Bournemouth,2025-12-13,15:00:00,Matchweek 16,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Bournemouth,16
+ENG-Premier League,2526,Brentford,2025-12-13 Brentford-Leeds United,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Leeds United,,,,,,,,,,,Brentford,Leeds United,16
+ENG-Premier League,2526,Brighton,2025-12-13 Liverpool-Brighton,2025-12-13,15:00:00,Matchweek 16,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Brighton,16
+ENG-Premier League,2526,Burnley,2025-12-13 Burnley-Fulham,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Fulham,,,,,,,,,,,Burnley,Fulham,16
+ENG-Premier League,2526,Chelsea,2025-12-13 Chelsea-Everton,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Everton,,,,,,,,,,,Chelsea,Everton,16
+ENG-Premier League,2526,Crystal Palace,2025-12-13 Crystal Palace-Manchester City,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Manchester City,,,,,,,,,,,Crystal Palace,Manchester City,16
+ENG-Premier League,2526,Newcastle Utd,2025-12-13 Sunderland-Newcastle Utd,2025-12-13,15:00:00,Matchweek 16,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Newcastle Utd,16
+ENG-Premier League,2526,Nott'ham Forest,2025-12-13 Nott'ham Forest-Tottenham,2025-12-13,15:00:00,Matchweek 16,Sat,Home,,,,Tottenham,,,,,,,,,,,Nott'ham Forest,Tottenham,16
+ENG-Premier League,2526,Arsenal,2025-12-20 Everton-Arsenal,2025-12-20,15:00:00,Matchweek 17,Sat,Away,,,,Everton,,,,,,,,,,,Everton,Arsenal,17
+ENG-Premier League,2526,Aston Villa,2025-12-20 Aston Villa-Manchester Utd,2025-12-20,15:00:00,Matchweek 17,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Aston Villa,Manchester Utd,17
+ENG-Premier League,2526,Bournemouth,2025-12-20 Bournemouth-Burnley,2025-12-20,15:00:00,Matchweek 17,Sat,Home,,,,Burnley,,,,,,,,,,,Bournemouth,Burnley,17
+ENG-Premier League,2526,Brentford,2025-12-20 Wolves-Brentford,2025-12-20,15:00:00,Matchweek 17,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Brentford,17
+ENG-Premier League,2526,Brighton,2025-12-20 Brighton-Sunderland,2025-12-20,15:00:00,Matchweek 17,Sat,Home,,,,Sunderland,,,,,,,,,,,Brighton,Sunderland,17
+ENG-Premier League,2526,Chelsea,2025-12-20 Newcastle Utd-Chelsea,2025-12-20,15:00:00,Matchweek 17,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Chelsea,17
+ENG-Premier League,2526,Crystal Palace,2025-12-20 Leeds United-Crystal Palace,2025-12-20,15:00:00,Matchweek 17,Sat,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Crystal Palace,17
+ENG-Premier League,2526,Fulham,2025-12-20 Fulham-Nott'ham Forest,2025-12-20,15:00:00,Matchweek 17,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Fulham,Nott'ham Forest,17
+ENG-Premier League,2526,Liverpool,2025-12-20 Tottenham-Liverpool,2025-12-20,15:00:00,Matchweek 17,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Liverpool,17
+ENG-Premier League,2526,Manchester City,2025-12-20 Manchester City-West Ham,2025-12-20,15:00:00,Matchweek 17,Sat,Home,,,,West Ham,,,,,,,,,,,Manchester City,West Ham,17
+ENG-Premier League,2526,Arsenal,2025-12-27 Arsenal-Brighton,2025-12-27,15:00:00,Matchweek 18,Sat,Home,,,,Brighton,,,,,,,,,,,Arsenal,Brighton,18
+ENG-Premier League,2526,Aston Villa,2025-12-27 Chelsea-Aston Villa,2025-12-27,15:00:00,Matchweek 18,Sat,Away,,,,Chelsea,,,,,,,,,,,Chelsea,Aston Villa,18
+ENG-Premier League,2526,Bournemouth,2025-12-27 Brentford-Bournemouth,2025-12-27,15:00:00,Matchweek 18,Sat,Away,,,,Brentford,,,,,,,,,,,Brentford,Bournemouth,18
+ENG-Premier League,2526,Burnley,2025-12-27 Burnley-Everton,2025-12-27,15:00:00,Matchweek 18,Sat,Home,,,,Everton,,,,,,,,,,,Burnley,Everton,18
+ENG-Premier League,2526,Crystal Palace,2025-12-27 Crystal Palace-Tottenham,2025-12-27,15:00:00,Matchweek 18,Sat,Home,,,,Tottenham,,,,,,,,,,,Crystal Palace,Tottenham,18
+ENG-Premier League,2526,Fulham,2025-12-27 West Ham-Fulham,2025-12-27,15:00:00,Matchweek 18,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Fulham,18
+ENG-Premier League,2526,Leeds United,2025-12-27 Sunderland-Leeds United,2025-12-27,15:00:00,Matchweek 18,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Leeds United,18
+ENG-Premier League,2526,Liverpool,2025-12-27 Liverpool-Wolves,2025-12-27,15:00:00,Matchweek 18,Sat,Home,,,,Wolves,,,,,,,,,,,Liverpool,Wolves,18
+ENG-Premier League,2526,Manchester City,2025-12-27 Nott'ham Forest-Manchester City,2025-12-27,15:00:00,Matchweek 18,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Manchester City,18
+ENG-Premier League,2526,Manchester Utd,2025-12-27 Manchester Utd-Newcastle Utd,2025-12-27,15:00:00,Matchweek 18,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Manchester Utd,Newcastle Utd,18
+ENG-Premier League,2526,Arsenal,2025-12-30 Arsenal-Aston Villa,2025-12-30,20:00:00,Matchweek 19,Tue,Home,,,,Aston Villa,,,,,,,,,,,Arsenal,Aston Villa,19
+ENG-Premier League,2526,Bournemouth,2025-12-30 Chelsea-Bournemouth,2025-12-30,20:00:00,Matchweek 19,Tue,Away,,,,Chelsea,,,,,,,,,,,Chelsea,Bournemouth,19
+ENG-Premier League,2526,Brentford,2025-12-30 Brentford-Tottenham,2025-12-30,20:00:00,Matchweek 19,Tue,Home,,,,Tottenham,,,,,,,,,,,Brentford,Tottenham,19
+ENG-Premier League,2526,Brighton,2025-12-30 West Ham-Brighton,2025-12-30,20:00:00,Matchweek 19,Tue,Away,,,,West Ham,,,,,,,,,,,West Ham,Brighton,19
+ENG-Premier League,2526,Burnley,2025-12-30 Burnley-Newcastle Utd,2025-12-30,20:00:00,Matchweek 19,Tue,Home,,,,Newcastle Utd,,,,,,,,,,,Burnley,Newcastle Utd,19
+ENG-Premier League,2526,Crystal Palace,2025-12-30 Crystal Palace-Fulham,2025-12-30,20:00:00,Matchweek 19,Tue,Home,,,,Fulham,,,,,,,,,,,Crystal Palace,Fulham,19
+ENG-Premier League,2526,Everton,2025-12-30 Nott'ham Forest-Everton,2025-12-30,20:00:00,Matchweek 19,Tue,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Everton,19
+ENG-Premier League,2526,Leeds United,2025-12-30 Liverpool-Leeds United,2025-12-30,20:00:00,Matchweek 19,Tue,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Leeds United,19
+ENG-Premier League,2526,Manchester City,2025-12-30 Sunderland-Manchester City,2025-12-30,20:00:00,Matchweek 19,Tue,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Manchester City,19
+ENG-Premier League,2526,Manchester Utd,2025-12-30 Manchester Utd-Wolves,2025-12-30,20:00:00,Matchweek 19,Tue,Home,,,,Wolves,,,,,,,,,,,Manchester Utd,Wolves,19
+ENG-Premier League,2526,Arsenal,2026-01-03 Bournemouth-Arsenal,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Bournemouth,,,,,,,,,,,Bournemouth,Arsenal,20
+ENG-Premier League,2526,Aston Villa,2026-01-03 Aston Villa-Nott'ham Forest,2026-01-03,15:00:00,Matchweek 20,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Aston Villa,Nott'ham Forest,20
+ENG-Premier League,2526,Brentford,2026-01-03 Everton-Brentford,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Everton,,,,,,,,,,,Everton,Brentford,20
+ENG-Premier League,2526,Brighton,2026-01-03 Brighton-Burnley,2026-01-03,15:00:00,Matchweek 20,Sat,Home,,,,Burnley,,,,,,,,,,,Brighton,Burnley,20
+ENG-Premier League,2526,Chelsea,2026-01-03 Manchester City-Chelsea,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Chelsea,20
+ENG-Premier League,2526,Crystal Palace,2026-01-03 Newcastle Utd-Crystal Palace,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Crystal Palace,20
+ENG-Premier League,2526,Fulham,2026-01-03 Fulham-Liverpool,2026-01-03,15:00:00,Matchweek 20,Sat,Home,,,,Liverpool,,,,,,,,,,,Fulham,Liverpool,20
+ENG-Premier League,2526,Leeds United,2026-01-03 Leeds United-Manchester Utd,2026-01-03,15:00:00,Matchweek 20,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Leeds United,Manchester Utd,20
+ENG-Premier League,2526,Sunderland,2026-01-03 Tottenham-Sunderland,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Sunderland,20
+ENG-Premier League,2526,West Ham,2026-01-03 Wolves-West Ham,2026-01-03,15:00:00,Matchweek 20,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,West Ham,20
+ENG-Premier League,2526,Arsenal,2026-01-07 Arsenal-Liverpool,2026-01-07,20:00:00,Matchweek 21,Wed,Home,,,,Liverpool,,,,,,,,,,,Arsenal,Liverpool,21
+ENG-Premier League,2526,Aston Villa,2026-01-07 Crystal Palace-Aston Villa,2026-01-07,20:00:00,Matchweek 21,Wed,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Aston Villa,21
+ENG-Premier League,2526,Bournemouth,2026-01-07 Bournemouth-Tottenham,2026-01-07,20:00:00,Matchweek 21,Wed,Home,,,,Tottenham,,,,,,,,,,,Bournemouth,Tottenham,21
+ENG-Premier League,2526,Brentford,2026-01-07 Brentford-Sunderland,2026-01-07,20:00:00,Matchweek 21,Wed,Home,,,,Sunderland,,,,,,,,,,,Brentford,Sunderland,21
+ENG-Premier League,2526,Brighton,2026-01-07 Manchester City-Brighton,2026-01-07,20:00:00,Matchweek 21,Wed,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Brighton,21
+ENG-Premier League,2526,Burnley,2026-01-07 Burnley-Manchester Utd,2026-01-07,20:00:00,Matchweek 21,Wed,Home,,,,Manchester Utd,,,,,,,,,,,Burnley,Manchester Utd,21
+ENG-Premier League,2526,Chelsea,2026-01-07 Fulham-Chelsea,2026-01-07,20:00:00,Matchweek 21,Wed,Away,,,,Fulham,,,,,,,,,,,Fulham,Chelsea,21
+ENG-Premier League,2526,Everton,2026-01-07 Everton-Wolves,2026-01-07,20:00:00,Matchweek 21,Wed,Home,,,,Wolves,,,,,,,,,,,Everton,Wolves,21
+ENG-Premier League,2526,Leeds United,2026-01-07 Newcastle Utd-Leeds United,2026-01-07,20:00:00,Matchweek 21,Wed,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Leeds United,21
+ENG-Premier League,2526,Nott'ham Forest,2026-01-07 West Ham-Nott'ham Forest,2026-01-07,20:00:00,Matchweek 21,Wed,Away,,,,West Ham,,,,,,,,,,,West Ham,Nott'ham Forest,21
+ENG-Premier League,2526,Arsenal,2026-01-17 Nott'ham Forest-Arsenal,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Arsenal,22
+ENG-Premier League,2526,Aston Villa,2026-01-17 Aston Villa-Everton,2026-01-17,15:00:00,Matchweek 22,Sat,Home,,,,Everton,,,,,,,,,,,Aston Villa,Everton,22
+ENG-Premier League,2526,Bournemouth,2026-01-17 Brighton-Bournemouth,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Brighton,,,,,,,,,,,Brighton,Bournemouth,22
+ENG-Premier League,2526,Brentford,2026-01-17 Chelsea-Brentford,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Chelsea,,,,,,,,,,,Chelsea,Brentford,22
+ENG-Premier League,2526,Burnley,2026-01-17 Liverpool-Burnley,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Burnley,22
+ENG-Premier League,2526,Crystal Palace,2026-01-17 Sunderland-Crystal Palace,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Crystal Palace,22
+ENG-Premier League,2526,Fulham,2026-01-17 Leeds United-Fulham,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Fulham,22
+ENG-Premier League,2526,Manchester City,2026-01-17 Manchester Utd-Manchester City,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Manchester City,22
+ENG-Premier League,2526,Newcastle Utd,2026-01-17 Wolves-Newcastle Utd,2026-01-17,15:00:00,Matchweek 22,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Newcastle Utd,22
+ENG-Premier League,2526,Tottenham,2026-01-17 Tottenham-West Ham,2026-01-17,15:00:00,Matchweek 22,Sat,Home,,,,West Ham,,,,,,,,,,,Tottenham,West Ham,22
+ENG-Premier League,2526,Arsenal,2026-01-24 Arsenal-Manchester Utd,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Arsenal,Manchester Utd,23
+ENG-Premier League,2526,Aston Villa,2026-01-24 Newcastle Utd-Aston Villa,2026-01-24,15:00:00,Matchweek 23,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Aston Villa,23
+ENG-Premier League,2526,Bournemouth,2026-01-24 Bournemouth-Liverpool,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Liverpool,,,,,,,,,,,Bournemouth,Liverpool,23
+ENG-Premier League,2526,Brentford,2026-01-24 Brentford-Nott'ham Forest,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Brentford,Nott'ham Forest,23
+ENG-Premier League,2526,Brighton,2026-01-24 Fulham-Brighton,2026-01-24,15:00:00,Matchweek 23,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Brighton,23
+ENG-Premier League,2526,Burnley,2026-01-24 Burnley-Tottenham,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Tottenham,,,,,,,,,,,Burnley,Tottenham,23
+ENG-Premier League,2526,Chelsea,2026-01-24 Crystal Palace-Chelsea,2026-01-24,15:00:00,Matchweek 23,Sat,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Chelsea,23
+ENG-Premier League,2526,Everton,2026-01-24 Everton-Leeds United,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Leeds United,,,,,,,,,,,Everton,Leeds United,23
+ENG-Premier League,2526,Manchester City,2026-01-24 Manchester City-Wolves,2026-01-24,15:00:00,Matchweek 23,Sat,Home,,,,Wolves,,,,,,,,,,,Manchester City,Wolves,23
+ENG-Premier League,2526,Sunderland,2026-01-24 West Ham-Sunderland,2026-01-24,15:00:00,Matchweek 23,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Sunderland,23
+ENG-Premier League,2526,Arsenal,2026-01-31 Leeds United-Arsenal,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Arsenal,24
+ENG-Premier League,2526,Aston Villa,2026-01-31 Aston Villa-Brentford,2026-01-31,15:00:00,Matchweek 24,Sat,Home,,,,Brentford,,,,,,,,,,,Aston Villa,Brentford,24
+ENG-Premier League,2526,Bournemouth,2026-01-31 Wolves-Bournemouth,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Bournemouth,24
+ENG-Premier League,2526,Brighton,2026-01-31 Brighton-Everton,2026-01-31,15:00:00,Matchweek 24,Sat,Home,,,,Everton,,,,,,,,,,,Brighton,Everton,24
+ENG-Premier League,2526,Burnley,2026-01-31 Sunderland-Burnley,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Burnley,24
+ENG-Premier League,2526,Chelsea,2026-01-31 Chelsea-West Ham,2026-01-31,15:00:00,Matchweek 24,Sat,Home,,,,West Ham,,,,,,,,,,,Chelsea,West Ham,24
+ENG-Premier League,2526,Crystal Palace,2026-01-31 Nott'ham Forest-Crystal Palace,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Crystal Palace,24
+ENG-Premier League,2526,Fulham,2026-01-31 Manchester Utd-Fulham,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Fulham,24
+ENG-Premier League,2526,Liverpool,2026-01-31 Liverpool-Newcastle Utd,2026-01-31,15:00:00,Matchweek 24,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Liverpool,Newcastle Utd,24
+ENG-Premier League,2526,Manchester City,2026-01-31 Tottenham-Manchester City,2026-01-31,15:00:00,Matchweek 24,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Manchester City,24
+ENG-Premier League,2526,Arsenal,2026-02-07 Arsenal-Sunderland,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,Sunderland,,,,,,,,,,,Arsenal,Sunderland,25
+ENG-Premier League,2526,Aston Villa,2026-02-07 Bournemouth-Aston Villa,2026-02-07,15:00:00,Matchweek 25,Sat,Away,,,,Bournemouth,,,,,,,,,,,Bournemouth,Aston Villa,25
+ENG-Premier League,2526,Brentford,2026-02-07 Newcastle Utd-Brentford,2026-02-07,15:00:00,Matchweek 25,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Brentford,25
+ENG-Premier League,2526,Brighton,2026-02-07 Brighton-Crystal Palace,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,Crystal Palace,,,,,,,,,,,Brighton,Crystal Palace,25
+ENG-Premier League,2526,Burnley,2026-02-07 Burnley-West Ham,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,West Ham,,,,,,,,,,,Burnley,West Ham,25
+ENG-Premier League,2526,Chelsea,2026-02-07 Wolves-Chelsea,2026-02-07,15:00:00,Matchweek 25,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Chelsea,25
+ENG-Premier League,2526,Everton,2026-02-07 Fulham-Everton,2026-02-07,15:00:00,Matchweek 25,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Everton,25
+ENG-Premier League,2526,Leeds United,2026-02-07 Leeds United-Nott'ham Forest,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Leeds United,Nott'ham Forest,25
+ENG-Premier League,2526,Liverpool,2026-02-07 Liverpool-Manchester City,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,Manchester City,,,,,,,,,,,Liverpool,Manchester City,25
+ENG-Premier League,2526,Manchester Utd,2026-02-07 Manchester Utd-Tottenham,2026-02-07,15:00:00,Matchweek 25,Sat,Home,,,,Tottenham,,,,,,,,,,,Manchester Utd,Tottenham,25
+ENG-Premier League,2526,Arsenal,2026-02-11 Brentford-Arsenal,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Brentford,,,,,,,,,,,Brentford,Arsenal,26
+ENG-Premier League,2526,Aston Villa,2026-02-11 Aston Villa-Brighton,2026-02-11,20:00:00,Matchweek 26,Wed,Home,,,,Brighton,,,,,,,,,,,Aston Villa,Brighton,26
+ENG-Premier League,2526,Bournemouth,2026-02-11 Everton-Bournemouth,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Everton,,,,,,,,,,,Everton,Bournemouth,26
+ENG-Premier League,2526,Burnley,2026-02-11 Crystal Palace-Burnley,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Burnley,26
+ENG-Premier League,2526,Chelsea,2026-02-11 Chelsea-Leeds United,2026-02-11,20:00:00,Matchweek 26,Wed,Home,,,,Leeds United,,,,,,,,,,,Chelsea,Leeds United,26
+ENG-Premier League,2526,Fulham,2026-02-11 Manchester City-Fulham,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Fulham,26
+ENG-Premier League,2526,Liverpool,2026-02-11 Sunderland-Liverpool,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Liverpool,26
+ENG-Premier League,2526,Manchester Utd,2026-02-11 West Ham-Manchester Utd,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,West Ham,,,,,,,,,,,West Ham,Manchester Utd,26
+ENG-Premier League,2526,Newcastle Utd,2026-02-11 Tottenham-Newcastle Utd,2026-02-11,20:00:00,Matchweek 26,Wed,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Newcastle Utd,26
+ENG-Premier League,2526,Nott'ham Forest,2026-02-11 Nott'ham Forest-Wolves,2026-02-11,20:00:00,Matchweek 26,Wed,Home,,,,Wolves,,,,,,,,,,,Nott'ham Forest,Wolves,26
+ENG-Premier League,2526,Arsenal,2026-02-21 Tottenham-Arsenal,2026-02-21,15:00:00,Matchweek 27,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Arsenal,27
+ENG-Premier League,2526,Aston Villa,2026-02-21 Aston Villa-Leeds United,2026-02-21,15:00:00,Matchweek 27,Sat,Home,,,,Leeds United,,,,,,,,,,,Aston Villa,Leeds United,27
+ENG-Premier League,2526,Bournemouth,2026-02-21 West Ham-Bournemouth,2026-02-21,15:00:00,Matchweek 27,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Bournemouth,27
+ENG-Premier League,2526,Brentford,2026-02-21 Brentford-Brighton,2026-02-21,15:00:00,Matchweek 27,Sat,Home,,,,Brighton,,,,,,,,,,,Brentford,Brighton,27
+ENG-Premier League,2526,Burnley,2026-02-21 Chelsea-Burnley,2026-02-21,15:00:00,Matchweek 27,Sat,Away,,,,Chelsea,,,,,,,,,,,Chelsea,Burnley,27
+ENG-Premier League,2526,Crystal Palace,2026-02-21 Crystal Palace-Wolves,2026-02-21,15:00:00,Matchweek 27,Sat,Home,,,,Wolves,,,,,,,,,,,Crystal Palace,Wolves,27
+ENG-Premier League,2526,Everton,2026-02-21 Everton-Manchester Utd,2026-02-21,15:00:00,Matchweek 27,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Everton,Manchester Utd,27
+ENG-Premier League,2526,Fulham,2026-02-21 Sunderland-Fulham,2026-02-21,15:00:00,Matchweek 27,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Fulham,27
+ENG-Premier League,2526,Liverpool,2026-02-21 Nott'ham Forest-Liverpool,2026-02-21,15:00:00,Matchweek 27,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Liverpool,27
+ENG-Premier League,2526,Manchester City,2026-02-21 Manchester City-Newcastle Utd,2026-02-21,15:00:00,Matchweek 27,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Manchester City,Newcastle Utd,27
+ENG-Premier League,2526,Arsenal,2026-02-28 Arsenal-Chelsea,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,Chelsea,,,,,,,,,,,Arsenal,Chelsea,28
+ENG-Premier League,2526,Aston Villa,2026-02-28 Wolves-Aston Villa,2026-02-28,15:00:00,Matchweek 28,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Aston Villa,28
+ENG-Premier League,2526,Bournemouth,2026-02-28 Bournemouth-Sunderland,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,Sunderland,,,,,,,,,,,Bournemouth,Sunderland,28
+ENG-Premier League,2526,Brentford,2026-02-28 Burnley-Brentford,2026-02-28,15:00:00,Matchweek 28,Sat,Away,,,,Burnley,,,,,,,,,,,Burnley,Brentford,28
+ENG-Premier League,2526,Brighton,2026-02-28 Brighton-Nott'ham Forest,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Brighton,Nott'ham Forest,28
+ENG-Premier League,2526,Crystal Palace,2026-02-28 Manchester Utd-Crystal Palace,2026-02-28,15:00:00,Matchweek 28,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Crystal Palace,28
+ENG-Premier League,2526,Everton,2026-02-28 Newcastle Utd-Everton,2026-02-28,15:00:00,Matchweek 28,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Everton,28
+ENG-Premier League,2526,Fulham,2026-02-28 Fulham-Tottenham,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,Tottenham,,,,,,,,,,,Fulham,Tottenham,28
+ENG-Premier League,2526,Leeds United,2026-02-28 Leeds United-Manchester City,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,Manchester City,,,,,,,,,,,Leeds United,Manchester City,28
+ENG-Premier League,2526,Liverpool,2026-02-28 Liverpool-West Ham,2026-02-28,15:00:00,Matchweek 28,Sat,Home,,,,West Ham,,,,,,,,,,,Liverpool,West Ham,28
+ENG-Premier League,2526,Arsenal,2026-03-04 Brighton-Arsenal,2026-03-04,20:00:00,Matchweek 29,Wed,Away,,,,Brighton,,,,,,,,,,,Brighton,Arsenal,29
+ENG-Premier League,2526,Aston Villa,2026-03-04 Aston Villa-Chelsea,2026-03-04,20:00:00,Matchweek 29,Wed,Home,,,,Chelsea,,,,,,,,,,,Aston Villa,Chelsea,29
+ENG-Premier League,2526,Bournemouth,2026-03-04 Bournemouth-Brentford,2026-03-04,20:00:00,Matchweek 29,Wed,Home,,,,Brentford,,,,,,,,,,,Bournemouth,Brentford,29
+ENG-Premier League,2526,Burnley,2026-03-04 Everton-Burnley,2026-03-04,20:00:00,Matchweek 29,Wed,Away,,,,Everton,,,,,,,,,,,Everton,Burnley,29
+ENG-Premier League,2526,Crystal Palace,2026-03-04 Tottenham-Crystal Palace,2026-03-04,20:00:00,Matchweek 29,Wed,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Crystal Palace,29
+ENG-Premier League,2526,Fulham,2026-03-04 Fulham-West Ham,2026-03-04,20:00:00,Matchweek 29,Wed,Home,,,,West Ham,,,,,,,,,,,Fulham,West Ham,29
+ENG-Premier League,2526,Leeds United,2026-03-04 Leeds United-Sunderland,2026-03-04,20:00:00,Matchweek 29,Wed,Home,,,,Sunderland,,,,,,,,,,,Leeds United,Sunderland,29
+ENG-Premier League,2526,Liverpool,2026-03-04 Wolves-Liverpool,2026-03-04,20:00:00,Matchweek 29,Wed,Away,,,,Wolves,,,,,,,,,,,Wolves,Liverpool,29
+ENG-Premier League,2526,Manchester City,2026-03-04 Manchester City-Nott'ham Forest,2026-03-04,20:00:00,Matchweek 29,Wed,Home,,,,Nott'ham Forest,,,,,,,,,,,Manchester City,Nott'ham Forest,29
+ENG-Premier League,2526,Manchester Utd,2026-03-04 Newcastle Utd-Manchester Utd,2026-03-04,20:00:00,Matchweek 29,Wed,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Manchester Utd,29
+ENG-Premier League,2526,Arsenal,2026-03-14 Arsenal-Everton,2026-03-14,15:00:00,Matchweek 30,Sat,Home,,,,Everton,,,,,,,,,,,Arsenal,Everton,30
+ENG-Premier League,2526,Aston Villa,2026-03-14 Manchester Utd-Aston Villa,2026-03-14,15:00:00,Matchweek 30,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Aston Villa,30
+ENG-Premier League,2526,Bournemouth,2026-03-14 Burnley-Bournemouth,2026-03-14,15:00:00,Matchweek 30,Sat,Away,,,,Burnley,,,,,,,,,,,Burnley,Bournemouth,30
+ENG-Premier League,2526,Brentford,2026-03-14 Brentford-Wolves,2026-03-14,15:00:00,Matchweek 30,Sat,Home,,,,Wolves,,,,,,,,,,,Brentford,Wolves,30
+ENG-Premier League,2526,Brighton,2026-03-14 Sunderland-Brighton,2026-03-14,15:00:00,Matchweek 30,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Brighton,30
+ENG-Premier League,2526,Chelsea,2026-03-14 Chelsea-Newcastle Utd,2026-03-14,15:00:00,Matchweek 30,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Chelsea,Newcastle Utd,30
+ENG-Premier League,2526,Crystal Palace,2026-03-14 Crystal Palace-Leeds United,2026-03-14,15:00:00,Matchweek 30,Sat,Home,,,,Leeds United,,,,,,,,,,,Crystal Palace,Leeds United,30
+ENG-Premier League,2526,Fulham,2026-03-14 Nott'ham Forest-Fulham,2026-03-14,15:00:00,Matchweek 30,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Fulham,30
+ENG-Premier League,2526,Liverpool,2026-03-14 Liverpool-Tottenham,2026-03-14,15:00:00,Matchweek 30,Sat,Home,,,,Tottenham,,,,,,,,,,,Liverpool,Tottenham,30
+ENG-Premier League,2526,Manchester City,2026-03-14 West Ham-Manchester City,2026-03-14,15:00:00,Matchweek 30,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Manchester City,30
+ENG-Premier League,2526,Arsenal,2026-03-21 Wolves-Arsenal,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Arsenal,31
+ENG-Premier League,2526,Aston Villa,2026-03-21 Aston Villa-West Ham,2026-03-21,15:00:00,Matchweek 31,Sat,Home,,,,West Ham,,,,,,,,,,,Aston Villa,West Ham,31
+ENG-Premier League,2526,Bournemouth,2026-03-21 Bournemouth-Manchester Utd,2026-03-21,15:00:00,Matchweek 31,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Bournemouth,Manchester Utd,31
+ENG-Premier League,2526,Brentford,2026-03-21 Leeds United-Brentford,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Brentford,31
+ENG-Premier League,2526,Brighton,2026-03-21 Brighton-Liverpool,2026-03-21,15:00:00,Matchweek 31,Sat,Home,,,,Liverpool,,,,,,,,,,,Brighton,Liverpool,31
+ENG-Premier League,2526,Burnley,2026-03-21 Fulham-Burnley,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Burnley,31
+ENG-Premier League,2526,Chelsea,2026-03-21 Everton-Chelsea,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Everton,,,,,,,,,,,Everton,Chelsea,31
+ENG-Premier League,2526,Crystal Palace,2026-03-21 Manchester City-Crystal Palace,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Crystal Palace,31
+ENG-Premier League,2526,Newcastle Utd,2026-03-21 Newcastle Utd-Sunderland,2026-03-21,15:00:00,Matchweek 31,Sat,Home,,,,Sunderland,,,,,,,,,,,Newcastle Utd,Sunderland,31
+ENG-Premier League,2526,Nott'ham Forest,2026-03-21 Tottenham-Nott'ham Forest,2026-03-21,15:00:00,Matchweek 31,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Nott'ham Forest,31
+ENG-Premier League,2526,Arsenal,2026-04-11 Arsenal-Bournemouth,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Bournemouth,,,,,,,,,,,Arsenal,Bournemouth,32
+ENG-Premier League,2526,Aston Villa,2026-04-11 Nott'ham Forest-Aston Villa,2026-04-11,15:00:00,Matchweek 32,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Aston Villa,32
+ENG-Premier League,2526,Brentford,2026-04-11 Brentford-Everton,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Everton,,,,,,,,,,,Brentford,Everton,32
+ENG-Premier League,2526,Brighton,2026-04-11 Burnley-Brighton,2026-04-11,15:00:00,Matchweek 32,Sat,Away,,,,Burnley,,,,,,,,,,,Burnley,Brighton,32
+ENG-Premier League,2526,Chelsea,2026-04-11 Chelsea-Manchester City,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Manchester City,,,,,,,,,,,Chelsea,Manchester City,32
+ENG-Premier League,2526,Crystal Palace,2026-04-11 Crystal Palace-Newcastle Utd,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Crystal Palace,Newcastle Utd,32
+ENG-Premier League,2526,Fulham,2026-04-11 Liverpool-Fulham,2026-04-11,15:00:00,Matchweek 32,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Fulham,32
+ENG-Premier League,2526,Leeds United,2026-04-11 Manchester Utd-Leeds United,2026-04-11,15:00:00,Matchweek 32,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Leeds United,32
+ENG-Premier League,2526,Sunderland,2026-04-11 Sunderland-Tottenham,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Tottenham,,,,,,,,,,,Sunderland,Tottenham,32
+ENG-Premier League,2526,West Ham,2026-04-11 West Ham-Wolves,2026-04-11,15:00:00,Matchweek 32,Sat,Home,,,,Wolves,,,,,,,,,,,West Ham,Wolves,32
+ENG-Premier League,2526,Arsenal,2026-04-18 Manchester City-Arsenal,2026-04-18,15:00:00,Matchweek 33,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Arsenal,33
+ENG-Premier League,2526,Aston Villa,2026-04-18 Aston Villa-Sunderland,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,Sunderland,,,,,,,,,,,Aston Villa,Sunderland,33
+ENG-Premier League,2526,Bournemouth,2026-04-18 Newcastle Utd-Bournemouth,2026-04-18,15:00:00,Matchweek 33,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Bournemouth,33
+ENG-Premier League,2526,Brentford,2026-04-18 Brentford-Fulham,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,Fulham,,,,,,,,,,,Brentford,Fulham,33
+ENG-Premier League,2526,Brighton,2026-04-18 Tottenham-Brighton,2026-04-18,15:00:00,Matchweek 33,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Brighton,33
+ENG-Premier League,2526,Burnley,2026-04-18 Nott'ham Forest-Burnley,2026-04-18,15:00:00,Matchweek 33,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Burnley,33
+ENG-Premier League,2526,Chelsea,2026-04-18 Chelsea-Manchester Utd,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,Manchester Utd,,,,,,,,,,,Chelsea,Manchester Utd,33
+ENG-Premier League,2526,Crystal Palace,2026-04-18 Crystal Palace-West Ham,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,West Ham,,,,,,,,,,,Crystal Palace,West Ham,33
+ENG-Premier League,2526,Everton,2026-04-18 Everton-Liverpool,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,Liverpool,,,,,,,,,,,Everton,Liverpool,33
+ENG-Premier League,2526,Leeds United,2026-04-18 Leeds United-Wolves,2026-04-18,15:00:00,Matchweek 33,Sat,Home,,,,Wolves,,,,,,,,,,,Leeds United,Wolves,33
+ENG-Premier League,2526,Arsenal,2026-04-25 Arsenal-Newcastle Utd,2026-04-25,15:00:00,Matchweek 34,Sat,Home,,,,Newcastle Utd,,,,,,,,,,,Arsenal,Newcastle Utd,34
+ENG-Premier League,2526,Aston Villa,2026-04-25 Fulham-Aston Villa,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Aston Villa,34
+ENG-Premier League,2526,Bournemouth,2026-04-25 Bournemouth-Leeds United,2026-04-25,15:00:00,Matchweek 34,Sat,Home,,,,Leeds United,,,,,,,,,,,Bournemouth,Leeds United,34
+ENG-Premier League,2526,Brentford,2026-04-25 Manchester Utd-Brentford,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Brentford,34
+ENG-Premier League,2526,Brighton,2026-04-25 Brighton-Chelsea,2026-04-25,15:00:00,Matchweek 34,Sat,Home,,,,Chelsea,,,,,,,,,,,Brighton,Chelsea,34
+ENG-Premier League,2526,Burnley,2026-04-25 Burnley-Manchester City,2026-04-25,15:00:00,Matchweek 34,Sat,Home,,,,Manchester City,,,,,,,,,,,Burnley,Manchester City,34
+ENG-Premier League,2526,Crystal Palace,2026-04-25 Liverpool-Crystal Palace,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Crystal Palace,34
+ENG-Premier League,2526,Everton,2026-04-25 West Ham-Everton,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Everton,34
+ENG-Premier League,2526,Nott'ham Forest,2026-04-25 Sunderland-Nott'ham Forest,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Nott'ham Forest,34
+ENG-Premier League,2526,Tottenham,2026-04-25 Wolves-Tottenham,2026-04-25,15:00:00,Matchweek 34,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Tottenham,34
+ENG-Premier League,2526,Arsenal,2026-05-02 Arsenal-Fulham,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,Fulham,,,,,,,,,,,Arsenal,Fulham,35
+ENG-Premier League,2526,Aston Villa,2026-05-02 Aston Villa-Tottenham,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,Tottenham,,,,,,,,,,,Aston Villa,Tottenham,35
+ENG-Premier League,2526,Bournemouth,2026-05-02 Bournemouth-Crystal Palace,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,Crystal Palace,,,,,,,,,,,Bournemouth,Crystal Palace,35
+ENG-Premier League,2526,Brentford,2026-05-02 Brentford-West Ham,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,West Ham,,,,,,,,,,,Brentford,West Ham,35
+ENG-Premier League,2526,Brighton,2026-05-02 Newcastle Utd-Brighton,2026-05-02,15:00:00,Matchweek 35,Sat,Away,,,,Newcastle Utd,,,,,,,,,,,Newcastle Utd,Brighton,35
+ENG-Premier League,2526,Burnley,2026-05-02 Leeds United-Burnley,2026-05-02,15:00:00,Matchweek 35,Sat,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Burnley,35
+ENG-Premier League,2526,Chelsea,2026-05-02 Chelsea-Nott'ham Forest,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,Nott'ham Forest,,,,,,,,,,,Chelsea,Nott'ham Forest,35
+ENG-Premier League,2526,Everton,2026-05-02 Everton-Manchester City,2026-05-02,15:00:00,Matchweek 35,Sat,Home,,,,Manchester City,,,,,,,,,,,Everton,Manchester City,35
+ENG-Premier League,2526,Liverpool,2026-05-02 Manchester Utd-Liverpool,2026-05-02,15:00:00,Matchweek 35,Sat,Away,,,,Manchester Utd,,,,,,,,,,,Manchester Utd,Liverpool,35
+ENG-Premier League,2526,Sunderland,2026-05-02 Wolves-Sunderland,2026-05-02,15:00:00,Matchweek 35,Sat,Away,,,,Wolves,,,,,,,,,,,Wolves,Sunderland,35
+ENG-Premier League,2526,Arsenal,2026-05-09 West Ham-Arsenal,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,West Ham,,,,,,,,,,,West Ham,Arsenal,36
+ENG-Premier League,2526,Aston Villa,2026-05-09 Burnley-Aston Villa,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Burnley,,,,,,,,,,,Burnley,Aston Villa,36
+ENG-Premier League,2526,Bournemouth,2026-05-09 Fulham-Bournemouth,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Fulham,,,,,,,,,,,Fulham,Bournemouth,36
+ENG-Premier League,2526,Brentford,2026-05-09 Manchester City-Brentford,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Brentford,36
+ENG-Premier League,2526,Brighton,2026-05-09 Brighton-Wolves,2026-05-09,15:00:00,Matchweek 36,Sat,Home,,,,Wolves,,,,,,,,,,,Brighton,Wolves,36
+ENG-Premier League,2526,Chelsea,2026-05-09 Liverpool-Chelsea,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Chelsea,36
+ENG-Premier League,2526,Crystal Palace,2026-05-09 Crystal Palace-Everton,2026-05-09,15:00:00,Matchweek 36,Sat,Home,,,,Everton,,,,,,,,,,,Crystal Palace,Everton,36
+ENG-Premier League,2526,Leeds United,2026-05-09 Tottenham-Leeds United,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Leeds United,36
+ENG-Premier League,2526,Manchester Utd,2026-05-09 Sunderland-Manchester Utd,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Manchester Utd,36
+ENG-Premier League,2526,Newcastle Utd,2026-05-09 Nott'ham Forest-Newcastle Utd,2026-05-09,15:00:00,Matchweek 36,Sat,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Newcastle Utd,36
+ENG-Premier League,2526,Arsenal,2026-05-17 Arsenal-Burnley,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Burnley,,,,,,,,,,,Arsenal,Burnley,37
+ENG-Premier League,2526,Aston Villa,2026-05-17 Aston Villa-Liverpool,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Liverpool,,,,,,,,,,,Aston Villa,Liverpool,37
+ENG-Premier League,2526,Bournemouth,2026-05-17 Bournemouth-Manchester City,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Manchester City,,,,,,,,,,,Bournemouth,Manchester City,37
+ENG-Premier League,2526,Brentford,2026-05-17 Brentford-Crystal Palace,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Crystal Palace,,,,,,,,,,,Brentford,Crystal Palace,37
+ENG-Premier League,2526,Brighton,2026-05-17 Leeds United-Brighton,2026-05-17,15:00:00,Matchweek 37,Sun,Away,,,,Leeds United,,,,,,,,,,,Leeds United,Brighton,37
+ENG-Premier League,2526,Chelsea,2026-05-17 Chelsea-Tottenham,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Tottenham,,,,,,,,,,,Chelsea,Tottenham,37
+ENG-Premier League,2526,Everton,2026-05-17 Everton-Sunderland,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Sunderland,,,,,,,,,,,Everton,Sunderland,37
+ENG-Premier League,2526,Fulham,2026-05-17 Wolves-Fulham,2026-05-17,15:00:00,Matchweek 37,Sun,Away,,,,Wolves,,,,,,,,,,,Wolves,Fulham,37
+ENG-Premier League,2526,Manchester Utd,2026-05-17 Manchester Utd-Nott'ham Forest,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,Nott'ham Forest,,,,,,,,,,,Manchester Utd,Nott'ham Forest,37
+ENG-Premier League,2526,Newcastle Utd,2026-05-17 Newcastle Utd-West Ham,2026-05-17,15:00:00,Matchweek 37,Sun,Home,,,,West Ham,,,,,,,,,,,Newcastle Utd,West Ham,37
+ENG-Premier League,2526,Arsenal,2026-05-24 Crystal Palace-Arsenal,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Crystal Palace,,,,,,,,,,,Crystal Palace,Arsenal,38
+ENG-Premier League,2526,Aston Villa,2026-05-24 Manchester City-Aston Villa,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Manchester City,,,,,,,,,,,Manchester City,Aston Villa,38
+ENG-Premier League,2526,Bournemouth,2026-05-24 Nott'ham Forest-Bournemouth,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Nott'ham Forest,,,,,,,,,,,Nott'ham Forest,Bournemouth,38
+ENG-Premier League,2526,Brentford,2026-05-24 Liverpool-Brentford,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Liverpool,,,,,,,,,,,Liverpool,Brentford,38
+ENG-Premier League,2526,Brighton,2026-05-24 Brighton-Manchester Utd,2026-05-24,16:00:00,Matchweek 38,Sun,Home,,,,Manchester Utd,,,,,,,,,,,Brighton,Manchester Utd,38
+ENG-Premier League,2526,Burnley,2026-05-24 Burnley-Wolves,2026-05-24,16:00:00,Matchweek 38,Sun,Home,,,,Wolves,,,,,,,,,,,Burnley,Wolves,38
+ENG-Premier League,2526,Chelsea,2026-05-24 Sunderland-Chelsea,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Sunderland,,,,,,,,,,,Sunderland,Chelsea,38
+ENG-Premier League,2526,Everton,2026-05-24 Tottenham-Everton,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,Tottenham,,,,,,,,,,,Tottenham,Everton,38
+ENG-Premier League,2526,Fulham,2026-05-24 Fulham-Newcastle Utd,2026-05-24,16:00:00,Matchweek 38,Sun,Home,,,,Newcastle Utd,,,,,,,,,,,Fulham,Newcastle Utd,38
+ENG-Premier League,2526,Leeds United,2026-05-24 West Ham-Leeds United,2026-05-24,16:00:00,Matchweek 38,Sun,Away,,,,West Ham,,,,,,,,,,,West Ham,Leeds United,38

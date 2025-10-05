@@ -1,0 +1,1054 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Coach Dashboard - Playwise{% endblock %}
+
+{% block namespace %}coach-dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Override base styles for dashboard */
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    
+    main {
+        padding-top: 100px;
+    }
+    
+    /* Dashboard specific styles */
+    .dashboard-wrapper {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.75rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #7c3aed, #3b82f6);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.12);
+        border-color: rgba(124, 58, 237, 0.2);
+    }
+    
+    .stat-card:hover::before {
+        transform: scaleX(1);
+    }
+    
+    .metric-card {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(124, 58, 237, 0.1);
+    }
+    
+    .metric-card:hover {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.1));
+        transform: scale(1.05);
+    }
+    
+    .metric-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-label {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .match-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .match-card:hover {
+        border-color: #7c3aed;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.1);
+        transform: translateX(4px);
+    }
+    
+    .match-card.upcoming {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.03));
+        border-left: 4px solid #7c3aed;
+    }
+    
+    .result-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.875rem;
+    }
+    
+    .result-badge.win {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .result-badge.draw {
+        background: linear-gradient(135deg, #64748b, #475569);
+        color: white;
+    }
+    
+    .result-badge.loss {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+    
+    .prediction-pill {
+        display: inline-block;
+        padding: 0.375rem 1rem;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+    }
+    
+    .team-logo-wrapper {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+        overflow: hidden;
+    }
+    
+    .team-logo-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .stats-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .stats-table thead th {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #64748b;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    
+    .stats-table tbody tr {
+        transition: background 0.2s ease;
+    }
+    
+    .stats-table tbody tr:hover {
+        background: rgba(124, 58, 237, 0.03);
+    }
+    
+    .stats-table tbody td {
+        padding: 0.875rem 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-weight: 500;
+    }
+    
+    .insight-box {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+        border-left: 4px solid #7c3aed;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        border-radius: 4px;
+    }
+    
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1.25rem;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .logout-btn:hover {
+        border-color: #ef4444;
+        color: #ef4444;
+        background: #fef2f2;
+    }
+
+    /* Modal Styles - Full Screen Takeover */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(12px);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 0;
+        margin: 0;
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        box-shadow: none;
+        transform: scale(0.95);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .modal-overlay.active .modal-container {
+        transform: scale(1);
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2.5rem 3rem;
+        border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+        background: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        flex-shrink: 0;
+    }
+
+    .modal-header h3 {
+        font-size: 2rem;
+        font-weight: 800;
+    }
+
+    .modal-close {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+        border: 2px solid transparent;
+        color: #ef4444;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .modal-close:hover {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-color: #ef4444;
+        color: white;
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+    }
+
+    .modal-close svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .modal-body {
+        padding: 3rem;
+        overflow-y: auto;
+        flex: 1;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+    }
+
+    .modal-body::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+        background: rgba(124, 58, 237, 0.05);
+        border-radius: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        border-radius: 8px;
+        border: 2px solid #f8fafc;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #6d28d9, #2563eb);
+    }
+
+    .chart-card {
+        background: white;
+        border: 2px solid rgba(124, 58, 237, 0.1);
+        border-radius: 24px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chart-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(90deg, #7c3aed, #3b82f6, #7c3aed);
+        background-size: 200% 100%;
+        animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .chart-card:hover {
+        box-shadow: 0 20px 60px rgba(124, 58, 237, 0.15);
+        border-color: rgba(124, 58, 237, 0.3);
+        transform: translateY(-8px);
+    }
+
+    .chart-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .chart-card .flex {
+        margin-bottom: 2rem;
+    }
+
+    .chart-card .chart-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+    }
+
+    .chart-card .chart-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .chart-card h4 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #1e293b;
+    }
+
+    .chart-card p {
+        font-size: 0.95rem;
+        color: #64748b;
+    }
+
+    .chart-wrapper {
+        position: relative;
+        height: 500px;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.02), rgba(59, 130, 246, 0.02));
+        border-radius: 16px;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .modal-header {
+            padding: 1.5rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .modal-close {
+            width: 44px;
+            height: 44px;
+        }
+        
+        .modal-close svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .chart-card {
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-card .chart-icon {
+            width: 48px;
+            height: 48px;
+        }
+        
+        .chart-card .chart-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .chart-card h4 {
+            font-size: 1.125rem;
+        }
+        
+        .chart-wrapper {
+            height: 350px;
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-wrapper">
+    <!-- Header Section -->
+    <div class="stat-card mb-8" data-aos="fade-down">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-6">
+                <div class="team-logo-wrapper">
+                    {% if team.logo %}
+                        <img src="{{ team.logo.url }}" alt="{{ team.name }}">
+                    {% else %}
+                        <span class="text-4xl">⚽</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <h1 class="text-3xl font-extrabold gradient-text mb-2">
+                        Welcome back, {{ coach.user.get_full_name|default:coach.user.username }}!
+                    </h1>
+                    <div class="flex items-center gap-4 text-sm text-gray-600">
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            <strong class="text-gray-900">{{ team.name }}</strong>
+                        </span>
+                        <span class="text-gray-400">|</span>
+                        <span class="flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Season {{ season }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <div class="text-2xl font-bold gradient-text">{{ played_count }}</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Matches Played</div>
+                </div>
+                <div class="h-12 w-px bg-gray-200"></div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold gradient-text">{{ ppg }}</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Points/Game</div>
+                </div>
+                <div class="h-12 w-px bg-gray-200"></div>
+                <a href="{% url "manager_logout" %}" class="logout-btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="metric-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="metric-value">{{ wins }}</div>
+            <div class="metric-label">Wins</div>
+            <div class="text-xs text-green-600 font-semibold mt-2">{{ wins_home }}H / {{ wins_away }}A</div>
+        </div>
+        <div class="metric-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="metric-value">{{ draws }}</div>
+            <div class="metric-label">Draws</div>
+            <div class="text-xs text-gray-600 font-semibold mt-2">{{ draws_home }}H / {{ draws_away }}A</div>
+        </div>
+        <div class="metric-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="metric-value">{{ losses }}</div>
+            <div class="metric-label">Losses</div>
+            <div class="text-xs text-red-600 font-semibold mt-2">{{ losses_home }}H / {{ losses_away }}A</div>
+        </div>
+        <div class="metric-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="metric-value">{{ goal_diff|stringformat:"+d" }}</div>
+            <div class="metric-label">Goal Difference</div>
+            <div class="text-xs text-gray-600 font-semibold mt-2">{{ goals_for }} GF / {{ goals_against }} GA</div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Column 1: Upcoming Matches -->
+        <div class="stat-card" data-aos="fade-right">
+            <h3 class="section-title">Upcoming Fixtures</h3>
+            {% if upcoming %}
+                <div class="space-y-3">
+                    {% for m in upcoming %}
+                    <a href="{% url 'team_compare' m.id %}" class="block hover:shadow-lg rounded-lg">
+                        <div class="match-card upcoming">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <div class="text-xs text-gray-500 font-semibold mb-1">
+                                        {{ m.date|date:"D, M j" }} • Week {{ m.matchweek }}
+                                    </div>
+                                    <div class="font-bold text-gray-900">
+                                        {{ m.home_team.name }}
+                                        <span class="text-gray-400 mx-2">vs</span>
+                                        {{ m.away_team.name }}
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 bg-gradient-to-r from-playwise-purple to-playwise-blue text-white text-xs font-bold rounded-full">
+                                    NEXT
+                                </span>
+                            </div>
+                            {% if next_pred and forloop.first %}
+                                <div class="prediction-pill">
+                                    <svg class="w-3 h-3 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    Prediction: {{ next_pred.home_win_prob }}% H / {{ next_pred.draw_prob }}% D / {{ next_pred.away_win_prob }}% A
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8 text-gray-400">
+                    <svg class="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <p>No upcoming fixtures</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Column 2: Team Statistics -->
+        <div class="stat-card" data-aos="fade-up">
+            <h3 class="section-title">Performance Overview</h3>
+            
+            <!-- Quick Stats Grid -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-playwise-blue mb-1">{{ avg_xg_for }}</div>
+                    <div class="text-xs text-gray-600 font-semibold">Avg xG For</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-playwise-purple mb-1">{{ avg_xg_against }}</div>
+                    <div class="text-xs text-gray-600 font-semibold">Avg xG Against</div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-green-600 mb-1">{{ clean_sheets }}</div>
+                    <div class="text-xs text-gray-600 font-semibold">Clean Sheets</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-orange-600 mb-1">{{ conversion_rate|default:"—" }}</div>
+                    <div class="text-xs text-gray-600 font-semibold">Conversion</div>
+                </div>
+            </div>
+
+            <!-- Detailed Stats Table -->
+            <div class="overflow-hidden rounded-xl border border-gray-200">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="text-center">Home</th>
+                            <th class="text-center">Away</th>
+                            <th class="text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">Matches</td>
+                            <td class="text-center">{{ matches_home }}</td>
+                            <td class="text-center">{{ matches_away }}</td>
+                            <td class="text-center font-bold">{{ matches_home|add:matches_away }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Goals For</td>
+                            <td class="text-center">{{ goals_home_for }}</td>
+                            <td class="text-center">{{ goals_away_for }}</td>
+                            <td class="text-center font-bold">{{ goals_for }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Goals Against</td>
+                            <td class="text-center">{{ goals_home_against }}</td>
+                            <td class="text-center">{{ goals_away_against }}</td>
+                            <td class="text-center font-bold">{{ goals_against }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">xG For</td>
+                            <td class="text-center">{{ xg_home_for }}</td>
+                            <td class="text-center">{{ xg_away_for }}</td>
+                            <td class="text-center font-bold">{{ xg_for_total }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Clean Sheets</td>
+                            <td class="text-center">{{ clean_sheets_home }}</td>
+                            <td class="text-center">{{ clean_sheets_away }}</td>
+                            <td class="text-center font-bold">{{ clean_sheets }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Insight Box -->
+            {% if played_count > 0 %}
+                <div class="insight-box">
+                    <h4 class="font-bold text-playwise-purple mb-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        Key Insights
+                    </h4>
+                    <p class="text-sm text-gray-700 leading-relaxed">
+                        Your team has achieved <strong>{{ wins }} wins</strong>, <strong>{{ draws }} draws</strong>, and <strong>{{ losses }} losses</strong> this season. 
+                        Current form shows a <strong>{{ streak }} {{ streak_type }}</strong> streak. 
+                        Home performance: <strong class="text-playwise-purple">{{ wins_home }}W-{{ draws_home }}D-{{ losses_home }}L</strong>. 
+                        Away performance: <strong class="text-playwise-blue">{{ wins_away }}W-{{ draws_away }}D-{{ losses_away }}L</strong>.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Column 3: Recent Matches & Charts Button -->
+        <div class="space-y-6" data-aos="fade-left">
+            <!-- Recent Matches -->
+            <div class="stat-card">
+                <h3 class="section-title">Recent Results</h3>
+                <div class="space-y-3">
+                    {% for m in recent %}
+                        <div class="match-card">
+                            <div class="flex justify-between items-center">
+                                <div class="flex-1">
+                                    <div class="text-xs text-gray-500 font-semibold mb-1">
+                                        {{ m.date|date:"D, M j" }}
+                                    </div>
+                                    <div class="font-semibold text-gray-900 text-sm">
+                                        {{ m.home_team.name }} vs {{ m.away_team.name }}
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    {% if m.y_home_goals is not None %}
+                                        <div class="text-right">
+                                            <div class="text-xl font-bold text-gray-900">
+                                                {{ m.y_home_goals }} - {{ m.y_away_goals }}
+                                            </div>
+                                            {% if m.xg_home and m.xg_away %}
+                                                <div class="text-xs text-gray-500">xG: {{ m.xg_home }} - {{ m.xg_away }}</div>
+                                            {% endif %}
+                                        </div>
+                                        {% if team.id == m.home_team.id %}
+                                            {% if m.result == "H" %}
+                                                <div class="result-badge win">W</div>
+                                            {% elif m.result == "D" %}
+                                                <div class="result-badge draw">D</div>
+                                            {% else %}
+                                                <div class="result-badge loss">L</div>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if m.result == "A" %}
+                                                <div class="result-badge win">W</div>
+                                            {% elif m.result == "D" %}
+                                                <div class="result-badge draw">D</div>
+                                            {% else %}
+                                                <div class="result-badge loss">L</div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-xs text-gray-400">Not played</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Charts Button -->
+            <div class="stat-card text-center py-8">
+                <svg class="w-16 h-16 mx-auto mb-4 text-playwise-purple opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <h4 class="font-bold text-gray-900 mb-2">Performance Analytics</h4>
+                <p class="text-sm text-gray-600 mb-4">View detailed charts and trends</p>
+                <button onclick="openChartsModal()" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold inline-flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                    View Charts
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Modal - OUTSIDE THE WRAPPER -->
+<div id="chartsModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div>
+                <h3 class="gradient-text">Performance Analytics Dashboard</h3>
+                <p class="text-sm text-gray-600 mt-2">Comprehensive view of your team's statistics and trends</p>
+            </div>
+            <button onclick="closeChartsModal()" class="modal-close">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="charts-grid">
+                <!-- Recent Form Chart -->
+                <div class="chart-card" data-aos="fade-up">
+                    <div class="flex items-center gap-4">
+                        <div class="chart-icon rounded-xl bg-gradient-to-br from-playwise-purple to-playwise-blue flex items-center justify-center">
+                            <svg class="text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Recent Form Analysis</h4>
+                            <p>Track your team's performance trend across recent matches</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="formChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Goals vs xG Chart -->
+                <div class="chart-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-4">
+                        <div class="chart-icon rounded-xl bg-gradient-to-br from-playwise-blue to-purple-600 flex items-center justify-center">
+                            <svg class="text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>Goals vs Expected Goals (xG)</h4>
+                            <p>Compare actual goals scored with expected goals based on shot quality</p>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="goalsXgChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
+<script>
+// Modal Functions
+function openChartsModal() {
+    const modal = document.getElementById('chartsModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Initialize charts when modal opens (if not already initialized)
+    if (!window.chartsInitialized) {
+        initializeCharts();
+        window.chartsInitialized = true;
+    }
+}
+
+function closeChartsModal() {
+    const modal = document.getElementById('chartsModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal on overlay click
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('chartsModal');
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeChartsModal();
+        }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeChartsModal();
+        }
+    });
+});
+
+// Initialize Charts
+function initializeCharts() {
+    const chartForm = JSON.parse('{{ chart_form|escapejs }}');
+    const chartGoalsXG = JSON.parse('{{ chart_goals_xg|escapejs }}');
+
+    // Form Chart
+    const ctxForm = document.getElementById('formChart');
+    if (ctxForm) {
+        new Chart(ctxForm, {
+            type: 'line',
+            data: {
+                labels: chartForm.labels.length ? chartForm.labels : ['No data'],
+                datasets: [{
+                    label: 'Points',
+                    data: chartForm.data.length ? chartForm.data : [0],
+                    fill: true,
+                    backgroundColor: function(context) {
+                        const ctx = context.chart.ctx;
+                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                        gradient.addColorStop(0, 'rgba(124, 58, 237, 0.3)');
+                        gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
+                        return gradient;
+                    },
+                    borderColor: '#7c3aed',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#7c3aed',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 3,
+                    pointHoverRadius: 8,
+                    pointHoverBorderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { 
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 13, weight: '600' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 16,
+                        cornerRadius: 12,
+                        titleFont: { size: 15, weight: 'bold' },
+                        bodyFont: { size: 14 },
+                        displayColors: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            stepSize: 1, 
+                            color: '#64748b', 
+                            font: { size: 12 },
+                            padding: 10
+                        },
+                        grid: { 
+                            color: '#f1f5f9',
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        ticks: { 
+                            color: '#64748b', 
+                            font: { size: 12 },
+                            padding: 10
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    // Goals vs xG Chart
+    const ctxGoalsXG = document.getElementById('goalsXgChart');
+    if (ctxGoalsXG) {
+        new Chart(ctxGoalsXG, {
+            data: {
+                labels: chartGoalsXG.labels.length ? chartGoalsXG.labels : ['No data'],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Goals',
+                        data: chartGoalsXG.goals.length ? chartGoalsXG.goals : [0],
+                        backgroundColor: 'rgba(59, 130, 246, 0.85)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        yAxisID: 'y',
+                    },
+                    {
+                        type: 'line',
+                        label: 'xG',
+                        data: chartGoalsXG.xg.length ? chartGoalsXG.xg : [0],
+                        borderColor: '#7c3aed',
+                        backgroundColor: function(context) {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 500);
+                            gradient.addColorStop(0, 'rgba(124, 58, 237, 0.2)');
+                            gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#7c3aed',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 3,
+                        pointHoverRadius: 8,
+                        yAxisID: 'y',
+                        fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 13, weight: '600' }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 16,
+                        cornerRadius: 12,
+                        titleFont: { size: 15, weight: 'bold' },
+                        bodyFont: { size: 14 }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            color: '#64748b', 
+                            font: { size: 12 },
+                            padding: 10
+                        },
+                        grid: { 
+                            color: '#f1f5f9',
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        ticks: { 
+                            color: '#64748b', 
+                            font: { size: 12 },
+                            padding: 10
+                        },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

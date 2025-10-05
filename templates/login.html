@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Manager Login - Playwise{% endblock %}
+
+{% block namespace %}login{% endblock %}
+
+{% block content %}
+
+<!-- Login Page -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 md:pt-32 pb-32 px-6 overflow-hidden">
+    
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-50 via-purple-50 to-blue-50"></div>
+    
+    <!-- Floating Orbs -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-playwise-purple/20 rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-playwise-blue/20 rounded-full blur-3xl animate-float-delayed"></div>
+    <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-purple-300/20 rounded-full blur-3xl animate-float-slow"></div>
+    
+    <!-- Particle Background -->
+    <div id="login-particles" class="absolute inset-0"></div>
+    
+    <!-- Login Container -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 items-center">
+            
+            <!-- Left Side - Branding & Info -->
+            <div class="hidden lg:block" data-aos="fade-right">
+                <div class="space-y-8">
+                    <!-- Logo & Brand -->
+
+                    
+                    <!-- Hero Text -->
+                    <div>
+                        <h2 class="text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
+                            Welcome Back,<br/>
+                            <span class="gradient-text">Manager</span>
+                        </h2>
+                        <p class="text-xl text-gray-600 leading-relaxed mb-8">
+                            Access your analytics dashboard and make data-driven decisions for your Premier League strategy.
+                        </p>
+                    </div>
+                    
+                    <!-- Features List -->
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 group">
+                            <div class="login-feature-icon">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Real-time Analytics</h4>
+                                <p class="text-gray-600 text-sm">Live match data and instant predictions</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group">
+                            <div class="login-feature-icon">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Secure Access</h4>
+                                <p class="text-gray-600 text-sm">Bank-level encryption and 2FA support</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4 group">
+                            <div class="login-feature-icon">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Lightning Fast</h4>
+                                <p class="text-gray-600 text-sm">Optimized performance across all devices</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200">
+                        <div>
+                            <div class="text-3xl font-bold gradient-text mb-1">10K+</div>
+                            <div class="text-sm text-gray-600">Active Managers</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text mb-1">87%</div>
+                            <div class="text-sm text-gray-600">Accuracy</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold gradient-text mb-1">24/7</div>
+                            <div class="text-sm text-gray-600">Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="w-full" data-aos="fade-left">
+                <div class="login-card">
+                    <!-- Mobile Logo -->
+                    <div class="lg:hidden flex items-center gap-3 mb-8">
+                        <div class="logo-icon">P</div>
+                        <span class="text-2xl font-bold gradient-text">Playwise</span>
+                    </div>
+                    
+                    <!-- Form Header -->
+                    <div class="mb-8">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-2">Sign In</h3>
+                        <p class="text-gray-600">Enter your credentials to access your dashboard</p>
+                    </div>
+                    
+                    <!-- Error Message -->
+                    {% if messages %}
+                        <div class="mb-4">
+                            <div class="alert alert-danger" role="alert">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <form method="POST" action="{% url 'manager_login' %}" class="space-y-5">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" name="username" class="form-input" placeholder="yourusername" required>
+                        </div>
+                    
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
+                        </div>
+                    
+                        <button type="submit" class="btn-primary w-full py-4 text-lg font-semibold rounded-xl relative z-10 text-white">
+                            Sign In to Dashboard
+                        </button>
+                    
+                        {% if error %}
+                        <p class="text-red-500">{{ error }}</p>
+                        {% endif %}
+                    </form>
+                    
+                    
+                    
+                    <!-- Security Badge -->
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
+                            <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <span>Secured with 256-bit SSL encryption</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize particles for login page
+window.addEventListener('load', function() {
+    tsParticles.load("login-particles", {
+        fullScreen: false,
+        background: {
+            color: { value: "transparent" }
+        },
+        fpsLimit: 120,
+        particles: {
+            number: {
+                value: 40,
+                density: {
+                    enable: true,
+                    area: 1000
+                }
+            },
+            color: {
+                value: ["#7c3aed", "#3b82f6"]
+            },
+            shape: {
+                type: "circle"
+            },
+            opacity: {
+                value: 0.15
+            },
+            size: {
+                value: { min: 1, max: 3 }
+            },
+            links: {
+                enable: true,
+                distance: 150,
+                color: "#7c3aed",
+                opacity: 0.1,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 0.8,
+                direction: "none",
+                random: false,
+                straight: false,
+                outModes: {
+                    default: "out"
+                }
+            }
+        },
+        detectRetina: true
+    });
+});
+
+// Password toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordToggle = document.querySelector('.password-toggle');
+    const passwordInput = document.getElementById('password');
+    
+    if (passwordToggle && passwordInput) {
+        passwordToggle.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        });
+    }
+    
+    // Form animation on submit
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const btn = form.querySelector('button[type="submit"]');
+            btn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            // Add your login logic here
+        });
+    }
+});
+</script>
+{% endblock %}
