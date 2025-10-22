@@ -1,0 +1,616 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ match.home_team.name }} vs {{ match.away_team.name }} - Match Analysis{% endblock %}
+
+{% block namespace %}match-detail{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    
+    main {
+        padding-top: 100px;
+    }
+    
+    .match-wrapper {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0 2rem 4rem;
+    }
+    
+    /* Hero Header */
+    .match-hero {
+        background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%);
+        border-radius: 32px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(124, 58, 237, 0.3);
+    }
+    
+    .match-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    
+    .match-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -50%;
+        left: -20%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    
+    .team-section {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .team-logo-large {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        padding: 1rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .team-logo-large:hover {
+        transform: scale(1.05) rotate(3deg);
+    }
+    
+    .score-display {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .score-number {
+        font-size: 5rem;
+        font-weight: 900;
+        color: white;
+        line-height: 1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .result-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 2rem;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.125rem;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Stats Cards */
+    .stat-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(124, 58, 237, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.12);
+        border-color: rgba(124, 58, 237, 0.2);
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .section-title::before {
+        content: '';
+        width: 4px;
+        height: 28px;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        border-radius: 4px;
+    }
+    
+    /* Form Pills */
+    .form-pills {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    
+    .form-pill {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+    
+    .form-pill:hover {
+        transform: scale(1.1);
+    }
+    
+    .form-pill.win {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .form-pill.draw {
+        background: linear-gradient(135deg, #64748b, #475569);
+        color: white;
+    }
+    
+    .form-pill.loss {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+    
+    /* Comparison Bar */
+    .comparison-bar {
+        position: relative;
+        height: 12px;
+        background: #f1f5f9;
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 1rem 0;
+    }
+    
+    .comparison-fill {
+        position: absolute;
+        height: 100%;
+        background: linear-gradient(90deg, #7c3aed, #3b82f6);
+        border-radius: 20px;
+        transition: width 1s ease-out;
+    }
+    
+    .comparison-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 1.5rem;
+        align-items: center;
+        margin: 1.5rem 0;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    /* H2H History */
+    .h2h-card {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+        border-radius: 16px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(124, 58, 237, 0.1);
+        transition: all 0.2s ease;
+    }
+    
+    .h2h-card:hover {
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.08));
+        border-color: rgba(124, 58, 237, 0.2);
+    }
+    
+    /* Performance Badge */
+    .performance-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+    
+    .performance-badge.positive {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+        color: #059669;
+    }
+    
+    .performance-badge.negative {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+        color: #dc2626;
+    }
+    
+    .performance-badge.neutral {
+        background: linear-gradient(135deg, rgba(100, 116, 139, 0.15), rgba(71, 85, 105, 0.1));
+        color: #475569;
+    }
+    
+    /* Donut Chart */
+    .donut-chart {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    .donut-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .donut-value {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #7c3aed, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .donut-label {
+        font-size: 0.75rem;
+        color: #64748b;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="match-wrapper">
+    <!-- Hero Section -->
+    <div class="match-hero mt-8" data-aos="fade-down">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative z-10 ">
+            <!-- Home Team -->
+            <div class="team-section text-center md:text-left">
+                {% if match.home_team.logo %}
+                    <img src="{{ match.home_team.logo.url }}" alt="{{ match.home_team.name }}" class="team-logo-large mx-auto md:mx-0 mb-4">
+                {% else %}
+                    <div class="team-logo-large mx-auto md:mx-0 mb-4 flex items-center justify-center text-5xl">🏠</div>
+                {% endif %}
+                <h2 class="text-3xl font-extrabold text-white mb-2">{{ match.home_team.name }}</h2>
+                <div class="text-white/80 text-sm mb-3">Home • Rank: {{ match.home_rank_in_season }}</div>
+                {% if home_form_results %}
+                    <div class="form-pills">
+                        {% for result in home_form_results %}
+                            <div class="form-pill {% if result == 'W' %}win{% elif result == 'D' %}draw{% else %}loss{% endif %}">{{ result }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- Score Display -->
+            <div class="score-display text-center">
+                <div class="text-white/80 text-sm font-semibold mb-3">
+                    {{ match.date|date:"D, M j, Y" }}
+                </div>
+                <div class="flex items-center justify-center gap-8 mb-4">
+                    <div class="score-number">{{ match.y_home_goals }}</div>
+                    <div class="text-white/50 text-4xl font-bold">:</div>
+                    <div class="score-number">{{ match.y_away_goals }}</div>
+                </div>
+                <div class="result-badge">
+                    {% if match.result == "H" %}
+                        Home Win
+                    {% elif match.result == "A" %}
+                        Away Win
+                    {% else %}
+                        Draw
+                    {% endif %}
+                </div>
+                <div class="text-white/60 text-xs mt-4">
+                    Season {{ match.season }} • Matchweek {{ match.matchweek }}
+                </div>
+            </div>
+            
+            <!-- Away Team -->
+            <div class="team-section text-center md:text-right">
+                {% if match.away_team.logo %}
+                    <img src="{{ match.away_team.logo.url }}" alt="{{ match.away_team.name }}" class="team-logo-large mx-auto md:ml-auto mb-4">
+                {% else %}
+                    <div class="team-logo-large mx-auto md:ml-auto mb-4 flex items-center justify-center text-5xl">✈️</div>
+                {% endif %}
+                <h2 class="text-3xl font-extrabold text-white mb-2">{{ match.away_team.name }}</h2>
+                <div class="text-white/80 text-sm mb-3">Away • Rank: {{ match.away_rank_in_season }}</div>
+                {% if away_form_results %}
+                    <div class="form-pills">
+                        {% for result in away_form_results %}
+                            <div class="form-pill {% if result == 'W' %}win{% elif result == 'D' %}draw{% else %}loss{% endif %}">{{ result }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Stats Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        
+        <!-- Match Statistics -->
+        <div class="lg:col-span-2 stat-card" data-aos="fade-right">
+            <h3 class="section-title">Match Statistics</h3>
+            
+            <!-- Goals -->
+            <div class="mb-6">
+                <div class="comparison-labels">
+                    <span class="text-playwise-purple">{{ match.y_home_goals|default:0 }}</span>
+                    <span class="text-gray-500 text-xs uppercase">Goals</span>
+                    <span class="text-playwise-blue">{{ match.y_away_goals|default:0 }}</span>
+                </div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" style="width: {% widthratio match.y_home_goals|default:0 match.y_home_goals|default:0|add:match.y_away_goals|default:0 100 %}%; left: 0;"></div>
+                </div>
+            </div>
+            
+            <!-- Expected Goals -->
+            <div class="mb-6">
+                <div class="comparison-labels">
+                    <span class="text-playwise-purple">{{ match.home_xg|floatformat:2 }}</span>
+                    <span class="text-gray-500 text-xs uppercase">Expected Goals (xG)</span>
+                    <span class="text-playwise-blue">{{ match.away_xg|floatformat:2 }}</span>
+                </div>
+                <div class="comparison-bar">
+                    <div class="comparison-fill" style="width: {% if match.home_xg and match.away_xg %}{% widthratio match.home_xg match.home_xg|add:match.away_xg 100 %}{% else %}50{% endif %}%;"></div>
+                </div>
+            </div>
+            
+            <!-- Goals For/Against -->
+            <div class="mb-6">
+                <div class="comparison-labels">
+                    <span class="text-playwise-purple">{{ match.home_gf }} / {{ match.home_ga }}</span>
+                    <span class="text-gray-500 text-xs uppercase">Goals For / Against (Season)</span>
+                    <span class="text-playwise-blue">{{ match.away_gf }} / {{ match.away_ga }}</span>
+                </div>
+            </div>
+            
+            <!-- Performance vs Expectation -->
+            {% if home_overperformance is not None or away_overperformance is not None %}
+            <div class="grid grid-cols-2 gap-4 mt-8 pt-6 border-t border-gray-200">
+                <div class="text-center">
+                    <div class="stat-label mb-2">Performance vs xG</div>
+                    {% if home_overperformance is not None %}
+                        <div class="performance-badge {% if home_overperformance > 0 %}positive{% elif home_overperformance < 0 %}negative{% else %}neutral{% endif %}">
+                            {% if home_overperformance > 0 %}+{% endif %}{{ home_overperformance|floatformat:2 }}
+                        </div>
+                    {% else %}
+                        <div class="text-gray-400">—</div>
+                    {% endif %}
+                </div>
+                <div class="text-center">
+                    <div class="stat-label mb-2">Performance vs xG</div>
+                    {% if away_overperformance is not None %}
+                        <div class="performance-badge {% if away_overperformance > 0 %}positive{% elif away_overperformance < 0 %}negative{% else %}neutral{% endif %}">
+                            {% if away_overperformance > 0 %}+{% endif %}{{ away_overperformance|floatformat:2 }}
+                        </div>
+                    {% else %}
+                        <div class="text-gray-400">—</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Form & H2H Summary -->
+        <div class="stat-card" data-aos="fade-left">
+            <h3 class="section-title">Head-to-Head</h3>
+            
+            <!-- H2H Donut -->
+            <div class="donut-chart mb-6">
+                <canvas id="h2hDonut"></canvas>
+                <div class="donut-center">
+                    <div class="donut-value">{{ h2h_matches|length }}</div>
+                    <div class="donut-label">Meetings</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-green-600">{{ h2h_home_wins }}</div>
+                    <div class="text-xs text-gray-500 uppercase">Home Wins</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-gray-600">{{ h2h_draws }}</div>
+                    <div class="text-xs text-gray-500 uppercase">Draws</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-blue-600">{{ h2h_away_wins }}</div>
+                    <div class="text-xs text-gray-500 uppercase">Away Wins</div>
+                </div>
+            </div>
+            
+            {% if match.table_points_gap %}
+            <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+                <div class="stat-label mb-2">Table Points Gap</div>
+                <div class="stat-value">{{ match.table_points_gap }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Season Averages & Recent H2H -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Season Averages -->
+        <div class="stat-card" data-aos="fade-up">
+            <h3 class="section-title">Season Averages</h3>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl">
+                    <h4 class="font-bold text-gray-900 mb-4">{{ match.home_team.name }}</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="stat-label">Avg Goals For</div>
+                            <div class="text-2xl font-bold gradient-text">{{ home_season_stats.avg_gf|floatformat:2 }}</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Avg Goals Against</div>
+                            <div class="text-2xl font-bold gradient-text">{{ home_season_stats.avg_ga|floatformat:2 }}</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Avg xG</div>
+                            <div class="text-2xl font-bold gradient-text">{{ home_season_stats.avg_xg|floatformat:2 }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl">
+                    <h4 class="font-bold text-gray-900 mb-4">{{ match.away_team.name }}</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="stat-label">Avg Goals For</div>
+                            <div class="text-2xl font-bold gradient-text">{{ away_season_stats.avg_gf|floatformat:2 }}</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Avg Goals Against</div>
+                            <div class="text-2xl font-bold gradient-text">{{ away_season_stats.avg_ga|floatformat:2 }}</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Avg xG</div>
+                            <div class="text-2xl font-bold gradient-text">{{ away_season_stats.avg_xg|floatformat:2 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent H2H Matches -->
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="section-title">Recent Meetings</h3>
+            
+            {% if h2h_matches %}
+                <div class="space-y-3">
+                    {% for h2h in h2h_matches %}
+                        <div class="h2h-card">
+                            <div class="flex justify-between items-center">
+                                <div class="flex-1">
+                                    <div class="text-sm font-semibold text-gray-900">
+                                        {{ h2h.home_team.name }} vs {{ h2h.away_team.name }}
+                                    </div>
+                                    <div class="text-xs text-gray-500">{{ h2h.date|date:"M j, Y" }}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-lg font-bold text-gray-900">
+                                        {{ h2h.y_home_goals }} - {{ h2h.y_away_goals }}
+                                    </div>
+                                    <div class="text-xs font-semibold {% if h2h.result == 'H' %}text-green-600{% elif h2h.result == 'A' %}text-blue-600{% else %}text-gray-600{% endif %}">
+                                        {% if h2h.result == 'H' %}Home{% elif h2h.result == 'A' %}Away{% else %}Draw{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8 text-gray-400">
+                    <svg class="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p>No previous meetings found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+<script>
+window.addEventListener('load', function() {
+    // H2H Donut Chart
+    const h2hCtx = document.getElementById('h2hDonut');
+    if (h2hCtx) {
+        new Chart(h2hCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Home Wins', 'Draws', 'Away Wins'],
+                datasets: [{
+                    data: [{{ h2h_home_wins }}, {{ h2h_draws }}, {{ h2h_away_wins }}],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(100, 116, 139, 0.8)',
+                        'rgba(59, 130, 246, 0.8)'
+                    ],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '75%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        cornerRadius: 8,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Animate comparison bars
+    document.querySelectorAll('.comparison-fill').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 300);
+    });
+});
+</script>
+{% endblock %}

@@ -6,7 +6,8 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Avg, Sum, Count, Q
+from decimal import Decimal
 from datetime import date
 
 
@@ -563,3 +564,125 @@ def team_compare(request, match_id):
     }
 
     return render(request, "team_compare.html", context)
+
+
+def match_detail(request, match_id):
+    """
+    Display detailed info about a single match with enhanced analytics.
+    """
+    match = get_object_or_404(Match, id=match_id)
+    
+    # Get recent form (last 5 matches before this match)
+    home_recent = Match.objects.filter(
+        Q(home_team=match.home_team) | Q(away_team=match.home_team),
+        date__lt=match.date,
+        season=match.season
+    ).order_by('-date')[:5]
+    
+    away_recent = Match.objects.filter(
+        Q(home_team=match.away_team) | Q(away_team=match.away_team),
+        date__lt=match.date,
+        season=match.season
+    ).order_by('-date')[:5]
+    
+    # Calculate form (points from last 5)
+    def calculate_form(team, matches):
+        points = 0
+        results = []
+        for m in matches:
+            if m.home_team == team:
+                if m.result == 'H':
+                    points += 3
+                    results.append('W')
+                elif m.result == 'D':
+                    points += 1
+                    results.append('D')
+                else:
+                    results.append('L')
+            else:
+                if m.result == 'A':
+                    points += 3
+                    results.append('W')
+                elif m.result == 'D':
+                    points += 1
+                    results.append('D')
+                else:
+                    results.append('L')
+        return points, results[::-1]  # Reverse to show oldest to newest
+    
+    home_form_points, home_form_results = calculate_form(match.home_team, home_recent)
+    away_form_points, away_form_results = calculate_form(match.away_team, away_recent)
+    
+    # Head-to-head history (last 5 meetings)
+    h2h_matches = Match.objects.filter(
+        Q(home_team=match.home_team, away_team=match.away_team) |
+        Q(home_team=match.away_team, away_team=match.home_team),
+        date__lt=match.date
+    ).order_by('-date')[:5]
+    
+    # Calculate h2h stats
+    home_wins = 0
+    away_wins = 0
+    draws = 0
+    for h2h in h2h_matches:
+        if h2h.home_team == match.home_team:
+            if h2h.result == 'H':
+                home_wins += 1
+            elif h2h.result == 'A':
+                away_wins += 1
+            else:
+                draws += 1
+        else:
+            if h2h.result == 'H':
+                away_wins += 1
+            elif h2h.result == 'A':
+                home_wins += 1
+            else:
+                draws += 1
+    
+    # Season averages
+    home_season_stats = Match.objects.filter(
+        Q(home_team=match.home_team) | Q(away_team=match.home_team),
+        season=match.season,
+        date__lt=match.date
+    ).aggregate(
+        avg_gf=Avg('home_gf', filter=Q(home_team=match.home_team)),
+        avg_ga=Avg('home_ga', filter=Q(home_team=match.home_team)),
+        avg_xg=Avg('home_xg', filter=Q(home_team=match.home_team)),
+    )
+    
+    away_season_stats = Match.objects.filter(
+        Q(home_team=match.away_team) | Q(away_team=match.away_team),
+        season=match.season,
+        date__lt=match.date
+    ).aggregate(
+        avg_gf=Avg('away_gf', filter=Q(away_team=match.away_team)),
+        avg_ga=Avg('away_ga', filter=Q(away_team=match.away_team)),
+        avg_xg=Avg('away_xg', filter=Q(away_team=match.away_team)),
+    )
+    
+    # Calculate performance vs expectation
+    home_overperformance = None
+    away_overperformance = None
+    if match.home_xg and match.y_home_goals is not None:
+        home_overperformance = float(match.y_home_goals) - float(match.home_xg)
+    if match.away_xg and match.y_away_goals is not None:
+        away_overperformance = float(match.y_away_goals) - float(match.away_xg)
+    
+    context = {
+        "match": match,
+        "home_form_points": home_form_points,
+        "home_form_results": home_form_results,
+        "away_form_points": away_form_points,
+        "away_form_results": away_form_results,
+        "h2h_matches": h2h_matches,
+        "h2h_home_wins": home_wins,
+        "h2h_away_wins": away_wins,
+        "h2h_draws": draws,
+        "home_season_stats": home_season_stats,
+        "away_season_stats": away_season_stats,
+        "home_overperformance": home_overperformance,
+        "away_overperformance": away_overperformance,
+    }
+    return render(request, "match_detail.html", context)
+

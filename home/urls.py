@@ -11,5 +11,6 @@ urlpatterns = [
     path("predict/", predict_api, name="predict_api"),
 
     path('compare/<int:match_id>/', team_compare, name='team_compare'),
+    path("match/<int:match_id>/", match_detail, name="match_detail"),
 
 ]

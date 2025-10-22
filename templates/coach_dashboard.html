@@ -607,6 +607,7 @@
                                 </div>
                             {% endif %}
                         </div>
+                    </a>
                     {% endfor %}
                 </div>
             {% else %}
@@ -715,6 +716,7 @@
                 <h3 class="section-title">Recent Results</h3>
                 <div class="space-y-3">
                     {% for m in recent %}
+                    <a href="{% url 'match_detail' m.id %}" class="block">
                         <div class="match-card">
                             <div class="flex justify-between items-center">
                                 <div class="flex-1">
@@ -758,6 +760,7 @@
                                 </div>
                             </div>
                         </div>
+                    </a>
                     {% endfor %}
                 </div>
             </div>
