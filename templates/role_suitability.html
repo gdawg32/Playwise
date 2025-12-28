@@ -1,0 +1,505 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+main {
+    padding-top: 100px;
+}
+
+.suitability-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Page Header */
+.page-header {
+    background: white;
+    border-radius: 20px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.page-header h1 {
+    font-size: 2.25rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Player Selector */
+.selector-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.selector-card:hover {
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.12);
+}
+
+.selector-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.selector-label svg {
+    width: 18px;
+    height: 18px;
+}
+
+#playerSelect {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.25rem;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    appearance: none;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.04);
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237c3aed' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.25rem center;
+}
+
+#playerSelect:hover {
+    border-color: #cbd5e1;
+    background-color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.08);
+    transform: translateY(-1px);
+}
+
+#playerSelect:focus {
+    outline: none;
+    border-color: #7c3aed;
+    background-color: white;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12), 0 4px 16px rgba(124, 58, 237, 0.08);
+}
+
+#playerSelect option {
+    padding: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+}
+
+#playerSelect option:first-child {
+    color: #94a3b8;
+}
+
+/* Chart Card */
+.chart-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#chart {
+    width: 100%;
+    min-height: 700px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+.empty-icon {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 2rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7c3aed;
+}
+
+.empty-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Info Banner */
+.info-banner {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.06));
+    border-left: 4px solid #7c3aed;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.info-banner svg {
+    flex-shrink: 0;
+    color: #7c3aed;
+    width: 24px;
+    height: 24px;
+}
+
+.info-banner p {
+    color: #475569;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Legend */
+.legend-card {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.03));
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.legend-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.legend-items {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.legend-color {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid #1e293b;
+}
+
+.legend-color.excellent {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.legend-color.good {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.legend-color.fair {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.legend-color.poor {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.legend-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .suitability-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .page-header {
+        padding: 1.75rem;
+    }
+    
+    .page-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .chart-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    #chart {
+        min-height: 520px;
+    }
+    
+    .legend-items {
+        gap: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+<div class="suitability-wrapper">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Role Suitability Analysis</h1>
+        <p class="page-subtitle">Analyze player compatibility across tactical positions based on performance metrics</p>
+    </div>
+
+    <!-- Info Banner -->
+    <div class="info-banner">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p>Suitability scores are calculated using role-specific statistical models weighted against league benchmarks. Scores above 70 indicate strong fit for the role.</p>
+    </div>
+
+    <!-- Player Selector -->
+    <div class="selector-card">
+        <label class="selector-label" for="playerSelect">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Select Player
+        </label>
+        <select id="playerSelect">
+            <option value="">Choose a player to analyze...</option>
+            {% for p in players %}
+                <option value="{{ p.player_id }}">{{ p.player_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-card">
+        <div class="legend-title">Suitability Ratings</div>
+        <div class="legend-items">
+            <div class="legend-item">
+                <div class="legend-color excellent"></div>
+                <span class="legend-text">Excellent (70-100)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color good"></div>
+                <span class="legend-text">Good (50-69)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color fair"></div>
+                <span class="legend-text">Fair (30-49)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color poor"></div>
+                <span class="legend-text">Poor (0-29)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Card -->
+    <div class="chart-card">
+        <div id="chart"></div>
+    </div>
+
+</div>
+
+<script>
+const select = document.getElementById("playerSelect");
+const chartDiv = document.getElementById("chart");
+
+// Show empty state initially
+function showEmpty() {
+    chartDiv.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h3>Ready to Analyze</h3>
+            <p>Select a player from the dropdown above to view their suitability scores across all tactical roles</p>
+        </div>
+    `;
+}
+
+showEmpty();
+
+select.addEventListener("change", async () => {
+    const playerId = select.value;
+    if (!playerId) {
+        showEmpty();
+        return;
+    }
+
+    try {
+        const res = await fetch(`/coach/api/role-suitability/?player_id=${playerId}`);
+        const data = await res.json();
+
+        const roles = data.roles.map(r => r.role);
+        const scores = data.roles.map(r => r.score);
+
+        // Color coding based on score ranges
+        const colors = scores.map(s => {
+            if (s >= 70) return "#10b981"; // Excellent - Green
+            if (s >= 50) return "#3b82f6"; // Good - Blue
+            if (s >= 30) return "#f59e0b"; // Fair - Orange
+            return "#ef4444"; // Poor - Red
+        });
+
+        const trace = {
+            type: "bar",
+            orientation: "h",
+            x: scores,
+            y: roles,
+            marker: {
+                color: colors,
+                line: { color: "#1e293b", width: 2 },
+                opacity: 0.9
+            },
+            text: scores.map(s => s.toFixed(1)),
+            textposition: "inside",
+            insidetextanchor: "middle",
+            textfont: {
+                size: 13,
+                family: "Inter",
+                weight: 700,
+                color: "#ffffff"
+            },
+            hovertemplate: '<b>%{y}</b><br>Score: %{x:.1f}<extra></extra>'
+        };
+
+        const layout = {
+            title: {
+                text: `<b>${data.player} — Role Suitability</b>`,
+                font: { 
+                    size: 24, 
+                    family: "Inter", 
+                    weight: 900,
+                    color: "#1e293b"
+                },
+                x: 0.5,
+                xanchor: "center"
+            },
+            xaxis: {
+                title: {
+                    text: "<b>Suitability Score (0-100)</b>",
+                    font: { size: 14, weight: 700, family: "Inter", color: "#64748b" }
+                },
+                range: [0, 100],
+                gridcolor: "#e5e7eb",
+                gridwidth: 1,
+                zeroline: true,
+                zerolinewidth: 2,
+                zerolinecolor: "#cbd5e1",
+                tickfont: { size: 12, weight: 600, family: "Inter", color: "#64748b" }
+            },
+            yaxis: {
+                autorange: "reversed",
+                tickfont: { size: 13, weight: 600, family: "Inter", color: "#1e293b" },
+                showgrid: false
+            },
+            margin: { l: 220, r: 50, t: 80, b: 70 },
+            height: 700,
+            paper_bgcolor: "#ffffff",
+            plot_bgcolor: "#fafafa",
+            hoverlabel: {
+                bgcolor: "#1e293b",
+                bordercolor: "#1e293b",
+                font: {
+                    family: "Inter",
+                    size: 13,
+                    color: "#ffffff",
+                    weight: 600
+                }
+            }
+        };
+
+        const config = {
+            responsive: true,
+            displaylogo: false,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d', 'autoScale2d'],
+            toImageButtonOptions: {
+                format: 'png',
+                filename: 'role_suitability_analysis',
+                height: 1080,
+                width: 1920,
+                scale: 2
+            }
+        };
+
+        Plotly.newPlot(chartDiv, [trace], layout, config);
+    } catch (error) {
+        console.error('Error:', error);
+        chartDiv.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.08)); color: #ef4444;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 style="color: #ef4444;">Error Loading Data</h3>
+                <p>Unable to load suitability analysis. Please try again or select a different player.</p>
+            </div>
+        `;
+    }
+});
+</script>
+
+{% endblock %}

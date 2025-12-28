@@ -1,0 +1,610 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+main {
+    padding-top: 100px;
+    padding-bottom: 4rem;
+}
+
+.analysis-wrapper {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Page Header */
+.page-header {
+    background: white;
+    border-radius: 20px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+}
+
+.header-info h1 {
+    font-size: 2.25rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.header-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9375rem;
+    color: #64748b;
+    font-weight: 600;
+    flex-wrap: wrap;
+}
+
+.header-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Squad Overview Cards */
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.overview-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    transition: all 0.3s ease;
+}
+
+.overview-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+}
+
+.overview-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.overview-value {
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Filters */
+.filters-section {
+    background: white;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+.filter-input {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: #f8fafc;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Table */
+.table-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    overflow: hidden;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1600px;
+}
+
+thead {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 2px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+th {
+    padding: 1rem 1rem;
+    text-align: left;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+th:hover {
+    background: rgba(124, 58, 237, 0.08);
+    color: #7c3aed;
+}
+
+th.sortable::after {
+    content: '⇅';
+    margin-left: 0.375rem;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+}
+
+th.sort-asc::after {
+    content: '↑';
+    color: #7c3aed;
+}
+
+th.sort-desc::after {
+    content: '↓';
+    color: #7c3aed;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.02));
+}
+
+td {
+    padding: 1rem 1rem;
+    font-size: 0.875rem;
+    color: #334155;
+    white-space: nowrap;
+}
+
+/* Player Name */
+.player-link {
+    font-weight: 700;
+    color: #1e293b;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.player-link:hover {
+    color: #7c3aed;
+}
+
+/* Position Badges */
+.pos-badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 6px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.pos-fw { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1)); color: #dc2626; }
+.pos-mf { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1)); color: #2563eb; }
+.pos-df { background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1)); color: #059669; }
+.pos-gk { background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1)); color: #d97706; }
+
+/* Metric Pills */
+.metric-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.metric-worldclass { background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.15)); color: #7c3aed; }
+.metric-elite { background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1)); color: #059669; }
+.metric-reliable { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1)); color: #2563eb; }
+.metric-rotation { background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1)); color: #d97706; }
+.metric-fringe { background: linear-gradient(135deg, rgba(100, 116, 139, 0.15), rgba(71, 85, 105, 0.1)); color: #475569; }
+
+.metric-excellent { background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1)); color: #059669; }
+.metric-good { background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1)); color: #2563eb; }
+.metric-average { background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1)); color: #d97706; }
+.metric-poor { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1)); color: #dc2626; }
+
+/* Flags & Insights */
+.flags-insights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    max-width: 250px;
+}
+
+.flag-item {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 6px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.insight-item {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    font-weight: 600;
+}
+
+/* Progress Bars */
+.progress-bar {
+    width: 80px;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    table {
+        min-width: 1400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .analysis-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .header-info h1 {
+        font-size: 1.75rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="analysis-wrapper">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-info">
+            <h1>Squad Analysis</h1>
+            <div class="header-meta">
+                <span>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <strong>{{ team.name }}</strong>
+                </span>
+                <span>•</span>
+                <span>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Season {{ season }}
+                </span>
+                <span>•</span>
+                <span>{{ squad_stats.total_players }} Players</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Squad Overview -->
+    <div class="overview-grid">
+        <div class="overview-card">
+            <div class="overview-label">Squad Size</div>
+            <div class="overview-value">{{ squad_stats.total_players }}</div>
+        </div>
+        <div class="overview-card">
+            <div class="overview-label">Average Age</div>
+            <div class="overview-value">{{ squad_stats.avg_age }}</div>
+        </div>
+        <div class="overview-card">
+            <div class="overview-label">Total Goals</div>
+            <div class="overview-value">{{ squad_stats.total_goals }}</div>
+        </div>
+        <div class="overview-card">
+            <div class="overview-label">Total Assists</div>
+            <div class="overview-value">{{ squad_stats.total_assists }}</div>
+        </div>
+        <div class="overview-card">
+            <div class="overview-label">Elite Players</div>
+            <div class="overview-value">{{ squad_stats.elite_count }}</div>
+        </div>
+        <div class="overview-card">
+            <div class="overview-label">Avg Pass %</div>
+            <div class="overview-value">{{ squad_stats.avg_pass_completion }}%</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-section">
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label class="filter-label">Search Player</label>
+                <input type="text" id="searchInput" class="filter-input" placeholder="Type name...">
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Position</label>
+                <select id="positionFilter" class="filter-input">
+                    <option value="">All</option>
+                    <option value="GK">GK</option>
+                    <option value="DF">DF</option>
+                    <option value="MF">MF</option>
+                    <option value="FW">FW</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Impact Tier</label>
+                <select id="impactFilter" class="filter-input">
+                    <option value="">All</option>
+                    <option value="World Class">World Class</option>
+                    <option value="Elite">Elite</option>
+                    <option value="Reliable">Reliable</option>
+                    <option value="Rotation">Rotation</option>
+                    <option value="Fringe">Fringe</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Filter By</label>
+                <select id="flagsFilter" class="filter-input">
+                    <option value="all">All Players</option>
+                    <option value="flagged">With Flags</option>
+                    <option value="insights">With Insights</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Min Minutes</label>
+                <input type="number" id="minutesFilter" class="filter-input" placeholder="0" value="0">
+            </div>
+        </div>
+    </div>
+
+    <!-- Players Table -->
+    <div class="table-container">
+        <div class="table-wrapper">
+            <table id="playersTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" data-column="name" data-type="string">Player</th>
+                        <th class="sortable" data-column="position" data-type="string">Pos</th>
+                        <th class="sortable" data-column="age" data-type="number">Age</th>
+                        <th class="sortable" data-column="minutes" data-type="number">Mins</th>
+                        <th class="sortable" data-column="starts" data-type="number">Starts</th>
+                        <th class="sortable" data-column="goal_contributions_p90" data-type="number">G+A/90</th>
+                        <th class="sortable" data-column="goals_p90" data-type="number">Goals/90</th>
+                        <th class="sortable" data-column="assists_p90" data-type="number">Ast/90</th>
+                        <th class="sortable" data-column="finishing_efficiency" data-type="number">Finish %</th>
+                        <th class="sortable" data-column="progression_p90" data-type="number">Prog/90</th>
+                        <th class="sortable" data-column="pass_completion" data-type="number">Pass %</th>
+                        <th class="sortable" data-column="defensive_actions_p90" data-type="number">Def/90</th>
+                        <th class="sortable" data-column="cards_per_90" data-type="number">Cards/90</th>
+                        <th class="sortable" data-column="impact_score" data-type="number">Impact</th>
+                        <th>Form</th>
+                        <th>Flags & Insights</th>
+                    </tr>
+                </thead>
+                <tbody id="playersTableBody">
+                    {% for p in players %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'player_detail' p.player_id %}" class="player-link">
+                                {{ p.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {% if p.position %}
+                                <span class="pos-badge pos-{{ p.position|lower|slice:':2' }}">
+                                    {{ p.position }}
+                                </span>
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>{{ p.age|slice:':2'|default:"—" }}</td>
+                        <td><strong>{{ p.minutes|floatformat:0 }}</strong></td>
+                        <td>{{ p.starts }}</td>
+                        <td><strong>{{ p.goal_contributions_p90 }}</strong></td>
+                        <td>{{ p.goals_p90 }}</td>
+                        <td>{{ p.assists_p90 }}</td>
+                        <td>
+                            <span class="metric-pill {% if p.finishing_efficiency >= 120 %}metric-excellent{% elif p.finishing_efficiency >= 90 %}metric-good{% elif p.finishing_efficiency >= 70 %}metric-average{% else %}metric-poor{% endif %}">
+                                {{ p.finishing_efficiency }}%
+                            </span>
+                        </td>
+                        <td>{{ p.progression_p90 }}</td>
+                        <td>
+                            <div class="progress-bar" title="{{ p.pass_completion }}%">
+                                <div class="progress-fill" style="width: {{ p.pass_completion }}%"></div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">{{ p.pass_completion }}%</span>
+                        </td>
+                        <td>{{ p.defensive_actions_p90 }}</td>
+                        <td>
+                            <span class="metric-pill {% if p.cards_per_90 >= 0.5 %}metric-poor{% elif p.cards_per_90 >= 0.3 %}metric-average{% else %}metric-excellent{% endif %}">
+                                {{ p.cards_per_90 }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="metric-pill metric-{{ p.impact|lower|cut:' ' }}">
+                                {{ p.impact }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="metric-pill metric-{{ p.recent_form|lower }}">
+                                {{ p.recent_form }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="flags-insights">
+                                {% for flag in p.flags %}
+                                    <div class="flag-item">{{ flag }}</div>
+                                {% endfor %}
+                                {% for insight in p.insights %}
+                                    <div class="insight-item">{{ insight }}</div>
+                                {% endfor %}
+                                {% if not p.flags and not p.insights %}
+                                    <span style="color: #94a3b8; font-size: 0.875rem;">—</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Sorting
+let currentSort = { column: 'impact_score', direction: 'desc' };
+
+document.querySelectorAll('th.sortable').forEach(header => {
+    header.addEventListener('click', () => {
+        const column = header.dataset.column;
+        const type = header.dataset.type;
+        const tbody = document.getElementById('playersTableBody');
+        const rows = Array.from(tbody.querySelectorAll('tr:not([style*="display: none"])'));
+        
+        if (currentSort.column === column) {
+            currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.column = column;
+            currentSort.direction = 'desc';
+        }
+        
+        document.querySelectorAll('th.sortable').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+        header.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+        
+        const allRows = Array.from(tbody.querySelectorAll('tr'));
+        
+        allRows.sort((a, b) => {
+            const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+            let aVal = a.cells[columnIndex].textContent.trim();
+            let bVal = b.cells[columnIndex].textContent.trim();
+            
+            if (type === 'number') {
+                aVal = parseFloat(aVal.replace(/[^0-9.-]/g, '')) || 0;
+                bVal = parseFloat(bVal.replace(/[^0-9.-]/g, '')) || 0;
+                return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+            } else {
+                return currentSort.direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            }
+        });
+        
+        allRows.forEach(row => tbody.appendChild(row));
+    });
+});
+
+// Filtering
+function filterTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const position = document.getElementById('positionFilter').value;
+    const impact = document.getElementById('impactFilter').value;
+    const flagsFilter = document.getElementById('flagsFilter').value;
+    const minMinutes = parseFloat(document.getElementById('minutesFilter').value) || 0;
+    
+    document.querySelectorAll('#playersTableBody tr').forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const pos = row.cells[1].textContent.trim();
+        const mins = parseFloat(row.cells[3].textContent.replace(/,/g, '')) || 0;
+        const impactCell = row.cells[13].textContent.trim();
+        const flagsCell = row.cells[15];
+        const hasFlags = flagsCell.querySelector('.flag-item') !== null;
+        const hasInsights = flagsCell.querySelector('.insight-item') !== null;
+        
+        const matchesSearch = name.includes(search);
+        const matchesPosition = !position || pos.includes(position);
+        const matchesImpact = !impact || impactCell === impact;
+        const matchesMinutes = mins >= minMinutes;
+        const matchesFlags = flagsFilter === 'all' || 
+                            (flagsFilter === 'flagged' && hasFlags) ||
+                            (flagsFilter === 'insights' && hasInsights);
+        
+        row.style.display = (matchesSearch && matchesPosition && matchesImpact && matchesMinutes && matchesFlags) ? '' : 'none';
+    });
+}
+
+document.getElementById('searchInput').addEventListener('input', filterTable);
+document.getElementById('positionFilter').addEventListener('change', filterTable);
+document.getElementById('impactFilter').addEventListener('change', filterTable);
+document.getElementById('flagsFilter').addEventListener('change', filterTable);
+document.getElementById('minutesFilter').addEventListener('input', filterTable);
+
+// Initial sort by impact
+document.querySelector('[data-column="impact_score"]').click();
+</script>
+
+{% endblock %}

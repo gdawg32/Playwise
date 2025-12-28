@@ -1,0 +1,581 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+<style>
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
+}
+
+main {
+    padding-top: 90px;
+}
+
+.comparison-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header Section */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.page-header p {
+    font-size: 1.0625rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Competition Card */
+.competition-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.06);
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.competition-card:hover {
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.12);
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7c3aed;
+    margin-bottom: 1rem;
+}
+
+.section-label::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 2px;
+}
+
+.choices__inner {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 54px;
+    padding: 0.875rem 1.125rem;
+    font-size: 1.0625rem;
+    transition: all 0.2s ease;
+}
+
+.choices__inner:hover {
+    border-color: #cbd5e1;
+    background: white;
+}
+
+.choices.is-focused .choices__inner {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+    background: white;
+}
+
+.choices__list--dropdown {
+    border: 2px solid #7c3aed;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+    margin-top: 6px;
+    z-index: 10;
+}
+
+.choices__item--selectable {
+    padding: 0.875rem 1.125rem;
+    transition: all 0.15s ease;
+    font-size: 1rem;
+}
+
+.choices__item--selectable.is-highlighted {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    color: #7c3aed;
+}
+
+/* Team Selection Card */
+.selection-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.06);
+    margin-bottom: 2.5rem;
+}
+
+.instruction-banner {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.06));
+    border-left: 4px solid #7c3aed;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.instruction-banner svg {
+    flex-shrink: 0;
+    color: #7c3aed;
+}
+
+.instruction-banner p {
+    color: #475569;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.instruction-banner strong {
+    color: #7c3aed;
+    font-weight: 700;
+}
+
+/* Team Grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.team-checkbox-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1.125rem 1.25rem;
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.team-checkbox-label:hover {
+    background: white;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.team-checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #cbd5e1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.team-checkbox-label input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-color: #7c3aed;
+}
+
+.team-checkbox-label input[type="checkbox"]:checked ~ span {
+    color: #7c3aed;
+    font-weight: 700;
+}
+
+.team-checkbox-label.selected {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.05));
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.team-checkbox-label span {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #334155;
+    transition: all 0.2s ease;
+}
+
+/* Compare Button */
+.compare-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    color: white;
+    padding: 0.9375rem 2.25rem;
+    border-radius: 12px;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s ease;
+}
+
+.compare-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(124, 58, 237, 0.4);
+}
+
+.compare-button:active {
+    transform: translateY(0);
+}
+
+.compare-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Error Message */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.08));
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    color: #dc2626;
+    font-weight: 600;
+    margin-top: 1.5rem;
+}
+
+.error-message svg {
+    flex-shrink: 0;
+}
+
+/* Chart Section */
+.chart-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.06);
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-section h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.chart-section h3::before,
+.chart-section h3::after {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 2px;
+}
+
+#bumpy {
+    max-width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#bumpy.loaded {
+    opacity: 1;
+}
+
+.empty-state {
+    color: #94a3b8;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.empty-state svg {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    opacity: 0.3;
+}
+
+.empty-state p {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state span {
+    font-size: 0.9375rem;
+    color: #cbd5e1;
+}
+
+/* Selection Counter */
+.selection-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #7c3aed;
+    margin-bottom: 1.5rem;
+}
+
+.selection-counter .count {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .comparison-container {
+        padding: 1.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="comparison-container">
+    
+    <!-- Header -->
+    <div class="page-header">
+        <h1>Team Comparison</h1>
+        <p>Analyze and compare team performance throughout the season</p>
+    </div>
+
+    <!-- Competition Selector -->
+    <div class="competition-card">
+        <form method="get">
+            <label class="section-label">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                </svg>
+                Select Competition
+            </label>
+            <select name="competition" id="competitionSelect" onchange="this.form.submit()">
+                <option value="">Choose a competition...</option>
+                {% for c in competitions %}
+                    <option value="{{ c.id }}" {% if selected_competition == c.id|stringformat:"s" %}selected{% endif %}>
+                        {{ c.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% if teams %}
+        <!-- Team Selection -->
+        <div class="selection-card">
+            <label class="section-label">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                Select Teams to Compare
+            </label>
+
+            <div class="instruction-banner">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <p>Select <strong>2 to 3 teams</strong> to view their performance comparison chart</p>
+            </div>
+
+            <div class="selection-counter" id="selectionCounter" style="display: none;">
+                <span class="count" id="countNumber">0</span>
+                <span id="countText">teams selected</span>
+            </div>
+
+            <form onsubmit="updateBumpy(); return false;">
+                <div class="team-grid">
+                    {% for team in teams %}
+                        <label class="team-checkbox-label" data-team-id="{{ team.id }}">
+                            <input type="checkbox" value="{{ team.id }}" class="team-checkbox">
+                            <span>{{ team.name }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="compare-button">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    Compare Teams
+                </button>
+
+                <div id="team-error" class="error-message" style="display: none;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="error-text"></span>
+                </div>
+            </form>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-section">
+            <div id="emptyState" class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <p>No comparison chart yet</p>
+                <span>Select teams above to generate the comparison</span>
+            </div>
+            <div id="chartContainer" style="display: none;">
+                <h3>Performance Progression</h3>
+                <img id="bumpy" src="" alt="Team progression chart">
+            </div>
+        </div>
+
+    {% else %}
+        <div class="chart-section">
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <p>Select a competition to get started</p>
+                <span>Season {{ season }} • Choose from the dropdown above</span>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+// Initialize Choices.js for competition select
+document.addEventListener('DOMContentLoaded', function() {
+    const competitionSelect = document.getElementById('competitionSelect');
+    if (competitionSelect) {
+        new Choices(competitionSelect, {
+            searchEnabled: true,
+            searchPlaceholderValue: 'Search competitions...',
+            itemSelectText: '',
+            shouldSort: false
+        });
+    }
+
+    // Add change listeners to checkboxes
+    const checkboxes = document.querySelectorAll('.team-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectionUI);
+    });
+});
+
+function updateSelectionUI() {
+    const checkboxes = document.querySelectorAll('.team-checkbox');
+    const counter = document.getElementById('selectionCounter');
+    const countNumber = document.getElementById('countNumber');
+    const countText = document.getElementById('countText');
+    
+    let selectedCount = 0;
+    
+    checkboxes.forEach(checkbox => {
+        const label = checkbox.closest('.team-checkbox-label');
+        if (checkbox.checked) {
+            selectedCount++;
+            label.classList.add('selected');
+        } else {
+            label.classList.remove('selected');
+        }
+    });
+    
+    if (selectedCount > 0) {
+        counter.style.display = 'inline-flex';
+        countNumber.textContent = selectedCount;
+        countText.textContent = selectedCount === 1 ? 'team selected' : 'teams selected';
+    } else {
+        counter.style.display = 'none';
+    }
+}
+
+function updateBumpy() {
+    const checked = [...document.querySelectorAll(".team-checkbox:checked")];
+    const errorDiv = document.getElementById("team-error");
+    const errorText = document.getElementById("error-text");
+    const img = document.getElementById("bumpy");
+    const emptyState = document.getElementById("emptyState");
+    const chartContainer = document.getElementById("chartContainer");
+
+    // Hide error and chart initially
+    errorDiv.style.display = "none";
+    img.classList.remove("loaded");
+
+    if (checked.length < 2) {
+        errorText.textContent = "Please select at least 2 teams to compare.";
+        errorDiv.style.display = "flex";
+        return;
+    }
+
+    if (checked.length > 3) {
+        errorText.textContent = "You can compare a maximum of 3 teams.";
+        errorDiv.style.display = "flex";
+        return;
+    }
+
+    // Show chart container, hide empty state
+    emptyState.style.display = "none";
+    chartContainer.style.display = "block";
+
+    // Build URL and load image
+    const params = checked.map(cb => `teams=${cb.value}`).join("&");
+    
+    img.onload = function() {
+        img.classList.add("loaded");
+    };
+    
+    img.onerror = function() {
+        errorText.textContent = "Error loading comparison chart. Please try again.";
+        errorDiv.style.display = "flex";
+        chartContainer.style.display = "none";
+        emptyState.style.display = "block";
+    };
+    
+    img.src = `/team-comparison/bumpy/?${params}`;
+}
+</script>
+{% endblock %}

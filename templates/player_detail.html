@@ -1,0 +1,985 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+main {
+    padding-top: 100px;
+    padding-bottom: 4rem;
+}
+
+.player-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header Section */
+.player-header {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+/* Player Profile Section - Enhanced */
+.profile-section {
+    background: white;
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+}
+
+.profile-header {
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.02));
+    border-bottom: 2px solid rgba(124, 58, 237, 0.08);
+}
+
+.profile-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.profile-title::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 4px;
+}
+
+.profile-subtitle {
+    font-size: 0.9375rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+
+.profile-column {
+    padding: 2.5rem;
+}
+
+.profile-column:first-child {
+    border-right: 2px solid rgba(124, 58, 237, 0.08);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.02), rgba(5, 150, 105, 0.01));
+}
+
+.profile-column:last-child {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.02), rgba(217, 119, 6, 0.01));
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.column-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.column-icon.strengths {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+    color: #059669;
+}
+
+.column-icon.development {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1));
+    color: #d97706;
+}
+
+.column-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.column-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.column-count {
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.insight-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-card {
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid;
+    transition: all 0.3s ease;
+    position: relative;
+    background: white;
+}
+
+.insight-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 12px 0 0 12px;
+}
+
+.insight-card.strength {
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.insight-card.strength::before {
+    background: linear-gradient(180deg, #10b981, #059669);
+}
+
+.insight-card.strength:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
+    transform: translateX(4px);
+}
+
+.insight-card.development {
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.insight-card.development::before {
+    background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.insight-card.development:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+    transform: translateX(4px);
+}
+
+.insight-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.insight-badge {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.insight-card.strength .insight-badge {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.insight-card.development .insight-badge {
+    background: #f59e0b;
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.insight-card-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.insight-card-detail {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.6;
+    padding-left: 1rem;
+}
+
+.profile-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #94a3b8;
+}
+
+.profile-empty svg {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    opacity: 0.3;
+}
+
+.profile-empty-text {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .profile-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-column:first-child {
+        border-right: none;
+        border-bottom: 2px solid rgba(124, 58, 237, 0.08);
+    }
+}
+
+.header-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.player-info h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.02em;
+}
+
+.player-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.player-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.role-badge {
+    display: inline-flex;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(59, 130, 246, 0.1));
+    color: #7c3aed;
+}
+
+.back-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.back-btn:hover {
+    border-color: #7c3aed;
+    color: #7c3aed;
+    transform: translateX(-2px);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-detail {
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Section Cards */
+.section-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 4px;
+}
+
+/* Insights Grid */
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.insight-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-item {
+    padding: 1.25rem;
+    border-radius: 12px;
+    border-left: 4px solid;
+}
+
+.insight-strength {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(5, 150, 105, 0.05));
+    border-color: #10b981;
+}
+
+.insight-development {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(217, 119, 6, 0.05));
+    border-color: #f59e0b;
+}
+
+.insight-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.375rem;
+}
+
+.insight-detail {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* Recent Form */
+.form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-badge {
+    padding: 0.625rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+.form-excellent {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+    color: #059669;
+}
+
+.form-good {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
+    color: #2563eb;
+}
+
+.form-average {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.1));
+    color: #d97706;
+}
+
+.form-quiet {
+    background: linear-gradient(135deg, rgba(100, 116, 139, 0.15), rgba(71, 85, 105, 0.1));
+    color: #475569;
+}
+
+.form-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.25rem;
+}
+
+.form-stat {
+    text-align: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.03));
+    border-radius: 12px;
+}
+
+.form-stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.form-stat-label {
+    font-size: 0.8125rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Percentile Chart */
+#percentile-bars {
+    width: 100%;
+    height: 900px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Match Logs Table */
+.table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+thead {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-bottom: 2px solid #e2e8f0;
+}
+
+th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+    white-space: nowrap;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.02));
+}
+
+td {
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+    color: #334155;
+    white-space: nowrap;
+}
+
+.venue-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.venue-home {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+.venue-away {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .player-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .player-header {
+        padding: 1.75rem;
+    }
+    
+    .player-info h1 {
+        font-size: 1.875rem;
+    }
+    
+    .section-card {
+        padding: 1.75rem;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #percentile-bars {
+        height: 700px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="player-wrapper">
+    
+    <!-- Player Header -->
+    <div class="player-header">
+        <div class="header-content">
+            <div class="player-info">
+                <h1>{{ overview.name }}</h1>
+                <div class="player-meta">
+                    <span>
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <strong>{{ overview.team }}</strong>
+                    </span>
+                    <span>•</span>
+                    <span>{{ overview.league }}</span>
+                    <span>•</span>
+                    <span>{{ overview.position|default:"—" }}</span>
+                    <span>•</span>
+                    <span>Age {{ overview.age }}</span>
+                    {% if overview.nation %}
+                    <span>•</span>
+                    <span>{{ overview.nation }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <span class="role-badge">{{ overview.role_type }} — {{ overview.role_desc }}</span>
+                </div>
+            </div>
+            <a href="javascript:history.back()" class="back-btn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back
+            </a>
+        </div>
+    </div>
+
+    <!-- Overview Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Appearances</div>
+            <div class="stat-value">{{ overview.appearances }}</div>
+            <div class="stat-detail">{{ overview.starts }} starts ({{ overview.start_percentage }}%)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Minutes Played</div>
+            <div class="stat-value">{{ overview.minutes|floatformat:0 }}</div>
+            <div class="stat-detail">{{ overview.minutes_per_game }} mins/game</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Goals</div>
+            <div class="stat-value">{{ metrics.goals }}</div>
+            <div class="stat-detail">{{ metrics.goals_p90 }}/90 · xG {{ metrics.xg }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Assists</div>
+            <div class="stat-value">{{ metrics.assists }}</div>
+            <div class="stat-detail">{{ metrics.assists_p90 }}/90 · xA {{ metrics.xag }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Goal Contributions</div>
+            <div class="stat-value">{{ metrics.goal_contributions }}</div>
+            <div class="stat-detail">{{ metrics.goal_contributions_p90 }} per 90</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Pass Completion</div>
+            <div class="stat-value">{{ metrics.pass_completion }}%</div>
+            <div class="stat-detail">{{ metrics.passes_completed }}/{{ metrics.passes_attempted }}</div>
+        </div>
+    </div>
+
+<!-- Strengths & Development Areas - Enhanced -->
+<div class="profile-section">
+  <div class="profile-header">
+      <h2 class="profile-title">Player Profile</h2>
+      <p class="profile-subtitle">Key strengths and areas for development based on performance analysis</p>
+  </div>
+  
+  <div class="profile-content">
+      <!-- Strengths Column -->
+      <div class="profile-column">
+          <div class="column-header">
+              <div class="column-icon strengths">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+              </div>
+              <div>
+                  <h3 class="column-title">Strengths</h3>
+                  <p class="column-count">{{ strengths|length }} identified</p>
+              </div>
+          </div>
+          
+          <div class="insight-cards">
+              {% for strength in strengths %}
+              <div class="insight-card strength">
+                  <div class="insight-card-header">
+                      <span class="insight-badge"></span>
+                      <h4 class="insight-card-title">{{ strength.title }}</h4>
+                  </div>
+                  <p class="insight-card-detail">{{ strength.detail }}</p>
+              </div>
+              {% empty %}
+              <div class="profile-empty">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  <p class="profile-empty-text">Continue building standout strengths</p>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+      
+      <!-- Development Areas Column -->
+      <div class="profile-column">
+          <div class="column-header">
+              <div class="column-icon development">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                  </svg>
+              </div>
+              <div>
+                  <h3 class="column-title">Development Areas</h3>
+                  <p class="column-count">{{ development|length }} identified</p>
+              </div>
+          </div>
+          
+          <div class="insight-cards">
+              {% for dev in development %}
+              <div class="insight-card development">
+                  <div class="insight-card-header">
+                      <span class="insight-badge"></span>
+                      <h4 class="insight-card-title">{{ dev.title }}</h4>
+                  </div>
+                  <p class="insight-card-detail">{{ dev.detail }}</p>
+              </div>
+              {% empty %}
+              <div class="profile-empty">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <p class="profile-empty-text">Strong all-around performance</p>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+
+    <!-- Recent Form -->
+    <div class="section-card">
+        <h2 class="section-title">Recent Form</h2>
+        <div class="form-header">
+            <div>
+                <span class="form-badge form-{{ recent.form|lower }}">
+                    {{ recent.form }} Form
+                </span>
+                <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.5rem;">{{ recent.form_desc }} (Last {{ recent.matches }} matches)</p>
+            </div>
+        </div>
+        <div class="form-stats-grid">
+            <div class="form-stat">
+                <div class="form-stat-value">{{ recent.minutes }}</div>
+                <div class="form-stat-label">Minutes</div>
+            </div>
+            <div class="form-stat">
+                <div class="form-stat-value">{{ recent.goals }}</div>
+                <div class="form-stat-label">Goals</div>
+            </div>
+            <div class="form-stat">
+                <div class="form-stat-value">{{ recent.assists }}</div>
+                <div class="form-stat-label">Assists</div>
+            </div>
+            <div class="form-stat">
+                <div class="form-stat-value">{{ recent.xg }}</div>
+                <div class="form-stat-label">xG</div>
+            </div>
+            <div class="form-stat">
+                <div class="form-stat-value">{{ recent.xag }}</div>
+                <div class="form-stat-label">xA</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Percentile Analysis (Plotly Chart) -->
+    <div class="section-card">
+        <h2 class="section-title">League Percentile Rankings</h2>
+        <p style="font-size: 0.9375rem; color: #64748b; margin-bottom: 2rem;">Performance compared to all players in {{ overview.league }} with 5+ full matches played</p>
+        
+        <div id="percentile-bars"></div>
+    </div>
+
+    <!-- Match Logs -->
+    <div class="section-card">
+        <h2 class="section-title">Match Logs</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Opponent</th>
+                        <th>Venue</th>
+                        <th>Mins</th>
+                        <th>G</th>
+                        <th>A</th>
+                        <th>xG</th>
+                        <th>xA</th>
+                        <th>SCA</th>
+                        <th>GCA</th>
+                        <th>Touches</th>
+                        <th>Pass %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in match_logs %}
+                    <tr>
+                        <td>{{ m.date|date:"M d, Y" }}</td>
+                        <td><strong>{{ m.opponent }}</strong></td>
+                        <td>
+                            <span class="venue-badge venue-{% if m.home %}home{% else %}away{% endif %}">
+                                {% if m.home %}H{% else %}A{% endif %}
+                            </span>
+                        </td>
+                        <td>{{ m.minutes }}</td>
+                        <td><strong>{{ m.goals }}</strong></td>
+                        <td><strong>{{ m.assists }}</strong></td>
+                        <td>{{ m.xg }}</td>
+                        <td>{{ m.xag }}</td>
+                        <td>{{ m.sca }}</td>
+                        <td>{{ m.gca }}</td>
+                        <td>{{ m.touches }}</td>
+                        <td>{{ m.pass_completion }}%</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="12" class="empty-state">No recent match data available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// Percentile chart data from view
+const percentileData = {{ percentile_data|safe }};
+
+// Flatten all categories into one array for the chart
+let allPercentiles = [];
+for (const category in percentileData) {
+    allPercentiles = allPercentiles.concat(percentileData[category]);
+}
+
+function getPercentileColor(p) {
+    if (p >= 80) return "#10b981";
+    if (p >= 65) return "#3b82f6";
+    if (p >= 50) return "#f59e0b";
+    if (p >= 35) return "#64748b";
+    return "#ef4444";
+}
+
+const labels = allPercentiles.map(d => d.label);
+const values = allPercentiles.map(d => d.percentile ?? 0);
+const colors = allPercentiles.map(d => getPercentileColor(d.percentile ?? 0));
+
+const trace = {
+    type: "bar",
+    orientation: "h",
+    x: values,
+    y: labels,
+    marker: { 
+        color: colors,
+        line: { color: "#1e293b", width: 1.5 }
+    },
+    text: values.map(v => v !== null ? `${v}%` : "—"),
+    textposition: "inside",
+    insidetextanchor: "middle",
+    textfont: {
+        size: 12,
+        family: "Inter",
+        weight: 600,
+        color: "#ffffff"
+    },
+    hovertemplate: "<b>%{y}</b><br>Percentile: %{x:.1f}%<extra></extra>"
+};
+
+const layout = {
+    title: {
+        text: `<b>${"{{ overview.name }}"} — League Percentile Rankings</b>`,
+        font: { 
+            size: 20, 
+            family: "Inter",
+            weight: 900,
+            color: "#1e293b"
+        },
+        x: 0.5,
+        xanchor: "center"
+    },
+    xaxis: {
+        range: [0, 100],
+        title: {
+            text: "<b>Percentile Rank (0-100)</b>",
+            font: { size: 13, weight: 700, family: "Inter", color: "#64748b" }
+        },
+        showgrid: true,
+        gridcolor: "#e2e8f0",
+        gridwidth: 1,
+        zeroline: true,
+        zerolinecolor: "#cbd5e1",
+        zerolinewidth: 2,
+        tickfont: { size: 11, weight: 600, family: "Inter", color: "#64748b" }
+    },
+    yaxis: {
+        autorange: "reversed",
+        tickfont: { size: 12, weight: 600, family: "Inter", color: "#1e293b" },
+        showgrid: false
+    },
+    margin: {
+        l: 220,
+        r: 50,
+        t: 80,
+        b: 60
+    },
+    height: 900,
+    paper_bgcolor: "#ffffff",
+    plot_bgcolor: "#fafafa",
+    font: {
+        family: "Inter, system-ui",
+        color: "#1e293b"
+    },
+    hoverlabel: {
+        bgcolor: "#1e293b",
+        bordercolor: "#1e293b",
+        font: {
+            family: "Inter",
+            size: 12,
+            color: "#ffffff",
+            weight: 600
+        }
+    }
+};
+
+const config = {
+    displayModeBar: true,
+    displaylogo: false,
+    responsive: true,
+    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d', 'autoScale2d'],
+    toImageButtonOptions: {
+        format: 'png',
+        filename: 'player_percentiles',
+        height: 1200,
+        width: 1600,
+        scale: 2
+    }
+};
+
+Plotly.newPlot("percentile-bars", [trace], layout, config);
+</script>
+
+{% endblock %}

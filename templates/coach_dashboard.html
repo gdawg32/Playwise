@@ -3,33 +3,311 @@
 
 {% block title %}Coach Dashboard - Playwise{% endblock %}
 
-{% block namespace %}coach-dashboard{% endblock %}
-
 {% block extra_css %}
 <style>
-    /* Override base styles for dashboard */
+    :root {
+        --primary: #0f172a;
+        --primary-light: #1e293b;
+        --primary-dark: #020617;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
     body {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        background: var(--gray-50);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        color: var(--gray-900);
+        line-height: 1.6;
     }
     
     main {
-        padding-top: 100px;
+        padding-top: 0;
     }
     
-    /* Dashboard specific styles */
-    .dashboard-wrapper {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 0 2rem 4rem;
+    /* Dashboard Layout */
+    .dashboard-layout {
+        display: flex;
+        min-height: 100vh;
+        padding-top: 80px;
+    }
+    
+    /* Sidebar */
+    .dashboard-sidebar {
+        width: 280px;
+        background: white;
+        border-right: 1px solid var(--gray-200);
+        position: fixed;
+        top: 80px;
+        bottom: 0;
+        left: 0;
+        overflow-y: auto;
+        z-index: 100;
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar-header {
+        padding: 2rem 1.5rem 1.5rem;
+        border-bottom: 1px solid var(--gray-100);
+    }
+    
+    .team-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .team-logo-wrapper {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+    
+    .team-logo-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .team-details h1 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.125rem;
+    }
+    
+    .team-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--gray-500);
+    }
+    
+    .season-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.625rem;
+        background: var(--gray-100);
+        border-radius: 6px;
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+    
+    .sidebar-nav {
+        padding: 1rem 0;
+    }
+    
+    .nav-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .nav-section-title {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
+        color: var(--gray-400);
+    }
+    
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 0.75rem 1.5rem;
+        color: var(--gray-600);
+        font-size: 0.9375rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+    
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 0;
+        background: var(--accent);
+        border-radius: 0 3px 3px 0;
+        transition: height 0.2s ease;
+    }
+    
+    .nav-link:hover {
+        background: var(--gray-50);
+        color: var(--gray-900);
+    }
+    
+    .nav-link.active {
+        background: var(--gray-100);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    .nav-link.active::before {
+        height: 24px;
+    }
+    
+    .nav-link svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+    
+    .nav-link .badge {
+        margin-left: auto;
+        padding: 0.125rem 0.5rem;
+        background: var(--accent);
+        color: white;
+        border-radius: 10px;
+        font-size: 0.6875rem;
+        font-weight: 700;
+    }
+    
+    .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid var(--gray-100);
+    }
+    
+    .logout-button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: var(--gray-100);
+        border: 1px solid var(--gray-200);
+        border-radius: 10px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--danger);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .logout-button:hover {
+        background: #fee2e2;
+        border-color: var(--danger);
+    }
+    
+    .logout-button svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    /* Main Content */
+    .dashboard-content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem 3rem 4rem;
+        max-width: calc(100% - 280px);
+    }
+    
+    /* Page Header */
+    .page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .header-top {
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--gray-900);
+    }
+    
+    .header-actions {
+        display: flex;
+        gap: 0.75rem;
+    }
+    
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background: var(--accent);
+        color: white;
+        border-radius: 10px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+        background: var(--accent-hover);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--gray-500);
+    }
+    
+    .breadcrumb-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .breadcrumb-separator {
+        color: var(--gray-300);
+    }
+    
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
     }
     
     .stat-card {
         background: white;
-        border-radius: 20px;
-        padding: 1.75rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-        border: 1px solid rgba(124, 58, 237, 0.08);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 16px;
+        padding: 1.5rem;
+        border: 1px solid var(--gray-200);
+        transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
     }
@@ -40,453 +318,910 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #7c3aed, #3b82f6);
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
         transform: scaleX(0);
         transform-origin: left;
         transition: transform 0.3s ease;
     }
     
     .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.12);
-        border-color: rgba(124, 58, 237, 0.2);
+        border-color: var(--gray-300);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        transform: translateY(-2px);
     }
     
     .stat-card:hover::before {
         transform: scaleX(1);
     }
     
-    .metric-card {
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
-        border-radius: 16px;
-        padding: 1.5rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(124, 58, 237, 0.1);
+    .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
     }
     
-    .metric-card:hover {
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.1));
-        transform: scale(1.05);
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gray-100);
     }
     
-    .metric-value {
-        font-size: 2.5rem;
+    .stat-icon svg {
+        width: 20px;
+        height: 20px;
+        color: var(--gray-600);
+    }
+    
+    .stat-trend {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+    
+    .stat-trend.up {
+        background: #d1fae5;
+        color: var(--success);
+    }
+    
+    .stat-trend.down {
+        background: #fee2e2;
+        color: var(--danger);
+    }
+    
+    .stat-trend svg {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #7c3aed, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: var(--gray-900);
         line-height: 1;
         margin-bottom: 0.5rem;
     }
     
-    .metric-label {
+    .stat-label {
         font-size: 0.875rem;
-        color: #64748b;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    .match-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.25rem;
-        margin-bottom: 1rem;
-        border: 1px solid #e2e8f0;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-    
-    .match-card:hover {
-        border-color: #7c3aed;
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.1);
-        transform: translateX(4px);
-    }
-    
-    .match-card.upcoming {
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(59, 130, 246, 0.03));
-        border-left: 4px solid #7c3aed;
-    }
-    
-    .result-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 0.875rem;
-    }
-    
-    .result-badge.win {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-    }
-    
-    .result-badge.draw {
-        background: linear-gradient(135deg, #64748b, #475569);
-        color: white;
-    }
-    
-    .result-badge.loss {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        color: white;
-    }
-    
-    .prediction-pill {
-        display: inline-block;
-        padding: 0.375rem 1rem;
-        background: linear-gradient(135deg, #7c3aed, #3b82f6);
-        color: white;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-top: 0.5rem;
-    }
-    
-    .team-logo-wrapper {
-        width: 72px;
-        height: 72px;
-        border-radius: 20px;
-        background: linear-gradient(135deg, #7c3aed, #3b82f6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
-        overflow: hidden;
-    }
-    
-    .team-logo-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .stats-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-    
-    .stats-table thead th {
-        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #64748b;
-        border-bottom: 2px solid #e2e8f0;
-    }
-    
-    .stats-table tbody tr {
-        transition: background 0.2s ease;
-    }
-    
-    .stats-table tbody tr:hover {
-        background: rgba(124, 58, 237, 0.03);
-    }
-    
-    .stats-table tbody td {
-        padding: 0.875rem 1rem;
-        border-bottom: 1px solid #f1f5f9;
-        color: #334155;
+        color: var(--gray-500);
         font-weight: 500;
     }
     
-    .insight-box {
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
-        border-left: 4px solid #7c3aed;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-top: 1.5rem;
+    .stat-sublabel {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+        margin-top: 0.25rem;
     }
     
-    .section-title {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #1e293b;
+    /* Content Grid */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
         margin-bottom: 1.5rem;
+    }
+    
+    .content-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* Card Component */
+    .card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--gray-200);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--gray-100);
+    }
+    
+    .card-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+    
+    .card-title svg {
+        width: 20px;
+        height: 20px;
+        color: var(--gray-500);
+    }
+    
+    .card-action {
+        font-size: 0.875rem;
+        color: var(--accent);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        transition: color 0.2s ease;
+    }
+    
+    .card-action:hover {
+        color: var(--accent-hover);
+    }
+    
+    .card-action svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    /* Match Item */
+    .match-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        border: 1px solid var(--gray-100);
+        margin-bottom: 0.75rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    
+    .match-item:hover {
+        border-color: var(--gray-300);
+        background: var(--gray-50);
+        transform: translateX(4px);
+    }
+    
+    .match-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .match-item.upcoming {
+        background: linear-gradient(135deg, #eff6ff 0%, white 100%);
+        border-color: #bfdbfe;
+    }
+    
+    .match-status {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem;
+        min-width: 60px;
+    }
+    
+    .match-date {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--gray-900);
+        line-height: 1;
+    }
+    
+    .match-month {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .match-details {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .match-teams {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.375rem;
+    }
+    
+    .team-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+    
+    .team-logo-small {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--gray-100);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    .team-logo-small img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 4px;
+    }
+    
+    .team-name {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .match-vs {
+        font-size: 0.75rem;
+        color: var(--gray-400);
+        font-weight: 700;
+    }
+    
+    .match-meta {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+    }
+    
+    .match-result {
         display: flex;
         align-items: center;
         gap: 0.75rem;
     }
     
-    .section-title::before {
-        content: '';
-        width: 4px;
-        height: 24px;
-        background: linear-gradient(135deg, #7c3aed, #3b82f6);
-        border-radius: 4px;
+    .match-score {
+        font-size: 1.0rem;
+        font-weight: 800;
+        color: var(--gray-900);
     }
     
-    .logout-btn {
+    .result-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.875rem;
+        color: white;
+    }
+    
+    .result-badge.win {
+        background: var(--success);
+    }
+    
+    .result-badge.draw {
+        background: var(--gray-500);
+    }
+    
+    .result-badge.loss {
+        background: var(--danger);
+    }
+    
+    /* Performance Chart */
+    .performance-overview {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .performance-item {
+        background: var(--gray-50);
+        border-radius: 12px;
+        padding: 1.25rem;
+        border: 1px solid var(--gray-100);
+    }
+    
+    .performance-label {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .performance-value {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--gray-900);
+    }
+    
+    .performance-comparison {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.625rem 1.25rem;
-        background: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        color: #64748b;
-        font-weight: 600;
-        font-size: 0.875rem;
-        transition: all 0.2s ease;
-        cursor: pointer;
+        margin-top: 0.5rem;
+        font-size: 0.8125rem;
     }
     
-    .logout-btn:hover {
-        border-color: #ef4444;
-        color: #ef4444;
-        background: #fef2f2;
-    }
-
-    /* Modal Styles - Full Screen Takeover */
-    .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(12px);
-        z-index: 99999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 0;
-        margin: 0;
-    }
-
-    .modal-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .modal-container {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        border-radius: 0;
-        width: 100vw;
-        height: 100vh;
+    .comparison-bar {
+        flex: 1;
+        height: 6px;
+        background: var(--gray-200);
+        border-radius: 3px;
         overflow: hidden;
-        box-shadow: none;
-        transform: scale(0.95);
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        position: relative;
     }
-
-    .modal-overlay.active .modal-container {
-        transform: scale(1);
+    
+    .comparison-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--primary));
+        border-radius: 3px;
     }
-
-    .modal-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 2.5rem 3rem;
-        border-bottom: 2px solid rgba(124, 58, 237, 0.1);
+    
+    /* Quick Actions */
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+    }
+    
+    .action-card {
         background: white;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        flex-shrink: 0;
-    }
-
-    .modal-header h3 {
-        font-size: 2rem;
-        font-weight: 800;
-    }
-
-    .modal-close {
-        width: 56px;
-        height: 56px;
+        border: 1px solid var(--gray-200);
         border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
-        border: 2px solid transparent;
-        color: #ef4444;
+        padding: 1.5rem;
         transition: all 0.3s ease;
         cursor: pointer;
     }
-
-    .modal-close:hover {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        border-color: #ef4444;
+    
+    .action-card:hover {
+        border-color: var(--accent);
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+        transform: translateY(-4px);
+    }
+    
+    .action-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .action-icon svg {
+        width: 24px;
+        height: 24px;
         color: white;
-        transform: rotate(90deg) scale(1.1);
-        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
     }
-
-    .modal-close svg {
-        width: 28px;
-        height: 28px;
+    
+    .action-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.5rem;
     }
-
-    .modal-body {
-        padding: 3rem;
-        overflow-y: auto;
-        flex: 1;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+    
+    .action-description {
+        font-size: 0.875rem;
+        color: var(--gray-500);
+        line-height: 1.5;
     }
-
-    .modal-body::-webkit-scrollbar {
-        width: 12px;
+    
+    /* Insight Box */
+    .insight-box {
+        background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+        border-left: 3px solid var(--accent);
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-top: 1rem;
     }
-
-    .modal-body::-webkit-scrollbar-track {
-        background: rgba(124, 58, 237, 0.05);
-        border-radius: 8px;
+    
+    .insight-title {
+        font-weight: 700;
+        font-size: 0.9375rem;
+        color: var(--accent-hover);
+        margin-bottom: 0.625rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
-
-    .modal-body::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #7c3aed, #3b82f6);
-        border-radius: 8px;
-        border: 2px solid #f8fafc;
+    
+    .insight-title svg {
+        width: 18px;
+        height: 18px;
     }
-
-    .modal-body::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #6d28d9, #2563eb);
+    
+    .insight-text {
+        font-size: 0.875rem;
+        color: var(--gray-700);
+        line-height: 1.6;
     }
-
-    .chart-card {
-        background: white;
-        border: 2px solid rgba(124, 58, 237, 0.1);
-        border-radius: 24px;
-        padding: 3rem;
-        margin-bottom: 3rem;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
+    
+    /* No Data State */
+    .no-data {
+        text-align: center;
+        padding: 3rem 1.5rem;
+        color: var(--gray-400);
     }
-
-    .chart-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #7c3aed, #3b82f6, #7c3aed);
-        background-size: 200% 100%;
-        animation: shimmer 3s ease-in-out infinite;
-    }
-
-    @keyframes shimmer {
-        0%, 100% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-    }
-
-    .chart-card:hover {
-        box-shadow: 0 20px 60px rgba(124, 58, 237, 0.15);
-        border-color: rgba(124, 58, 237, 0.3);
-        transform: translateY(-8px);
-    }
-
-    .chart-card:last-child {
-        margin-bottom: 0;
-    }
-
-    .chart-card .flex {
-        margin-bottom: 2rem;
-    }
-
-    .chart-card .chart-icon {
+    
+    .no-data svg {
         width: 64px;
         height: 64px;
-        border-radius: 20px;
-        box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+        margin: 0 auto 1rem;
+        color: var(--gray-300);
+    }
+    
+    .no-data-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--gray-500);
+        margin-bottom: 0.5rem;
+    }
+    
+    .no-data-text {
+        font-size: 0.875rem;
+        color: var(--gray-400);
     }
 
-    .chart-card .chart-icon svg {
-        width: 32px;
-        height: 32px;
-    }
+    /* Prediction Card */
+.prediction-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
 
-    .chart-card h4 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #1e293b;
-    }
+.prediction-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    border-color: var(--gray-300);
+}
 
-    .chart-card p {
-        font-size: 0.95rem;
-        color: #64748b;
-    }
+/* Prediction Header */
+.prediction-header {
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--primary-light) 100%);
+    padding: 2rem 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
 
-    .chart-wrapper {
-        position: relative;
-        height: 500px;
+.prediction-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+}
+
+.prediction-header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.prediction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+}
+
+.prediction-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.375rem;
+    letter-spacing: -0.02em;
+}
+
+.prediction-date {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+/* Prediction Body */
+.prediction-body {
+    padding: 2rem;
+}
+
+/* Team Matchup */
+.prediction-matchup {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.prediction-team {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.prediction-team.away {
+    flex-direction: row-reverse;
+}
+
+.prediction-team-logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+    border: 2px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.prediction-team-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.team-initial {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--gray-500);
+}
+
+.prediction-team-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.prediction-team.away .prediction-team-info {
+    align-items: flex-end;
+}
+
+.prediction-team-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.2;
+}
+
+.prediction-team-label {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.prediction-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+}
+
+.divider-line {
+    width: 1px;
+    height: 20px;
+    background: var(--gray-200);
+}
+
+.divider-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--gray-400);
+    padding: 0.25rem 0.75rem;
+    background: var(--gray-100);
+    border-radius: 6px;
+}
+
+/* Probability Bars */
+.prediction-probabilities {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.probability-item {
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.probability-item.active {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.probability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.625rem;
+}
+
+.probability-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.probability-value {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--gray-900);
+}
+
+.probability-bar-container {
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.probability-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+}
+
+.probability-bar.neutral {
+    background: linear-gradient(90deg, var(--gray-500) 0%, var(--gray-600) 100%);
+    box-shadow: 0 0 8px rgba(100, 116, 139, 0.3);
+}
+
+/* Prediction Outcome */
+.prediction-outcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+}
+
+.outcome-indicator {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.outcome-label {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.outcome-result {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--gray-900);
+}
+
+.prediction-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.prediction-cta:hover {
+    background: var(--primary-light);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .prediction-header {
+        padding: 1.5rem 1.5rem 1.25rem;
+    }
+    
+    .prediction-title {
+        font-size: 1.25rem;
+    }
+    
+    .prediction-body {
         padding: 1.5rem;
-        background: linear-gradient(135deg, rgba(124, 58, 237, 0.02), rgba(59, 130, 246, 0.02));
-        border-radius: 16px;
     }
-
-    .charts-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        max-width: 1600px;
-        margin: 0 auto;
+    
+    .prediction-matchup {
+        flex-direction: column;
+        gap: 1rem;
     }
+    
+    .prediction-team,
+    .prediction-team.away {
+        width: 100%;
+        flex-direction: row;
+    }
+    
+    .prediction-team.away .prediction-team-info {
+        align-items: flex-start;
+    }
+    
+    .prediction-divider {
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .divider-line {
+        width: 100%;
+        height: 1px;
+    }
+    
+    .prediction-team-logo {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .prediction-outcome {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .prediction-cta {
+        justify-content: center;
+    }
+}
 
+    
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+        display: none;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        background: var(--accent);
+        border-radius: 50%;
+        border: none;
+        color: white;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        cursor: pointer;
+        z-index: 1000;
+    }
+    
     /* Responsive */
-    @media (max-width: 768px) {
-        .modal-header {
+    @media (max-width: 1200px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 1024px) {
+        .dashboard-sidebar {
+            transform: translateX(-100%);
+        }
+        
+        .dashboard-sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .dashboard-content {
+            margin-left: 0;
+            max-width: 100%;
             padding: 1.5rem;
         }
         
-        .modal-header h3 {
+        .mobile-menu-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 640px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .content-grid-3 {
+            grid-template-columns: 1fr;
+        }
+        
+        .performance-overview {
+            grid-template-columns: 1fr;
+        }
+        
+        .page-title {
             font-size: 1.5rem;
         }
         
-        .modal-close {
-            width: 44px;
-            height: 44px;
+        .match-teams {
+            flex-direction: column;
+            align-items: stretch;
         }
         
-        .modal-close svg {
-            width: 20px;
-            height: 20px;
+        .match-vs {
+            text-align: center;
+            padding: 0.25rem 0;
+        }
+    }
+    
+    /* Accessibility */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+    
+    /* Focus Styles */
+    *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+    
+    /* Print Styles */
+    @media print {
+        .dashboard-sidebar,
+        .mobile-menu-toggle,
+        .logout-button {
+            display: none;
         }
         
-        .modal-body {
-            padding: 1.5rem;
-        }
-        
-        .chart-card {
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .chart-card .chart-icon {
-            width: 48px;
-            height: 48px;
-        }
-        
-        .chart-card .chart-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-        
-        .chart-card h4 {
-            font-size: 1.125rem;
-        }
-        
-        .chart-wrapper {
-            height: 350px;
-            padding: 1rem;
+        .dashboard-content {
+            margin-left: 0;
+            max-width: 100%;
         }
     }
 </style>
@@ -494,564 +1229,634 @@
 
 {% block content %}
 
-<div class="dashboard-wrapper">
-    <!-- Header Section -->
-    <div class="stat-card mb-8" data-aos="fade-down">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-            <div class="flex items-center gap-6">
+<div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+        <div class="sidebar-header">
+            <div class="team-info">
                 <div class="team-logo-wrapper">
                     {% if team.logo %}
-                        <img src="{{ team.logo.url }}" alt="{{ team.name }}">
+                        <img src="{{ team.logo.url }}" alt="{{ team.name }} logo">
                     {% else %}
-                        <span class="text-4xl">⚽</span>
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
                     {% endif %}
                 </div>
-                <div>
-                    <h1 class="text-3xl font-extrabold gradient-text mb-2">
-                        Welcome back, {{ coach.user.get_full_name|default:coach.user.username }}!
-                    </h1>
-                    <div class="flex items-center gap-4 text-sm text-gray-600">
-                        <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                            <strong class="text-gray-900">{{ team.name }}</strong>
-                        </span>
-                        <span class="text-gray-400">|</span>
-                        <span class="flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            Season {{ season }}
-                        </span>
+                <div class="team-details">
+                    <h1>{{ team.name }}</h1>
+                    <div class="team-meta">
+                        <span>{{ coach.user.get_full_name|default:coach.user.username }}</span>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <div class="text-2xl font-bold gradient-text">{{ played_count }}</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-wide">Matches Played</div>
-                </div>
-                <div class="h-12 w-px bg-gray-200"></div>
-                <div class="text-right">
-                    <div class="text-2xl font-bold gradient-text">{{ ppg }}</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-wide">Points/Game</div>
-                </div>
-                <div class="h-12 w-px bg-gray-200"></div>
-                <a href="{% url "manager_logout" %}" class="logout-btn">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            <div class="season-badge">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                Season {{ season }}
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h2 class="nav-section-title">Overview</h2>
+                <a href="#overview" class="nav-link active" aria-current="page">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
-                    Logout
+                    Dashboard
                 </a>
             </div>
-        </div>
-    </div>
-
-    <!-- Key Metrics Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div class="metric-card" data-aos="fade-up" data-aos-delay="0">
-            <div class="metric-value">{{ wins }}</div>
-            <div class="metric-label">Wins</div>
-            <div class="text-xs text-green-600 font-semibold mt-2">{{ wins_home }}H / {{ wins_away }}A</div>
-        </div>
-        <div class="metric-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="metric-value">{{ draws }}</div>
-            <div class="metric-label">Draws</div>
-            <div class="text-xs text-gray-600 font-semibold mt-2">{{ draws_home }}H / {{ draws_away }}A</div>
-        </div>
-        <div class="metric-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="metric-value">{{ losses }}</div>
-            <div class="metric-label">Losses</div>
-            <div class="text-xs text-red-600 font-semibold mt-2">{{ losses_home }}H / {{ losses_away }}A</div>
-        </div>
-        <div class="metric-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="metric-value">{{ goal_diff|stringformat:"+d" }}</div>
-            <div class="metric-label">Goal Difference</div>
-            <div class="text-xs text-gray-600 font-semibold mt-2">{{ goals_for }} GF / {{ goals_against }} GA</div>
-        </div>
-    </div>
-
-    <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- Column 1: Upcoming Matches -->
-        <div class="stat-card" data-aos="fade-right">
-            <h3 class="section-title">Upcoming Fixtures</h3>
-            {% if upcoming %}
-                <div class="space-y-3">
-                    {% for m in upcoming %}
-                    <a href="{% url 'team_compare' m.id %}" class="block hover:shadow-lg rounded-lg">
-                        <div class="match-card upcoming">
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <div class="text-xs text-gray-500 font-semibold mb-1">
-                                        {{ m.date|date:"D, M j" }} • Week {{ m.matchweek }}
-                                    </div>
-                                    <div class="font-bold text-gray-900">
-                                        {{ m.home_team.name }}
-                                        <span class="text-gray-400 mx-2">vs</span>
-                                        {{ m.away_team.name }}
-                                    </div>
-                                </div>
-                                <span class="px-3 py-1 bg-gradient-to-r from-playwise-purple to-playwise-blue text-white text-xs font-bold rounded-full">
-                                    NEXT
-                                </span>
-                            </div>
-                            {% if next_pred and forloop.first %}
-                                <div class="prediction-pill">
-                                    <svg class="w-3 h-3 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
-                                    Prediction: {{ next_pred.home_win_prob }}% H / {{ next_pred.draw_prob }}% D / {{ next_pred.away_win_prob }}% A
-                                </div>
-                            {% endif %}
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="text-center py-8 text-gray-400">
-                    <svg class="w-16 h-16 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <p>No upcoming fixtures</p>
-                </div>
-            {% endif %}
-        </div>
-
-        <!-- Column 2: Team Statistics -->
-        <div class="stat-card" data-aos="fade-up">
-            <h3 class="section-title">Performance Overview</h3>
             
-            <!-- Quick Stats Grid -->
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-playwise-blue mb-1">{{ avg_xg_for }}</div>
-                    <div class="text-xs text-gray-600 font-semibold">Avg xG For</div>
-                </div>
-                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-playwise-purple mb-1">{{ avg_xg_against }}</div>
-                    <div class="text-xs text-gray-600 font-semibold">Avg xG Against</div>
-                </div>
-                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-green-600 mb-1">{{ clean_sheets }}</div>
-                    <div class="text-xs text-gray-600 font-semibold">Clean Sheets</div>
-                </div>
-                <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 text-center">
-                    <div class="text-2xl font-bold text-orange-600 mb-1">{{ conversion_rate|default:"—" }}</div>
-                    <div class="text-xs text-gray-600 font-semibold">Conversion</div>
-                </div>
+            <div class="nav-section">
+                <h2 class="nav-section-title">Matches</h2>
+                <a href="#upcoming" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Upcoming
+                    {% if upcoming %}
+                        <span class="badge">{{ upcoming|length }}</span>
+                    {% endif %}
+                </a>
+                <a href="#recent" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Results
+                </a>
             </div>
-
-            <!-- Detailed Stats Table -->
-            <div class="overflow-hidden rounded-xl border border-gray-200">
-                <table class="stats-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th class="text-center">Home</th>
-                            <th class="text-center">Away</th>
-                            <th class="text-center">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="font-semibold">Matches</td>
-                            <td class="text-center">{{ matches_home }}</td>
-                            <td class="text-center">{{ matches_away }}</td>
-                            <td class="text-center font-bold">{{ matches_home|add:matches_away }}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-semibold">Goals For</td>
-                            <td class="text-center">{{ goals_home_for }}</td>
-                            <td class="text-center">{{ goals_away_for }}</td>
-                            <td class="text-center font-bold">{{ goals_for }}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-semibold">Goals Against</td>
-                            <td class="text-center">{{ goals_home_against }}</td>
-                            <td class="text-center">{{ goals_away_against }}</td>
-                            <td class="text-center font-bold">{{ goals_against }}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-semibold">xG For</td>
-                            <td class="text-center">{{ xg_home_for }}</td>
-                            <td class="text-center">{{ xg_away_for }}</td>
-                            <td class="text-center font-bold">{{ xg_for_total }}</td>
-                        </tr>
-                        <tr>
-                            <td class="font-semibold">Clean Sheets</td>
-                            <td class="text-center">{{ clean_sheets_home }}</td>
-                            <td class="text-center">{{ clean_sheets_away }}</td>
-                            <td class="text-center font-bold">{{ clean_sheets }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div class="nav-section">
+                <h2 class="nav-section-title">Analysis</h2>
+                <a href="{% url 'admin_player_analysis' %}" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Players
+                </a>
+                <a href="{% url 'coach_role_leaders_page' %}" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Roles
+                </a>
+                <a href="{% url 'coach_role_suitability' %}" class="nav-link">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Suitability
+                </a>
             </div>
-
-            <!-- Insight Box -->
-            {% if played_count > 0 %}
-                <div class="insight-box">
-                    <h4 class="font-bold text-playwise-purple mb-2 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="{% url 'manager_logout' %}" class="logout-button">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                Sign Out
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="dashboard-content">
+        
+        <!-- Page Header -->
+        <header class="page-header">
+            <div class="header-top">
+                <h1 class="page-title">Dashboard Overview</h1>
+            </div>
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <span class="breadcrumb-item">Home</span>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-item" aria-current="page">Dashboard</span>
+            </nav>
+        </header>
+        
+        <!-- Stats Grid -->
+        <section class="stats-grid" aria-label="Team statistics">
+            <article class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                         </svg>
-                        Key Insights
-                    </h4>
-                    <p class="text-sm text-gray-700 leading-relaxed">
-                        Your team has achieved <strong>{{ wins }} wins</strong>, <strong>{{ draws }} draws</strong>, and <strong>{{ losses }} losses</strong> this season. 
-                        Current form shows a <strong>{{ streak }} {{ streak_type }}</strong> streak. 
-                        Home performance: <strong class="text-playwise-purple">{{ wins_home }}W-{{ draws_home }}D-{{ losses_home }}L</strong>. 
-                        Away performance: <strong class="text-playwise-blue">{{ wins_away }}W-{{ draws_away }}D-{{ losses_away }}L</strong>.
-                    </p>
+                    </div>
                 </div>
-            {% endif %}
+                <div class="stat-value">{{ played_count }}</div>
+                <div class="stat-label">Matches Played</div>
+                <div class="stat-sublabel">This season</div>
+            </article>
+            
+            <article class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #d1fae5; color: var(--success);">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    {% if wins > 0 %}
+                    <div class="stat-trend up">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ wins }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="stat-value">{{ wins }}</div>
+                <div class="stat-label">Wins</div>
+                <div class="stat-sublabel">{{ wins_home }}H / {{ wins_away }}A</div>
+            </article>
+            
+            <article class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #e0e7ff; color: var(--accent);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="stat-value">{{ points }}</div>
+                <div class="stat-label">Points</div>
+                <div class="stat-sublabel">{{ ppg }} PPG</div>
+            </article>
+            
+            <article class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon" style="background: #fef3c7; color: var(--warning);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="stat-value">{{ goals_for|default:"—" }}</div>
+                <div class="stat-label">Goals For</div>
+                <div class="stat-sublabel">{{ goals_against|default:"—" }} Against</div>
+            </article>
+            
+            <article class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="stat-value">{{ goal_diff|stringformat:"+d"|default:"—" }}</div>
+                <div class="stat-label">Goal Difference</div>
+                <div class="stat-sublabel">Net balance</div>
+            </article>
+        </section>
+        
+<!-- Next Match Prediction -->
+{% if next_pred and upcoming %}
+<section class="prediction-card" aria-labelledby="prediction-heading">
+    <div class="prediction-header">
+        <div class="prediction-header-content">
+            <div class="prediction-badge">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+                AI Prediction
+            </div>
+            <h2 class="prediction-title" id="prediction-heading">Next Match Forecast</h2>
+            <div class="prediction-date">{{ upcoming.0.date|date:"l, F j, Y" }}</div>
+        </div>
+    </div>
+
+    <div class="prediction-body">
+        <!-- Team Matchup -->
+        <div class="prediction-matchup">
+            <div class="prediction-team">
+                <div class="prediction-team-logo">
+                    {% if upcoming.0.home_team.logo %}
+                        <img src="{{ upcoming.0.home_team.logo.url }}" alt="{{ upcoming.0.home_team.name }}">
+                    {% else %}
+                        <span class="team-initial">{{ upcoming.0.home_team.name|slice:":1" }}</span>
+                    {% endif %}
+                </div>
+                <div class="prediction-team-info">
+                    <span class="prediction-team-name">{{ upcoming.0.home_team.name }}</span>
+                    <span class="prediction-team-label">Home</span>
+                </div>
+            </div>
+
+            <div class="prediction-divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">VS</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <div class="prediction-team away">
+                <div class="prediction-team-info">
+                    <span class="prediction-team-name">{{ upcoming.0.away_team.name }}</span>
+                    <span class="prediction-team-label">Away</span>
+                </div>
+                <div class="prediction-team-logo">
+                    {% if upcoming.0.away_team.logo %}
+                        <img src="{{ upcoming.0.away_team.logo.url }}" alt="{{ upcoming.0.away_team.name }}">
+                    {% else %}
+                        <span class="team-initial">{{ upcoming.0.away_team.name|slice:":1" }}</span>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-        <!-- Column 3: Recent Matches & Charts Button -->
-        <div class="space-y-6" data-aos="fade-left">
-            <!-- Recent Matches -->
-            <div class="stat-card">
-                <h3 class="section-title">Recent Results</h3>
-                <div class="space-y-3">
-                    {% for m in recent %}
-                    <a href="{% url 'match_detail' m.id %}" class="block">
-                        <div class="match-card">
-                            <div class="flex justify-between items-center">
-                                <div class="flex-1">
-                                    <div class="text-xs text-gray-500 font-semibold mb-1">
-                                        {{ m.date|date:"D, M j" }}
-                                    </div>
-                                    <div class="font-semibold text-gray-900 text-sm">
-                                        {{ m.home_team.name }} vs {{ m.away_team.name }}
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    {% if m.y_home_goals is not None %}
-                                        <div class="text-right">
-                                            <div class="text-xl font-bold text-gray-900">
-                                                {{ m.y_home_goals }} - {{ m.y_away_goals }}
-                                            </div>
-                                            {% if m.xg_home and m.xg_away %}
-                                                <div class="text-xs text-gray-500">xG: {{ m.xg_home }} - {{ m.xg_away }}</div>
+        <!-- Probability Bars -->
+        <div class="prediction-probabilities">
+            <div class="probability-item {% if next_pred.predicted == 'H' %}active{% endif %}">
+                <div class="probability-header">
+                    <span class="probability-label">Home Win</span>
+                    <span class="probability-value">{{ next_pred.home_win_prob }}%</span>
+                </div>
+                <div class="probability-bar-container">
+                    <div class="probability-bar" style="width: {{ next_pred.home_win_prob }}%;"></div>
+                </div>
+            </div>
+
+            <div class="probability-item {% if next_pred.predicted == 'D' %}active{% endif %}">
+                <div class="probability-header">
+                    <span class="probability-label">Draw</span>
+                    <span class="probability-value">{{ next_pred.draw_prob }}%</span>
+                </div>
+                <div class="probability-bar-container">
+                    <div class="probability-bar neutral" style="width: {{ next_pred.draw_prob }}%;"></div>
+                </div>
+            </div>
+
+            <div class="probability-item {% if next_pred.predicted == 'A' %}active{% endif %}">
+                <div class="probability-header">
+                    <span class="probability-label">Away Win</span>
+                    <span class="probability-value">{{ next_pred.away_win_prob }}%</span>
+                </div>
+                <div class="probability-bar-container">
+                    <div class="probability-bar" style="width: {{ next_pred.away_win_prob }}%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Predicted Outcome -->
+        <div class="prediction-outcome">
+            <div class="outcome-indicator">
+                <span class="outcome-label">Most Likely Outcome</span>
+                <span class="outcome-result">
+                    {% if next_pred.predicted == 'H' %}
+                        {{ upcoming.0.home_team.name }} Victory
+                    {% elif next_pred.predicted == 'D' %}
+                        Draw
+                    {% else %}
+                        {{ upcoming.0.away_team.name }} Victory
+                    {% endif %}
+                </span>
+            </div>
+            <a href="{% url 'team_compare' upcoming.0.id %}" class="prediction-cta">
+                <span>View Full Analysis</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+        
+        <!-- Content Grid -->
+        <div class="content-grid">
+            
+            <!-- Upcoming Matches -->
+            <section class="card" id="upcoming" aria-labelledby="upcoming-heading">
+                <div class="card-header">
+                    <h2 class="card-title" id="upcoming-heading">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Upcoming Fixtures
+                    </h2>
+                    <span style="font-size: 0.875rem; color: var(--gray-500); font-weight: 600;">{{ upcoming|length }} matches</span>
+                </div>
+                <div class="card-body">
+                    {% if upcoming %}
+                        {% for m in upcoming|slice:":5" %}
+                        <a href="{% url 'team_compare' m.id %}" class="match-item upcoming">
+                            <div class="match-status">
+                                <div class="match-date">{{ m.date|date:"d" }}</div>
+                                <div class="match-month">{{ m.date|date:"M" }}</div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-teams">
+                                    <div class="team-badge">
+                                        <div class="team-logo-small">
+                                            {% if m.home_team.logo %}
+                                                <img src="{{ m.home_team.logo.url }}" alt="{{ m.home_team.name }}">
+                                            {% else %}
+                                                <span style="font-size: 0.75rem; font-weight: 800;">{{ m.home_team.name|slice:":1" }}</span>
                                             {% endif %}
                                         </div>
-                                        {% if team.id == m.home_team.id %}
-                                            {% if m.result == "H" %}
-                                                <div class="result-badge win">W</div>
-                                            {% elif m.result == "D" %}
-                                                <div class="result-badge draw">D</div>
+                                        <span class="team-name">{{ m.home_team.name }}</span>
+                                    </div>
+                                    <span class="match-vs">VS</span>
+                                    <div class="team-badge">
+                                        <div class="team-logo-small">
+                                            {% if m.away_team.logo %}
+                                                <img src="{{ m.away_team.logo.url }}" alt="{{ m.away_team.name }}">
                                             {% else %}
-                                                <div class="result-badge loss">L</div>
+                                                <span style="font-size: 0.75rem; font-weight: 800;">{{ m.away_team.name|slice:":1" }}</span>
                                             {% endif %}
-                                        {% else %}
-                                            {% if m.result == "A" %}
-                                                <div class="result-badge win">W</div>
-                                            {% elif m.result == "D" %}
-                                                <div class="result-badge draw">D</div>
-                                            {% else %}
-                                                <div class="result-badge loss">L</div>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% else %}
-                                        <span class="text-xs text-gray-400">Not played</span>
-                                    {% endif %}
+                                        </div>
+                                        <span class="team-name">{{ m.away_team.name }}</span>
+                                    </div>
                                 </div>
+                                <div class="match-meta">Week {{ m.matchweek }}{% if m.venue %} • {{ m.venue }}{% endif %}</div>
                             </div>
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-data">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <div class="no-data-title">No upcoming fixtures</div>
+                            <div class="no-data-text">Check back later for new matches</div>
                         </div>
-                    </a>
-                    {% endfor %}
+                    {% endif %}
                 </div>
-            </div>
-
-            <!-- Charts Button -->
-            <div class="stat-card text-center py-8">
-                <svg class="w-16 h-16 mx-auto mb-4 text-playwise-purple opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-                <h4 class="font-bold text-gray-900 mb-2">Performance Analytics</h4>
-                <p class="text-sm text-gray-600 mb-4">View detailed charts and trends</p>
-                <button onclick="openChartsModal()" class="btn-primary px-6 py-3 rounded-xl text-sm font-semibold inline-flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
-                    </svg>
-                    View Charts
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Charts Modal - OUTSIDE THE WRAPPER -->
-<div id="chartsModal" class="modal-overlay">
-    <div class="modal-container">
-        <div class="modal-header">
-            <div>
-                <h3 class="gradient-text">Performance Analytics Dashboard</h3>
-                <p class="text-sm text-gray-600 mt-2">Comprehensive view of your team's statistics and trends</p>
-            </div>
-            <button onclick="closeChartsModal()" class="modal-close">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+            </section>
+            
+            <!-- Recent Results -->
+            <section class="card" id="recent" aria-labelledby="recent-heading">
+                <div class="card-header">
+                    <h2 class="card-title" id="recent-heading">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Recent Results
+                    </h2>
+                    <span style="font-size: 0.875rem; color: var(--gray-500); font-weight: 600;">Last 5 matches</span>
+                </div>
+                <div class="card-body">
+                    {% if recent %}
+                        {% for m in recent|slice:":5" %}
+                        <a href="{% url 'match_detail' m.id %}" class="match-item">
+                            <div class="match-status">
+                                <div class="match-date">{{ m.date|date:"d" }}</div>
+                                <div class="match-month">{{ m.date|date:"M" }}</div>
+                            </div>
+                            <div class="match-details">
+                                <div class="match-teams">
+                                    <div class="team-badge">
+                                        <div class="team-logo-small">
+                                            {% if m.home_team.logo %}
+                                                <img src="{{ m.home_team.logo.url }}" alt="{{ m.home_team.name }}">
+                                            {% else %}
+                                                <span style="font-size: 0.75rem; font-weight: 800;">{{ m.home_team.name|slice:":1" }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <span class="team-name">{{ m.home_team.name }}</span>
+                                    </div>
+                                    <span class="match-vs">VS</span>
+                                    <div class="team-badge">
+                                        <div class="team-logo-small">
+                                            {% if m.away_team.logo %}
+                                                <img src="{{ m.away_team.logo.url }}" alt="{{ m.away_team.name }}">
+                                            {% else %}
+                                                <span style="font-size: 0.75rem; font-weight: 800;">{{ m.away_team.name|slice:":1" }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <span class="team-name">{{ m.away_team.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="match-meta">Week {{ m.matchweek }}{% if m.xg_home and m.xg_away %} • xG: {{ m.xg_home }} - {{ m.xg_away }}{% endif %}</div>
+                            </div>
+                            {% if m.y_home_goals is not None %}
+                            <div class="match-result pt-8">
+                                <div class="match-score">{{ m.y_home_goals }} - {{ m.y_away_goals }}</div>
+                                {% if team.id == m.home_team.id %}
+                                    {% if m.result == "H" %}
+                                        <div class="result-badge win">W</div>
+                                    {% elif m.result == "D" %}
+                                        <div class="result-badge draw">D</div>
+                                    {% else %}
+                                        <div class="result-badge loss">L</div>
+                                    {% endif %}
+                                {% else %}
+                                    {% if m.result == "A" %}
+                                        <div class="result-badge win">W</div>
+                                    {% elif m.result == "D" %}
+                                        <div class="result-badge draw">D</div>
+                                    {% else %}
+                                        <div class="result-badge loss">L</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="no-data">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            <div class="no-data-title">No match history</div>
+                            <div class="no-data-text">Results will appear here after matches</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
         </div>
         
-        <div class="modal-body">
-            <div class="charts-grid">
-                <!-- Recent Form Chart -->
-                <div class="chart-card" data-aos="fade-up">
-                    <div class="flex items-center gap-4">
-                        <div class="chart-icon rounded-xl bg-gradient-to-br from-playwise-purple to-playwise-blue flex items-center justify-center">
-                            <svg class="text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4>Recent Form Analysis</h4>
-                            <p>Track your team's performance trend across recent matches</p>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="formChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Goals vs xG Chart -->
-                <div class="chart-card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-center gap-4">
-                        <div class="chart-icon rounded-xl bg-gradient-to-br from-playwise-blue to-purple-600 flex items-center justify-center">
-                            <svg class="text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4>Goals vs Expected Goals (xG)</h4>
-                            <p>Compare actual goals scored with expected goals based on shot quality</p>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper">
-                        <canvas id="goalsXgChart"></canvas>
-                    </div>
-                </div>
+        <!-- Performance Overview -->
+        <section class="card" style="margin-bottom: 1.5rem;" aria-labelledby="performance-heading">
+            <div class="card-header">
+                <h2 class="card-title" id="performance-heading">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Performance Metrics
+                </h2>
             </div>
-        </div>
-    </div>
+            <div class="card-body">
+                <div class="performance-overview">
+                    <div class="performance-item">
+                        <div class="performance-label">Average xG For</div>
+                        <div class="performance-value">{{ avg_xg_for|default:"—" }}</div>
+                        <div class="performance-comparison">
+                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Attack</span>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill" style="width: {% if avg_xg_for %}{{ avg_xg_for|floatformat:0|add:"0" }}%{% else %}0%{% endif %};"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-item">
+                        <div class="performance-label">Average xG Against</div>
+                        <div class="performance-value">{{ avg_xg_against|default:"—" }}</div>
+                        <div class="performance-comparison">
+                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Defense</span>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill" style="width: {% if avg_xg_against %}{{ avg_xg_against|floatformat:0|add:"0" }}%{% else %}0%{% endif %}; background: linear-gradient(90deg, var(--danger), var(--warning));"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-item">
+                        <div class="performance-label">Clean Sheets</div>
+                        <div class="performance-value">{{ clean_sheets }}</div>
+                        <div class="performance-comparison">
+                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">{{ clean_sheets_home }}H / {{ clean_sheets_away }}A</span>
+                        </div>
+                    </div>
+                    
+                    <div class="performance-item">
+                        <div class="performance-label">Conversion Rate</div>
+                        <div class="performance-value">{{ conversion_rate|default:"—" }}</div>
+                        <div class="performance-comparison">
+                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Efficiency</span>
+                            <div class="comparison-bar">
+                                <div class="comparison-fill" style="width: {% if conversion_rate %}{{ conversion_rate|cut:"%"|floatformat:0 }}%{% else %}0%{% endif %}; background: linear-gradient(90deg, var(--success), var(--accent));"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if played_count > 0 %}
+                <div class="insight-box">
+                    <div class="insight-title">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Season Insights
+                    </div>
+                    <p class="insight-text">
+                        This season, the team has played {{ played_count }} matches with a record of {{ wins }}W-{{ draws }}D-{{ losses }}L, earning {{ points }} points ({{ ppg }} PPG).
+                        {% if streak and streak_type %}
+                            Currently on a {{ streak }} match {{ streak_type }} streak.
+                        {% endif %}
+                        {% if clean_sheets > 0 %}
+                            The defense has kept {{ clean_sheets }} clean sheets.
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        
+        <!-- Quick Actions -->
+        <section aria-labelledby="actions-heading">
+            <h2 id="actions-heading" class="sr-only">Quick Actions</h2>
+            <div class="quick-actions">
+                <article class="action-card" onclick="window.location.href='{% url 'admin_player_analysis' %}'">
+                    <div class="action-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="action-title">Player Analysis</h3>
+                    <p class="action-description">Review individual player performance metrics, form, and development progress</p>
+                </article>
+                
+                <article class="action-card" onclick="window.location.href='{% url 'coach_role_leaders_page' %}'">
+                    <div class="action-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="action-title">Role Performance</h3>
+                    <p class="action-description">Analyze player effectiveness across different tactical positions and formations</p>
+                </article>
+                
+                <article class="action-card" onclick="window.location.href='{% url 'coach_role_suitability' %}'">
+                    <div class="action-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="action-title">Role Suitability</h3>
+                    <p class="action-description">Discover optimal tactical positions and role assignments for each player</p>
+                </article>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+    
 </div>
 
 {% endblock %}
 
 {% block extra_js %}
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-
 <script>
-// Modal Functions
-function openChartsModal() {
-    const modal = document.getElementById('chartsModal');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-    // Initialize charts when modal opens (if not already initialized)
-    if (!window.chartsInitialized) {
-        initializeCharts();
-        window.chartsInitialized = true;
-    }
-}
+// Mobile menu toggle
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const sidebar = document.getElementById('sidebar');
 
-function closeChartsModal() {
-    const modal = document.getElementById('chartsModal');
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// Close modal on overlay click
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('chartsModal');
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeChartsModal();
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', function() {
+        const isOpen = sidebar.classList.toggle('open');
+        this.setAttribute('aria-expanded', isOpen);
+        
+        // Change icon
+        const icon = this.querySelector('svg path');
+        if (isOpen) {
+            icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        } else {
+            icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
         }
     });
     
-    // Close on Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeChartsModal();
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 1024) {
+            if (!sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                const icon = mobileMenuToggle.querySelector('svg path');
+                icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            }
+        }
+    });
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            });
+            this.classList.add('active');
+            this.setAttribute('aria-current', 'page');
         }
     });
 });
 
-// Initialize Charts
-function initializeCharts() {
-    const chartForm = JSON.parse('{{ chart_form|escapejs }}');
-    const chartGoalsXG = JSON.parse('{{ chart_goals_xg|escapejs }}');
-
-    // Form Chart
-    const ctxForm = document.getElementById('formChart');
-    if (ctxForm) {
-        new Chart(ctxForm, {
-            type: 'line',
-            data: {
-                labels: chartForm.labels.length ? chartForm.labels : ['No data'],
-                datasets: [{
-                    label: 'Points',
-                    data: chartForm.data.length ? chartForm.data : [0],
-                    fill: true,
-                    backgroundColor: function(context) {
-                        const ctx = context.chart.ctx;
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                        gradient.addColorStop(0, 'rgba(124, 58, 237, 0.3)');
-                        gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
-                        return gradient;
-                    },
-                    borderColor: '#7c3aed',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    pointRadius: 6,
-                    pointBackgroundColor: '#7c3aed',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 3,
-                    pointHoverRadius: 8,
-                    pointHoverBorderWidth: 4,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { 
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            font: { size: 13, weight: '600' }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        padding: 16,
-                        cornerRadius: 12,
-                        titleFont: { size: 15, weight: 'bold' },
-                        bodyFont: { size: 14 },
-                        displayColors: false,
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { 
-                            stepSize: 1, 
-                            color: '#64748b', 
-                            font: { size: 12 },
-                            padding: 10
-                        },
-                        grid: { 
-                            color: '#f1f5f9',
-                            drawBorder: false
-                        }
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#64748b', 
-                            font: { size: 12 },
-                            padding: 10
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    // ESC to close mobile menu
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenuToggle.focus();
     }
-
-    // Goals vs xG Chart
-    const ctxGoalsXG = document.getElementById('goalsXgChart');
-    if (ctxGoalsXG) {
-        new Chart(ctxGoalsXG, {
-            data: {
-                labels: chartGoalsXG.labels.length ? chartGoalsXG.labels : ['No data'],
-                datasets: [
-                    {
-                        type: 'bar',
-                        label: 'Goals',
-                        data: chartGoalsXG.goals.length ? chartGoalsXG.goals : [0],
-                        backgroundColor: 'rgba(59, 130, 246, 0.85)',
-                        borderColor: '#3b82f6',
-                        borderWidth: 2,
-                        borderRadius: 8,
-                        yAxisID: 'y',
-                    },
-                    {
-                        type: 'line',
-                        label: 'xG',
-                        data: chartGoalsXG.xg.length ? chartGoalsXG.xg : [0],
-                        borderColor: '#7c3aed',
-                        backgroundColor: function(context) {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-                            gradient.addColorStop(0, 'rgba(124, 58, 237, 0.2)');
-                            gradient.addColorStop(1, 'rgba(124, 58, 237, 0.0)');
-                            return gradient;
-                        },
-                        borderWidth: 3,
-                        tension: 0.4,
-                        pointRadius: 6,
-                        pointBackgroundColor: '#7c3aed',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 3,
-                        pointHoverRadius: 8,
-                        yAxisID: 'y',
-                        fill: true,
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            font: { size: 13, weight: '600' }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        padding: 16,
-                        cornerRadius: 12,
-                        titleFont: { size: 15, weight: 'bold' },
-                        bodyFont: { size: 14 }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { 
-                            color: '#64748b', 
-                            font: { size: 12 },
-                            padding: 10
-                        },
-                        grid: { 
-                            color: '#f1f5f9',
-                            drawBorder: false
-                        }
-                    },
-                    x: {
-                        ticks: { 
-                            color: '#64748b', 
-                            font: { size: 12 },
-                            padding: 10
-                        },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-}
+});
 </script>
 {% endblock %}

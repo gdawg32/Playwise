@@ -1,0 +1,619 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+main {
+    padding-top: 90px;
+}
+
+.leaders-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-size: 2.75rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+.page-header p {
+    font-size: 1.0625rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.info-item {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    box-shadow: 0 2px 12px rgba(124, 58, 237, 0.06);
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.15);
+}
+
+.info-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #7c3aed;
+    margin-bottom: 0.5rem;
+}
+
+.info-text {
+    font-size: 0.9375rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* Controls Card */
+.controls-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.controls-card:hover {
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12);
+    border-color: rgba(124, 58, 237, 0.12);
+}
+
+.controls-header {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.control-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+.choices__inner {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 52px;
+    padding: 0.875rem 1.125rem;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.choices__inner:hover {
+    border-color: #cbd5e1;
+    background: white;
+}
+
+.choices.is-focused .choices__inner {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+    background: white;
+}
+
+.choices__list--dropdown {
+    border: 2px solid #7c3aed;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+    margin-top: 6px;
+    z-index: 10;
+}
+
+.choices__item--selectable {
+    padding: 0.875rem 1.125rem;
+    transition: all 0.15s ease;
+    font-size: 1rem;
+}
+
+.choices__item--selectable.is-highlighted {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    color: #7c3aed;
+}
+
+/* Chart Card */
+.chart-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#chart {
+    width: 100%;
+    min-height: 700px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    max-width: 480px;
+    padding: 4rem 2rem;
+}
+
+.empty-icon {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 1.75rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7c3aed;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Loading State */
+.loading-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 2rem;
+}
+
+.loading-state.active {
+    display: flex;
+}
+
+.spinner {
+    width: 56px;
+    height: 56px;
+    border: 4px solid rgba(124, 58, 237, 0.2);
+    border-radius: 50%;
+    border-top-color: #7c3aed;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.0625rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Chart Legend */
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #f1f5f9;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.legend-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid #1f2937;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.875rem;
+}
+
+.legend-badge.gold {
+    background: #fbbf24;
+    color: #78350f;
+}
+
+.legend-badge.silver {
+    background: #cbd5e1;
+    color: #1e293b;
+}
+
+.legend-badge.bronze {
+    background: #fb923c;
+    color: #7c2d12;
+}
+
+.legend-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .leaders-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .controls-card,
+    .chart-card {
+        padding: 1.75rem;
+    }
+    
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-legend {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="leaders-wrapper">
+    
+    <!-- Header -->
+    <div class="page-header">
+        <h1>Statistical Leaders</h1>
+        <p>Top performing players across all categories</p>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="info-grid">
+        <div class="info-item">
+            <div class="info-label">Attacking</div>
+            <div class="info-text">Goals, assists, shots on target</div>
+        </div>
+        
+        <div class="info-item">
+            <div class="info-label">Defensive</div>
+            <div class="info-text">Tackles, blocks, clearances</div>
+        </div>
+        
+        <div class="info-item">
+            <div class="info-label">Possession</div>
+            <div class="info-text">Passes, dribbles, touches</div>
+        </div>
+        
+        <div class="info-item">
+            <div class="info-label">Advanced</div>
+            <div class="info-text">Expected goals and assists</div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-card">
+        <h2 class="controls-header">Filter Statistics</h2>
+        
+        <div class="controls-grid">
+            <div class="control-group">
+                <label class="control-label" for="competition">Competition</label>
+                <select id="competition" onchange="loadChart()">
+                    <option value="">Select competition</option>
+                    {% for c in competitions %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="stat">Statistical Category</label>
+                <select id="stat" onchange="loadChart()">
+                    {% for key, meta in stat_options.items %}
+                        <option value="{{ key }}">{{ meta.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Display -->
+    <div class="chart-card">
+        
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+                <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h3>Select Filters</h3>
+            <p>Choose a competition and statistic above to view the top 10 leaders</p>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState">
+            <div class="spinner"></div>
+            <p class="loading-text">Loading data</p>
+        </div>
+
+        <!-- Chart -->
+        <div id="chartWrapper" style="width: 100%; display: none;">
+            <div id="chart"></div>
+            
+            <!-- Legend -->
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-badge gold">1</div>
+                    <span class="legend-text">First Place</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-badge silver">2</div>
+                    <span class="legend-text">Second Place</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-badge bronze">3</div>
+                    <span class="legend-text">Third Place</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+/* Initialize Choices.js */
+let choices = {};
+
+document.addEventListener('DOMContentLoaded', function() {
+    choices.competition = new Choices('#competition', {
+        searchEnabled: true,
+        searchPlaceholderValue: 'Search competitions...',
+        itemSelectText: '',
+        shouldSort: false
+    });
+
+    choices.stat = new Choices('#stat', {
+        searchEnabled: true,
+        searchPlaceholderValue: 'Search statistics...',
+        itemSelectText: '',
+        shouldSort: false
+    });
+});
+
+/* Helpers */
+function fmt(v) {
+    const n = Number(v);
+    return isNaN(n) ? "—" : n.toFixed(2);
+}
+
+function luminance(hex) {
+    const c = hex.replace("#", "");
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    return 0.299*r + 0.587*g + 0.114*b;
+}
+
+/* Render Chart */
+function renderChart(rows, label) {
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('loadingState').classList.remove('active');
+    document.getElementById('chartWrapper').style.display = 'block';
+
+    const top = rows.slice(0, 10);
+
+    const pastelBlues = [
+        "#E8F1FE","#DCEBFE","#CFE5FE","#C2DFFE","#B5D9FE",
+        "#A8D2FD","#9BCBFD","#8EC4FD","#81BCFD","#74B4FC"
+    ];
+
+    const barColors = pastelBlues.slice(-top.length).reverse();
+    const textColors = barColors.map(c => luminance(c) < 150 ? "#ffffff" : "#1f2937");
+
+    const trace = {
+        type: "bar",
+        orientation: "h",
+        x: top.map(r => r.value),
+        y: top.map((_, i) => String(i + 1)),
+        text: top.map(r =>
+            `<b>${r.Player}</b> • ${fmt(r.value)} • ${r.Squad} • ${r.Mins.toLocaleString()} mins`
+        ),
+        textposition: "inside",
+        insidetextanchor: "middle",
+        customdata: top.map(r => [r.Player, r.Squad, r.Age, r.Mins]),
+        hovertemplate:
+            "<b>%{customdata[0]}</b><br>" +
+            "Squad: %{customdata[1]}<br>" +
+            "Age: %{customdata[2]}<br>" +
+            "Minutes: %{customdata[3]:,}<br>" +
+            "<b>" + label + ": %{x:.2f}</b>" +
+            "<extra></extra>",
+        marker: {
+            color: barColors,
+            line: { color: "#2b2b2b", width: 1.5 }
+        },
+        textfont: {
+            size: 11,
+            color: textColors,
+            family: "Inter",
+            weight: 600
+        }
+    };
+
+    const annotations = [];
+
+    annotations.push({
+        xref: "paper", yref: "paper",
+        x: 0.5, y: 1.08,
+        text: `<b>Top 10 Players: ${label}</b>`,
+        showarrow: false,
+        font: { size: 26, family: "Inter", weight: 900 }
+    });
+
+    annotations.push({
+        xref: "paper", yref: "paper",
+        x: 0.5, y: 1.03,
+        text: "Season 2025/26",
+        showarrow: false,
+        font: { size: 14, color: "#6b7280" }
+    });
+
+    top.forEach((_, i) => {
+        annotations.push({
+            x: -0.01,
+            y: String(i + 1),
+            xref: "paper",
+            yref: "y",
+            text: `<b>${i + 1}</b>`,
+            showarrow: false,
+            xanchor: "right",
+            font: {
+                size: 16,
+                family: "Inter",
+                weight: 900,
+                color: "#1f2937"
+            },
+            bgcolor: i === 0 ? "#fbbf24"
+                : i === 1 ? "#cbd5e1"
+                : i === 2 ? "#fb923c"
+                : "#e5e7eb",
+            bordercolor: "#1f2937",
+            borderwidth: 2,
+            borderpad: 6
+        });
+    });
+
+    const layout = {
+        plot_bgcolor: "#fafafa",
+        paper_bgcolor: "#ffffff",
+        height: 700,
+        margin: { l: 120, r: 50, t: 120, b: 70 },
+        xaxis: {
+            title: { text: `<b>${label}</b>`, font: { size: 15, weight: 700 } },
+            gridcolor: "#e5e7eb",
+            zeroline: true,
+            zerolinecolor: "#374151",
+            zerolinewidth: 2
+        },
+        yaxis: {
+            autorange: "reversed",
+            showticklabels: false
+        },
+        annotations: annotations,
+        showlegend: false
+    };
+
+    Plotly.newPlot("chart", [trace], layout, {
+        responsive: true,
+        displaylogo: false
+    });
+}
+
+/* Load Chart */
+function loadChart() {
+    const comp = document.getElementById("competition").value;
+    const stat = document.getElementById("stat").value;
+    
+    if (!comp || !stat) {
+        document.getElementById('chartWrapper').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
+        return;
+    }
+
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('chartWrapper').style.display = 'none';
+    document.getElementById('loadingState').classList.add('active');
+
+    fetch(`/api/stat-leaders/?competition_id=${comp}&stat=${stat}`)
+        .then(res => res.json())
+        .then(data => renderChart(data.rows, data.label))
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('loadingState').classList.remove('active');
+            document.getElementById('emptyState').style.display = 'block';
+        });
+}
+</script>
+{% endblock %}

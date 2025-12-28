@@ -1,0 +1,513 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  /* Smooth scrollbar for dropdowns */
+  .custom-select-dropdown::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-select-dropdown::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  
+  .custom-select-dropdown::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+  
+  .custom-select-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  
+  /* Selected option highlight */
+  .custom-select-dropdown .option.selected {
+    background: linear-gradient(to right, #f1f5f9, #e2e8f0);
+    font-weight: 700;
+    position: relative;
+  }
+  
+  .custom-select-dropdown .option.selected::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #0f172a, #475569);
+  }
+  
+  /* Amber mode selected state */
+  [data-name="mode-select"] .custom-select-dropdown .option.selected {
+    background: linear-gradient(to right, #fef3c7, #fde68a);
+  }
+  
+  [data-name="mode-select"] .custom-select-dropdown .option.selected::before {
+    background: linear-gradient(to bottom, #d97706, #f59e0b);
+  }
+  
+  /* Rotate arrow when open */
+  .custom-select.open .custom-select-trigger svg {
+    transform: rotate(180deg);
+  }
+</style>
+
+
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+  <div class="max-w-7xl mx-auto px-6 py-10 mt-24">
+
+    <!-- Premium Header -->
+    <div class="mb-12">
+      <div class="inline-flex items-center gap-3 bg-gradient-to-r from-slate-900 to-slate-700 text-white px-5 py-2 rounded-full text-sm font-semibold mb-4 shadow-lg">
+        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+        Tactical Intelligence System
+      </div>
+      <h1 class="text-5xl font-bold text-gray-900 mb-3 tracking-tight">
+        Formation & Lineup Builder
+      </h1>
+      <p class="text-xl text-gray-600 max-w-3xl">
+        Advanced AI-powered lineup optimization with strategic formation analysis
+      </p>
+    </div>
+
+    {% if error %}
+      <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 text-red-800 p-5 rounded-xl mb-8 shadow-lg">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold">System Error</p>
+            <p class="text-sm mt-1">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Configuration Panel -->
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 mb-8 overflow-hidden">
+      <!-- Panel Header -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-8 py-6 border-b border-gray-700">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-white">Configuration Settings</h2>
+            <p class="text-sm text-gray-300 mt-0.5">Define match context and tactical parameters</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuration Grid -->
+<div class="p-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Match Context -->
+    <div class="space-y-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center shadow-sm">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="text-sm font-bold text-gray-900 block">Match Context</span>
+          <span class="text-xs text-gray-500">Opponent-specific adjustments</span>
+        </div>
+      </div>
+      
+      <!-- Custom Dropdown -->
+      <div class="relative custom-select" data-name="match-select">
+        <button type="button" class="custom-select-trigger w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3.5 text-left text-sm font-semibold text-gray-900 hover:border-slate-400 focus:outline-none focus:border-slate-900 focus:ring-4 focus:ring-slate-100 transition-all shadow-sm hover:shadow-md flex items-center justify-between">
+          <span class="selected-text">General lineup</span>
+          <svg class="w-4 h-4 text-slate-900 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        
+        <div class="custom-select-dropdown hidden absolute z-50 w-full mt-2 bg-white border-2 border-gray-300 rounded-xl shadow-xl max-h-64 overflow-y-auto">
+          <div class="option py-2.5 px-4 hover:bg-slate-50 cursor-pointer text-sm font-medium text-gray-700 border-b border-gray-100" data-value="">
+            General lineup
+          </div>
+          {% for m in matches %}
+          <div class="option py-2.5 px-4 hover:bg-slate-50 cursor-pointer text-sm text-gray-700 border-b border-gray-100 last:border-b-0" data-value="{{ m.id }}">
+            <span class="font-semibold">{{ m.date|date:"M d" }}</span> — {{ m.home_team.name }} vs {{ m.away_team.name }}
+          </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Hidden input to store value -->
+        <input type="hidden" id="match-select" value="">
+      </div>
+    </div>
+
+    <!-- Formation -->
+    <div class="space-y-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center shadow-sm">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="text-sm font-bold text-gray-900 block">Tactical Formation</span>
+          <span class="text-xs text-gray-500">Player positional structure</span>
+        </div>
+      </div>
+      
+      <!-- Custom Dropdown -->
+      <div class="relative custom-select" data-name="formation-select">
+        <button type="button" class="custom-select-trigger w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3.5 text-left text-sm font-semibold text-gray-900 hover:border-slate-400 focus:outline-none focus:border-slate-900 focus:ring-4 focus:ring-slate-100 transition-all shadow-sm hover:shadow-md flex items-center justify-between">
+          <span class="selected-text">{{ formations.0 }}</span>
+          <svg class="w-4 h-4 text-slate-900 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        
+        <div class="custom-select-dropdown hidden absolute z-50 w-full mt-2 bg-white border-2 border-gray-300 rounded-xl shadow-xl max-h-64 overflow-y-auto">
+          {% for f in formations %}
+          <div class="option py-2.5 px-4 hover:bg-slate-50 cursor-pointer text-sm font-semibold text-gray-700 border-b border-gray-100 last:border-b-0" data-value="{{ f }}">
+            {{ f }}
+          </div>
+          {% endfor %}
+        </div>
+        
+        <input type="hidden" id="formation-select" value="{{ formations.0 }}">
+      </div>
+    </div>
+
+    <!-- Display Mode -->
+    <div class="space-y-3">
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-sm">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="text-sm font-bold text-gray-900 block">Display Mode</span>
+          <span class="text-xs text-gray-500">Output visualization type</span>
+        </div>
+      </div>
+      
+      <!-- Custom Dropdown -->
+      <div class="relative custom-select" data-name="mode-select">
+        <button type="button" class="custom-select-trigger w-full bg-white border-2 border-amber-300 rounded-xl px-4 py-3.5 text-left text-sm font-semibold text-gray-900 hover:border-amber-400 focus:outline-none focus:border-amber-600 focus:ring-4 focus:ring-amber-100 transition-all shadow-sm hover:shadow-md flex items-center justify-between">
+          <span class="selected-text">Selected Formation</span>
+          <svg class="w-4 h-4 text-amber-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        
+        <div class="custom-select-dropdown hidden absolute z-50 w-full mt-2 bg-white border-2 border-amber-300 rounded-xl shadow-xl">
+          <div class="option py-2.5 px-4 hover:bg-amber-50 cursor-pointer text-sm font-semibold text-gray-700 border-b border-amber-100" data-value="requested">
+            Selected Formation
+          </div>
+          <div class="option py-2.5 px-4 hover:bg-amber-50 cursor-pointer text-sm font-semibold text-gray-700" data-value="best">
+            Optimal Formation
+          </div>
+        </div>
+        
+        <input type="hidden" id="mode-select" value="requested">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- Action Cards Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+  
+  <!-- Generate XI Card -->
+  <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300">
+    <!-- Card Header -->
+    <div class="bg-gray-50 border-b border-gray-200 px-6 py-5">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-900">Generate Starting XI</h3>
+          <p class="text-sm text-gray-600 mt-0.5">Standard lineup generation</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="p-6">
+      <p class="text-gray-700 leading-relaxed mb-5">
+        Creates an optimal starting eleven based on your selected formation. Analyzes player form, fitness levels, and positional suitability.
+      </p>
+
+      <!-- Key Points -->
+      <div class="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-200">
+        <div class="space-y-2.5 text-sm">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-slate-900 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700">Uses your selected formation</span>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-slate-900 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700">Respects display mode setting</span>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-slate-900 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700">Quick generation (~2 seconds)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button id="run-btn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg group">
+        <span>Generate Lineup</span>
+        <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Find Best Formation Card -->
+  <div class="bg-white rounded-2xl shadow-lg border-2 border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300">
+    <!-- Card Header -->
+    <div class="bg-gray-50 border-b border-gray-200 px-6 py-5">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center flex-shrink-0">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-900">Find Best Formation</h3>
+          <p class="text-sm text-gray-600 mt-0.5">AI-powered optimization</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card Body -->
+    <div class="p-6">
+      <p class="text-gray-700 leading-relaxed mb-5">
+        Analyzes all available formations to identify the optimal tactical setup. Evaluates squad depth, player compatibility, and formation effectiveness.
+      </p>
+
+      <!-- Key Points -->
+      <div class="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-200">
+        <div class="space-y-2.5 text-sm">
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700"><span class="font-semibold text-gray-900">Ignores</span> formation selection</span>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700"><span class="font-semibold text-gray-900">Always shows</span> optimal formation found</span>
+          </div>
+          <div class="flex items-start gap-2.5">
+            <div class="w-1.5 h-1.5 rounded-full bg-amber-600 mt-1.5 flex-shrink-0"></div>
+            <span class="text-gray-700">Analysis takes 3-5 seconds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button id="best-btn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg group">
+        <svg class="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7"/>
+        </svg>
+        <span>Find Best Formation</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+    <!-- Output Section -->
+    <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
+      <!-- Output Header -->
+      <div class="bg-gradient-to-r from-slate-800 via-gray-800 to-slate-800 px-8 py-5 border-b border-gray-700">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">Generated Output</h3>
+              <p class="text-xs text-gray-300">Tactical visualization and lineup details</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output Content -->
+      <div id="output" class="p-12 min-h-[500px]">
+        <div class="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mb-6 shadow-inner">
+            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+            </svg>
+          </div>
+          <p class="text-xl font-semibold text-gray-600 mb-2">No Lineup Generated Yet</p>
+          <p class="text-sm text-gray-500">Configure your settings above and select an action to begin</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function buildPitchURL(mode) {
+    const formation = encodeURIComponent(
+      document.getElementById("formation-select").value
+    );
+    const matchId = document.getElementById("match-select").value;
+    let url = `/api/xi/pitch/?formation=${formation}&mode=${mode}`;
+    if (matchId && matchId !== "None") {
+      url += `&match_id=${encodeURIComponent(matchId)}`;
+    }
+    return url;
+  }
+
+  function renderPitch(mode) {
+    const out = document.getElementById("output");
+    out.innerHTML = `
+      <div class="flex flex-col items-center justify-center py-12">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="relative">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 animate-pulse"></div>
+            <div class="absolute inset-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 animate-ping opacity-75"></div>
+          </div>
+          <div>
+            <p class="text-xl font-bold text-gray-900">Generating Tactical Lineup</p>
+            <p class="text-sm text-gray-500">Analyzing player data and formations...</p>
+          </div>
+        </div>
+        <img id="pitch-img"
+             class="max-w-full rounded-2xl shadow-2xl border-2 border-gray-200 mx-auto hidden"
+             alt="XI Pitch Diagram">
+        <div id="pitch-error" class="hidden bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 text-red-800 p-6 rounded-xl shadow-lg max-w-2xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold">Failed to Generate Lineup</p>
+              <p class="text-sm mt-1">Unable to load pitch visualization. Please verify backend configuration and try again.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const img = document.getElementById("pitch-img");
+    const err = document.getElementById("pitch-error");
+    const loader = out.querySelector('.animate-pulse').parentElement.parentElement;
+
+    img.onload = () => {
+      loader.classList.add("hidden");
+      img.classList.remove("hidden");
+      err.classList.add("hidden");
+    };
+
+    img.onerror = () => {
+      loader.classList.add("hidden");
+      err.classList.remove("hidden");
+    };
+
+    img.src = buildPitchURL(mode);
+  }
+
+  document.getElementById("run-btn").addEventListener("click", () => {
+    const mode = document.getElementById("mode-select").value;
+    renderPitch(mode);
+  });
+
+  document.getElementById("best-btn").addEventListener("click", () => {
+    renderPitch("best");
+  });
+
+    // Custom Select Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const customSelects = document.querySelectorAll('.custom-select');
+      
+      customSelects.forEach(select => {
+        const trigger = select.querySelector('.custom-select-trigger');
+        const dropdown = select.querySelector('.custom-select-dropdown');
+        const options = select.querySelectorAll('.option');
+        const hiddenInput = select.querySelector('input[type="hidden"]');
+        const selectedText = select.querySelector('.selected-text');
+        
+        // Toggle dropdown
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          // Close other dropdowns
+          document.querySelectorAll('.custom-select').forEach(s => {
+            if (s !== select) {
+              s.classList.remove('open');
+              s.querySelector('.custom-select-dropdown').classList.add('hidden');
+            }
+          });
+          
+          // Toggle current
+          select.classList.toggle('open');
+          dropdown.classList.toggle('hidden');
+        });
+        
+        // Select option
+        options.forEach(option => {
+          option.addEventListener('click', () => {
+            const value = option.dataset.value;
+            const text = option.textContent.trim();
+            
+            // Update UI
+            selectedText.textContent = text;
+            hiddenInput.value = value;
+            
+            // Update selected state
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Close dropdown
+            dropdown.classList.add('hidden');
+            select.classList.remove('open');
+          });
+        });
+        
+        // Set initial selected state
+        const currentValue = hiddenInput.value;
+        options.forEach(option => {
+          if (option.dataset.value === currentValue) {
+            option.classList.add('selected');
+          }
+        });
+      });
+      
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', () => {
+        document.querySelectorAll('.custom-select').forEach(select => {
+          select.classList.remove('open');
+          select.querySelector('.custom-select-dropdown').classList.add('hidden');
+        });
+      });
+    });
+  
+</script>
+
+{% endblock %}

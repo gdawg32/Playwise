@@ -1,0 +1,802 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+main {
+    padding-top: 100px;
+}
+
+.role-wrapper { 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 2rem;
+}
+
+/* Header Section */
+.page-header {
+    background: white;
+    border-radius: 20px;
+    padding: 2.25rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.header-info h1 {
+    font-size: 2.25rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.header-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9375rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.header-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-meta svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Custom Select Dropdown */
+.controls-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.control-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.custom-select {
+    position: relative;
+    min-width: 280px;
+}
+
+.custom-select select {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.25rem;
+    border-radius: 14px;
+    border: 2px solid #e2e8f0;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.04);
+}
+
+.custom-select select:hover {
+    border-color: #cbd5e1;
+    background: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.08);
+    transform: translateY(-1px);
+}
+
+.custom-select select:focus {
+    outline: none;
+    border-color: #7c3aed;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12), 0 4px 16px rgba(124, 58, 237, 0.08);
+}
+
+/* Custom Arrow Icon */
+.custom-select::after {
+    content: '';
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #7c3aed;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.custom-select select:focus ~ .select-icon,
+.custom-select:hover::after {
+    border-top-color: #3b82f6;
+}
+
+/* Refresh Button */
+.refresh-btn {
+    padding: 1rem 1.75rem;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    color: white;
+    border: none;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.refresh-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.refresh-btn:hover::before {
+    left: 100%;
+}
+
+.refresh-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+}
+
+.refresh-btn:active {
+    transform: translateY(0);
+}
+
+.refresh-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.refresh-btn:hover svg {
+    transform: rotate(180deg);
+}
+
+/* Chart Card */
+.chart-card {
+    background: white;
+    padding: 3rem 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid rgba(124, 58, 237, 0.08);
+    transition: all 0.3s ease;
+    min-height: 700px;
+}
+
+#roleChart {
+    width: 100%;
+    height: 640px;
+}
+
+/* Skeleton Loader */
+.skeleton-loader {
+    padding: 3rem 2rem;
+}
+
+.skeleton-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.skeleton-title {
+    width: 400px;
+    height: 32px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+.skeleton-subtitle {
+    width: 300px;
+    height: 20px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+}
+
+.skeleton-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.skeleton-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.skeleton-rank {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.skeleton-bar-fill {
+    height: 48px;
+    background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 10px;
+    flex: 1;
+}
+
+.skeleton-bar:nth-child(1) .skeleton-bar-fill { width: 95%; }
+.skeleton-bar:nth-child(2) .skeleton-bar-fill { width: 88%; }
+.skeleton-bar:nth-child(3) .skeleton-bar-fill { width: 82%; }
+.skeleton-bar:nth-child(4) .skeleton-bar-fill { width: 76%; }
+.skeleton-bar:nth-child(5) .skeleton-bar-fill { width: 70%; }
+.skeleton-bar:nth-child(6) .skeleton-bar-fill { width: 64%; }
+.skeleton-bar:nth-child(7) .skeleton-bar-fill { width: 58%; }
+.skeleton-bar:nth-child(8) .skeleton-bar-fill { width: 52%; }
+.skeleton-bar:nth-child(9) .skeleton-bar-fill { width: 46%; }
+.skeleton-bar:nth-child(10) .skeleton-bar-fill { width: 40%; }
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.empty-icon {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.08));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7c3aed;
+}
+
+.empty-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+/* Error State */
+.error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.error-icon {
+    width: 96px;
+    height: 96px;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.08));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+}
+
+.error-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.error-state h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ef4444;
+    margin-bottom: 0.75rem;
+}
+
+.error-state p {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Info Banner */
+.info-banner {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(59, 130, 246, 0.06));
+    border-left: 4px solid #7c3aed;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.info-banner svg {
+    flex-shrink: 0;
+    color: #7c3aed;
+    width: 24px;
+    height: 24px;
+}
+
+.info-banner p {
+    color: #475569;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .role-wrapper {
+        padding: 1.5rem;
+    }
+    
+    .page-header {
+        padding: 1.75rem;
+    }
+    
+    .header-info h1 {
+        font-size: 1.75rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .controls-section {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .custom-select {
+        min-width: 100%;
+    }
+    
+    .refresh-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .chart-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    #roleChart {
+        height: 520px;
+    }
+    
+    .skeleton-title {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .skeleton-subtitle {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div class="role-wrapper">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-info">
+                <h1>Role Leaders</h1>
+                <div class="header-meta">
+                    <span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <strong>{{ team.name }}</strong>
+                    </span>
+                    <span class="text-gray-400">•</span>
+                    <span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Season {{ season }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <div class="select-wrapper">
+                    <label class="control-label" for="roleSelect">Tactical Role</label>
+                    <div class="custom-select">
+                        <select id="roleSelect">
+                            {% for r in roles %}
+                                <option value="{{ r }}">{{ r }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <button id="refreshBtn" class="refresh-btn" style="margin-top: 1.5rem;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Banner -->
+    <div class="info-banner">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p>Scores calculated based on role-specific metrics weighted against league averages. Higher scores indicate better suitability for the selected role.</p>
+    </div>
+
+    <!-- Chart Card -->
+    <div class="chart-card">
+        <div id="roleChart"></div>
+    </div>
+
+</div>
+
+<script>
+const roleSelect = document.getElementById("roleSelect");
+const refreshBtn = document.getElementById("refreshBtn");
+const chartDiv = document.getElementById("roleChart");
+
+// Show skeleton loader
+function showLoading() {
+    chartDiv.innerHTML = `
+        <div class="skeleton-loader">
+            <div class="skeleton-header">
+                <div class="skeleton-title"></div>
+                <div class="skeleton-subtitle"></div>
+            </div>
+            <div class="skeleton-bars">
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+                <div class="skeleton-bar"><div class="skeleton-rank"></div><div class="skeleton-bar-fill"></div></div>
+            </div>
+        </div>
+    `;
+}
+
+// Show empty state
+function showEmpty() {
+    chartDiv.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                </svg>
+            </div>
+            <h3>No Data Available</h3>
+            <p>No eligible players found for this role. Try selecting a different role or check back later.</p>
+        </div>
+    `;
+}
+
+// Show error state
+function showError() {
+    chartDiv.innerHTML = `
+        <div class="error-state">
+            <div class="error-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h3>Error Loading Data</h3>
+            <p>Unable to load role leaders. Please try refreshing or contact support if the issue persists.</p>
+        </div>
+    `;
+}
+
+function luminance(hex) {
+    const c = hex.replace("#", "");
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+    return 0.299 * r + 0.587 * g + 0.114 * b;
+}
+
+async function fetchAndRender() {
+    const role = roleSelect.value;
+    if (!role) return;
+
+
+    try {
+        const resp = await fetch(`/api/coach/role-leaders/?role=${encodeURIComponent(role)}`);
+        
+        if (!resp.ok) {
+            showError();
+            return;
+        }
+
+        const data = await resp.json();
+        const rows = data.rows || [];
+
+        if (!rows.length) {
+            showEmpty();
+            return;
+        }
+
+        const pastel_blues = [
+            "#E8F1FE", "#DCEBFE", "#CFE5FE", "#C2DFFE", "#B5D9FE",
+            "#A8D2FD", "#9BCBFD", "#8EC4FD", "#81BCFD", "#74B4FC"
+        ].reverse();
+        
+        const bar_colors = pastel_blues.slice(-rows.length).reverse();
+        const bar_text_colors = bar_colors.map(c => luminance(c) < 150 ? "#ffffff" : "#1f2937");
+
+        const x = rows.map(r => r.score);
+        const y = rows.map((_, i) => String(i + 1));
+
+        const labels = rows.map((row, i) => 
+            `<b>${row.player_name}</b> • ${row.score.toFixed(1)} • ${row.team} • ${row.mins.toLocaleString()} mins`
+        );
+
+        const trace = {
+            type: "bar",
+            orientation: "h",
+            x: x,
+            y: y,
+            text: labels,
+            textposition: "inside",
+            insidetextanchor: "middle",
+            hovertemplate: 
+                '<b>%{customdata[0]}</b><br>' +
+                'Team: %{customdata[1]}<br>' +
+                'Minutes: %{customdata[2]:,}<br>' +
+                '<b>Role Score: %{x:.1f}</b>' +
+                '<extra></extra>',
+            customdata: rows.map(r => [r.player_name, r.team, r.mins]),
+            marker: {
+                color: bar_colors,
+                line: { color: "#2b2b2b", width: 1.5 },
+                opacity: 0.95
+            },
+            textfont: {
+                size: 11,
+                color: bar_text_colors,
+                family: "Inter",
+                weight: 600
+            }
+        };
+
+        const annotations = [];
+
+        annotations.push({
+            xref: 'paper',
+            yref: 'paper',
+            x: 0.5,
+            y: 1.08,
+            xanchor: 'center',
+            yanchor: 'middle',
+            text: `<b>Top ${rows.length} — ${data.role}</b>`,
+            showarrow: false,
+            font: {
+                size: 26,
+                color: '#1e293b',
+                family: 'Inter',
+                weight: 900
+            }
+        });
+
+        annotations.push({
+            xref: 'paper',
+            yref: 'paper',
+            x: 0.5,
+            y: 1.03,
+            xanchor: 'center',
+            yanchor: 'middle',
+            text: `${data.team} Squad • Season ${data.season}`,
+            showarrow: false,
+            font: {
+                size: 14,
+                color: '#64748b',
+                family: 'Inter',
+                weight: 500
+            }
+        });
+
+        rows.forEach((row, i) => {
+            annotations.push({
+                x: -0.01,
+                y: String(i + 1),
+                text: `<b>${i + 1}</b>`,
+                xref: 'paper',
+                yref: 'y',
+                xanchor: 'right',
+                yanchor: 'middle',
+                showarrow: false,
+                font: {
+                    size: 16,
+                    color: '#1f2937',
+                    family: 'Inter',
+                    weight: 900
+                },
+                bgcolor: i === 0 ? '#fbbf24' : i === 1 ? '#cbd5e1' : i === 2 ? '#fb923c' : '#e5e7eb',
+                bordercolor: '#1f2937',
+                borderwidth: 2,
+                borderpad: 6,
+                opacity: 0.95
+            });
+        });
+
+        const layout = {
+            plot_bgcolor: "#fafafa",
+            paper_bgcolor: "#ffffff",
+            xaxis: {
+                title: {
+                    text: '<b>Role Suitability Score (0-100)</b>',
+                    font: { 
+                        size: 15, 
+                        weight: 700,
+                        family: 'Inter',
+                        color: '#1e293b'
+                    },
+                    standoff: 20
+                },
+                range: [0, 100],
+                tickfont: { 
+                    size: 13, 
+                    weight: 600,
+                    family: 'Inter',
+                    color: '#475569'
+                },
+                gridcolor: "#e5e7eb",
+                gridwidth: 1,
+                linecolor: "#cbd5e1",
+                linewidth: 2,
+                zeroline: true,
+                zerolinecolor: "#94a3b8",
+                zerolinewidth: 2,
+                showline: true
+            },
+            yaxis: {
+                autorange: "reversed",
+                showticklabels: false,
+                showgrid: false,
+                linecolor: "#cbd5e1",
+                linewidth: 2,
+                showline: true
+            },
+            margin: { l: 120, r: 50, t: 120, b: 70 },
+            height: 640,
+            bargap: 0.18,
+            annotations: annotations,
+            showlegend: false,
+            hovermode: "closest",
+            hoverlabel: {
+                bgcolor: "#1f2937",
+                bordercolor: "#1f2937",
+                font: {
+                    family: "Inter",
+                    size: 13,
+                    color: "#ffffff",
+                    weight: 600
+                },
+                align: 'left'
+            }
+        };
+
+        const config = {
+            responsive: true,
+            displaylogo: false,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d', 'autoScale2d'],
+            toImageButtonOptions: {
+                format: 'png',
+                filename: 'role_leaders_chart',
+                height: 1080,
+                width: 1920,
+                scale: 2
+            }
+        };
+
+        Plotly.newPlot(chartDiv, [trace], layout, config);
+    } catch (error) {
+        console.error('Error:', error);
+        showError();
+    }
+}
+
+// Initial render
+fetchAndRender();
+
+roleSelect.addEventListener("change", fetchAndRender);
+refreshBtn.addEventListener("click", fetchAndRender);
+</script>
+{% endblock %}

@@ -43,152 +43,197 @@
     
     <div class="relative z-10 max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-20">
-            <div class="inline-flex items-center gap-2 bg-gradient-to-r from-playwise-purple/10 to-playwise-blue/10 px-6 py-2 rounded-full mb-6">
-                <div class="w-2 h-2 bg-playwise-purple rounded-full animate-pulse"></div>
-                <span class="text-playwise-purple font-semibold text-sm uppercase tracking-wider">Feature Spotlight</span>
+        <div class="py-32 px-6 relative overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="text-center mb-20">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6 gradient-text">
+                    Football Analytics Suite
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Explore players and teams through data-driven visual analysis
+                </p>
             </div>
-            <h2 class="text-5xl md:text-6xl font-bold mb-6 gradient-text">
-                The Complete Arsenal
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Four precision-engineered tools designed to give you the competitive edge
-            </p>
+        
+            <!-- FEATURES GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        
+                <!-- Card 1: Player Comparison -->
+                 <a href="{% url "player_comparision" %}">
+                <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="card-number">01</div>
+                    <div class="card-glow"></div>
+        
+                    <div class="flex flex-col h-full">
+                        <div class="flex items-start gap-6 mb-6">
+                            <div class="feature-icon-modern bg-gradient-to-br from-playwise-purple to-purple-700">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:gradient-text transition-all">
+                                    Player Comparison
+                                </h3>
+                                <div class="h-1 w-16 bg-gradient-to-r from-playwise-purple to-playwise-blue rounded-full mb-4"></div>
+                            </div>
+                        </div>
+        
+                        <p class="text-gray-600 leading-relaxed mb-6 flex-1">
+                            Compare two players side-by-side across goals, assists, xG, progression,
+                            discipline, and per-90 efficiency to uncover real performance differences.
+                        </p>
+        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                            <span class="text-sm font-semibold text-playwise-purple">Metrics Compared</span>
+                            <span class="text-2xl font-bold gradient-text">40+</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{% url "team_comparison" %}">
+                <!-- Card 2: Team Comparison -->
+                <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-number">02</div>
+                    <div class="card-glow"></div>
+        
+                    <div class="flex flex-col h-full">
+                        <div class="flex items-start gap-6 mb-6">
+                            <div class="feature-icon-modern bg-gradient-to-br from-playwise-blue to-blue-700">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 19v-6a2 2 0 00-2-2H5m14 8v-6a2 2 0 00-2-2h-2"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:gradient-text transition-all">
+                                    Team Comparison
+                                </h3>
+                                <div class="h-1 w-16 bg-gradient-to-r from-playwise-blue to-playwise-purple rounded-full mb-4"></div>
+                            </div>
+                        </div>
+        
+                        <p class="text-gray-600 leading-relaxed mb-6 flex-1">
+                            Analyze how two teams stack up in attacking output, defensive solidity,
+                            chance creation, and overall match control across the season.
+                        </p>
+        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                            <span class="text-sm font-semibold text-playwise-blue">Team Metrics</span>
+                            <span class="text-2xl font-bold gradient-text">30+</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+                <!-- Card 3: Player Stat Scatter -->
+                <a href="{% url "player_pizza" %}">
+                <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-number">03</div>
+                    <div class="card-glow"></div>
+        
+                    <div class="flex flex-col h-full">
+                        <div class="flex items-start gap-6 mb-6">
+                            <div class="feature-icon-modern bg-gradient-to-br from-purple-600 to-playwise-purple">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M11 3v18m0 0l-4-4m4 4l4-4M3 11h18"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:gradient-text transition-all">
+                                    Player Stat Scatter
+                                </h3>
+                                <div class="h-1 w-16 bg-gradient-to-r from-purple-600 to-playwise-blue rounded-full mb-4"></div>
+                            </div>
+                        </div>
+        
+                        <p class="text-gray-600 leading-relaxed mb-6 flex-1">
+                            Plot players across two chosen metrics to visually identify over-performers,
+                            inefficiencies, tactical roles, and statistical outliers.
+                        </p>
+        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                            <span class="text-sm font-semibold text-purple-600">Scatter Axes</span>
+                            <span class="text-2xl font-bold gradient-text">20+</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <!-- Card 4: Stat Leaders -->
+                <a href="{% url "stat_leaders" %}">
+                <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-number">04</div>
+                    <div class="card-glow"></div>
+        
+                    <div class="flex flex-col h-full">
+                        <div class="flex items-start gap-6 mb-6">
+                            <div class="feature-icon-modern bg-gradient-to-br from-blue-600 to-playwise-blue">
+                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M5 12l5 5L20 7"/>
+                                </svg>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-2 group-hover:gradient-text transition-all">
+                                    Stat Leaders
+                                </h3>
+                                <div class="h-1 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4"></div>
+                            </div>
+                        </div>
+        
+                        <p class="text-gray-600 leading-relaxed mb-6 flex-1">
+                            Instantly see league leaders in goals, assists, xG, progressive actions,
+                            defensive contributions, and per-90 performance metrics.
+                        </p>
+        
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                            <span class="text-sm font-semibold text-blue-600">Leaderboards</span>
+                            <span class="text-2xl font-bold gradient-text">25+</span>
+                        </div>
+                    </div>
+                </div>
+                </a>
+        
+            </div>
+        
+            <!-- BOTTOM STATS -->
+            <div class="mt-20 relative" data-aos="fade-up" data-aos-delay="400">
+                <div class="bg-gradient-to-r from-playwise-purple via-purple-600 to-playwise-blue rounded-3xl p-10 shadow-2xl">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">20</div>
+                            <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">
+                                Premier League Teams
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">700+</div>
+                            <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">
+                                Player Profiles
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">10K+</div>
+                            <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">
+                                Match Events
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl md:text-5xl font-bold text-white mb-2">25/26</div>
+                            <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">
+                                Live Season Data
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
         </div>
         
-        <!-- Features Grid - Staggered Card Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            
-            <!-- Card 1: Match Predictor -->
-            <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="0">
-                <div class="card-number">01</div>
-                <div class="card-glow"></div>
-                <div class="flex flex-col h-full">
-                    <div class="flex items-start gap-6 mb-6">
-                        <div class="feature-icon-modern bg-gradient-to-br from-playwise-purple to-purple-700">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2 text-gray-900 group-hover:gradient-text transition-all">Match Predictor</h3>
-                            <div class="h-1 w-16 bg-gradient-to-r from-playwise-purple to-playwise-blue rounded-full mb-4"></div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed mb-6 flex-1">
-                        Advanced machine learning algorithms analyze 50+ variables including form, head-to-head records, and real-time conditions to deliver match outcome predictions.
-                    </p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                        <span class="text-sm font-semibold text-playwise-purple">Accuracy Rate</span>
-                        <span class="text-2xl font-bold gradient-text">87%</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 2: Lineup Builder -->
-            <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="100">
-                <div class="card-number">02</div>
-                <div class="card-glow"></div>
-                <div class="flex flex-col h-full">
-                    <div class="flex items-start gap-6 mb-6">
-                        <div class="feature-icon-modern bg-gradient-to-br from-playwise-blue to-blue-700">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2 text-gray-900 group-hover:gradient-text transition-all">Lineup Builder</h3>
-                            <div class="h-1 w-16 bg-gradient-to-r from-playwise-blue to-playwise-purple rounded-full mb-4"></div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed mb-6 flex-1">
-                        Build tactical formations with drag-and-drop simplicity. Instant chemistry calculations and position-specific player recommendations optimize team performance.
-                    </p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                        <span class="text-sm font-semibold text-playwise-blue">Formations</span>
-                        <span class="text-2xl font-bold gradient-text">500+</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 3: Player Comparison -->
-            <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="200">
-                <div class="card-number">03</div>
-                <div class="card-glow"></div>
-                <div class="flex flex-col h-full">
-                    <div class="flex items-start gap-6 mb-6">
-                        <div class="feature-icon-modern bg-gradient-to-br from-purple-600 to-playwise-purple">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2 text-gray-900 group-hover:gradient-text transition-all">Player Comparison</h3>
-                            <div class="h-1 w-16 bg-gradient-to-r from-purple-600 to-playwise-blue rounded-full mb-4"></div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed mb-6 flex-1">
-                        Side-by-side statistical breakdowns across attacking, defensive, and creative metrics. Visualize performance differentials with interactive radar charts.
-                    </p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                        <span class="text-sm font-semibold text-purple-600">Data Points</span>
-                        <span class="text-2xl font-bold gradient-text">50+</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Card 4: Smart Alerts -->
-            <div class="feature-modern-card group" data-aos="fade-up" data-aos-delay="300">
-                <div class="card-number">04</div>
-                <div class="card-glow"></div>
-                <div class="flex flex-col h-full">
-                    <div class="flex items-start gap-6 mb-6">
-                        <div class="feature-icon-modern bg-gradient-to-br from-blue-600 to-playwise-blue">
-                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-2xl font-bold mb-2 text-gray-900 group-hover:gradient-text transition-all">Smart Alerts</h3>
-                            <div class="h-1 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mb-4"></div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 leading-relaxed mb-6 flex-1">
-                        Customizable push notifications for lineup changes, injury reports, form fluctuations, and betting value opportunities. Never miss critical updates.
-                    </p>
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-                        <span class="text-sm font-semibold text-blue-600">Response Time</span>
-                        <span class="text-2xl font-bold gradient-text">Instant</span>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        
-        <!-- Bottom Stats Banner -->
-        <div class="mt-20 relative" data-aos="fade-up" data-aos-delay="400">
-            <div class="bg-gradient-to-r from-playwise-purple via-purple-600 to-playwise-blue rounded-3xl p-10 shadow-2xl">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div class="text-center">
-                        <div class="text-4xl md:text-5xl font-bold text-white mb-2">20+</div>
-                        <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">Premier League Teams</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl md:text-5xl font-bold text-white mb-2">10K+</div>
-                        <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">Player Profiles</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl md:text-5xl font-bold text-white mb-2">24/7</div>
-                        <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">Live Updates</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl md:text-5xl font-bold text-white mb-2">99.9%</div>
-                        <div class="text-purple-100 text-sm uppercase tracking-wide font-medium">Uptime</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
 
 <!-- Demo Visualization Section - Interactive Dashboard -->

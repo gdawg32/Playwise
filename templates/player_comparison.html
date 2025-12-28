@@ -1,0 +1,712 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+<link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.min.css"/>
+<style>
+body {
+    background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+}
+
+main {
+    padding-top: 80px;
+}
+
+.comparison-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Hero Header */
+.comparison-hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+}
+
+.comparison-hero h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.comparison-hero p {
+    font-size: 1.125rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Player Cards Container */
+.players-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 968px) {
+    .players-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .vs-divider {
+        order: -1;
+    }
+}
+
+/* Player Selection Card */
+.player-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.player-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.player-card:hover {
+    border-color: rgba(124, 58, 237, 0.2);
+    box-shadow: 0 12px 48px rgba(124, 58, 237, 0.15);
+    transform: translateY(-4px);
+}
+
+.player-card:hover::before {
+    opacity: 1;
+}
+
+.player-card.player-1 {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.02) 0%, white 100%);
+}
+
+.player-card.player-2 {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.02) 0%, white 100%);
+}
+
+.player-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.player-1 .player-number {
+    background: linear-gradient(135deg, #7c3aed, #6366f1);
+    color: white;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
+.player-2 .player-number {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.player-card h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+}
+
+/* Select Styling */
+.select-group {
+    margin-bottom: 1.25rem;
+}
+
+.select-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.choices {
+    margin-bottom: 0;
+}
+
+.choices__inner {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.choices__inner:hover {
+    border-color: #cbd5e1;
+    background: white;
+}
+
+.choices.is-focused .choices__inner {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    background: white;
+}
+
+.choices__list--dropdown {
+    border: 2px solid #7c3aed;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.15);
+    margin-top: 4px;
+}
+
+.choices__item--selectable {
+    padding: 0.75rem 1rem;
+    transition: all 0.15s ease;
+}
+
+.choices__item--selectable.is-highlighted {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.1));
+    color: #7c3aed;
+}
+
+/* VS Divider */
+.vs-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.vs-badge {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+    position: relative;
+}
+
+.vs-badge::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    opacity: 0.2;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Compare Button */
+.compare-btn-wrapper {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.compare-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 16px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.compare-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(124, 58, 237, 0.4);
+}
+
+.compare-btn:active {
+    transform: translateY(0);
+}
+
+.compare-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.compare-btn:hover::before {
+    opacity: 1;
+}
+
+.compare-btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Radar Chart Section */
+.radar-section {
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.08);
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.radar-section h3 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.radar-section h3::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 4px;
+}
+
+.radar-section h3::after {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(135deg, #3b82f6, #7c3aed);
+    border-radius: 4px;
+}
+
+#radar {
+    max-width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#radar.loaded {
+    opacity: 1;
+}
+
+.radar-placeholder {
+    color: #94a3b8;
+    font-size: 1.125rem;
+    padding: 4rem 2rem;
+}
+
+.radar-placeholder svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+/* Loading State */
+.loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Info Cards */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.info-card {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.05));
+    border: 2px solid rgba(124, 58, 237, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.info-card-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.info-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.info-card p {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="comparison-wrapper">
+    <!-- Hero Section -->
+    <div class="comparison-hero animate__animated animate__fadeIn">
+        <h1>Player Comparison</h1>
+        <p>Compare performance metrics side-by-side with interactive radar charts</p>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-cards animate__animated animate__fadeInUp">
+        <div class="info-card">
+            <div class="info-card-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h4>Multi-Metric Analysis</h4>
+            <p>Compare goals, assists, xG, and more</p>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-card-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <h4>Real-Time Data</h4>
+            <p>Latest statistics from all competitions</p>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-card-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                </svg>
+            </div>
+            <h4>Visual Insights</h4>
+            <p>Interactive radar charts for clarity</p>
+        </div>
+    </div>
+
+    <!-- Player Selection Form -->
+    <form class="players-grid" onsubmit="updateRadar(); return false;">
+        
+        <!-- Player 1 -->
+        <div class="player-card player-1 animate__animated animate__fadeInLeft">
+            <div class="player-number">1</div>
+            <h2>First Player</h2>
+            
+            <div class="select-group">
+                <label class="select-label">Competition</label>
+                <select id="comp1" onchange="loadTeams(1)">
+                    <option value="">Choose a competition...</option>
+                    {% for c in competitions %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label class="select-label">Team</label>
+                <select id="team1" onchange="loadPlayers(1)" disabled>
+                    <option value="">Select team first</option>
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label class="select-label">Player</label>
+                <select id="player1" disabled>
+                    <option value="">Select player...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- VS Divider -->
+        <div class="vs-divider animate__animated animate__zoomIn animate__delay-1s">
+            <div class="vs-badge">VS</div>
+        </div>
+
+        <!-- Player 2 -->
+        <div class="player-card player-2 animate__animated animate__fadeInRight">
+            <div class="player-number">2</div>
+            <h2>Second Player</h2>
+            
+            <div class="select-group">
+                <label class="select-label">Competition</label>
+                <select id="comp2" onchange="loadTeams(2)">
+                    <option value="">Choose a competition...</option>
+                    {% for c in competitions %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label class="select-label">Team</label>
+                <select id="team2" onchange="loadPlayers(2)" disabled>
+                    <option value="">Select team first</option>
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label class="select-label">Player</label>
+                <select id="player2" disabled>
+                    <option value="">Select player...</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Compare Button -->
+        <div class="compare-btn-wrapper" style="grid-column: 1 / -1;">
+            <button type="submit" class="compare-btn" id="compareBtn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                Compare Players
+            </button>
+        </div>
+    </form>
+
+    <!-- Radar Chart Section -->
+    <div class="radar-section animate__animated animate__fadeInUp">
+        <h3>Performance Comparison</h3>
+        <div id="radarContainer">
+            <div class="radar-placeholder">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <div>Select two players to view comparison</div>
+            </div>
+            <img id="radar" src="" alt="Player radar comparison">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+// Initialize Choices.js for all selects
+let choices = {};
+
+document.addEventListener('DOMContentLoaded', function() {
+    ['comp1', 'comp2', 'team1', 'team2', 'player1', 'player2'].forEach(id => {
+        const element = document.getElementById(id);
+        choices[id] = new Choices(element, {
+            searchEnabled: true,
+            searchPlaceholderValue: 'Type to search...',
+            itemSelectText: '',
+            shouldSort: false,
+            classNames: {
+                containerOuter: 'choices',
+                containerInner: 'choices__inner',
+                input: 'choices__input',
+                inputCloned: 'choices__input--cloned',
+                list: 'choices__list',
+                listItems: 'choices__list--multiple',
+                listSingle: 'choices__list--single',
+                listDropdown: 'choices__list--dropdown',
+                item: 'choices__item',
+                itemSelectable: 'choices__item--selectable',
+                itemDisabled: 'choices__item--disabled',
+                itemChoice: 'choices__item--choice',
+                placeholder: 'choices__placeholder',
+                group: 'choices__group',
+                groupHeading: 'choices__heading',
+                button: 'choices__button',
+                activeState: 'is-active',
+                focusState: 'is-focused',
+                openState: 'is-open',
+                disabledState: 'is-disabled',
+                highlightedState: 'is-highlighted',
+                selectedState: 'is-selected',
+                flippedState: 'is-flipped',
+                loadingState: 'is-loading',
+                noResults: 'has-no-results',
+                noChoices: 'has-no-choices'
+            }
+        });
+    });
+    
+    // Disable team and player selects initially
+    choices['team1'].disable();
+    choices['team2'].disable();
+    choices['player1'].disable();
+    choices['player2'].disable();
+});
+
+async function loadTeams(slot) {
+    const comp = document.getElementById(`comp${slot}`).value;
+    const teamChoice = choices[`team${slot}`];
+    const playerChoice = choices[`player${slot}`];
+
+    teamChoice.clearStore();
+    playerChoice.clearStore();
+    playerChoice.disable();
+
+    if (!comp) {
+        teamChoice.disable();
+        teamChoice.setChoices([{value: '', label: 'Select team first', disabled: true}], 'value', 'label', true);
+        return;
+    }
+
+    teamChoice.setChoices([{value: '', label: 'Loading teams...', disabled: true}], 'value', 'label', true);
+
+    try {
+        const res = await fetch(`/api/teams/?competition=${comp}`);
+        const teams = await res.json();
+
+        const teamOptions = [{value: '', label: 'Choose a team...', selected: true}].concat(
+            teams.map(t => ({value: t.id, label: t.name}))
+        );
+
+        teamChoice.setChoices(teamOptions, 'value', 'label', true);
+        teamChoice.enable();
+    } catch (error) {
+        console.error('Error loading teams:', error);
+        teamChoice.setChoices([{value: '', label: 'Error loading teams', disabled: true}], 'value', 'label', true);
+    }
+}
+
+async function loadPlayers(slot) {
+    const team = document.getElementById(`team${slot}`).value;
+    const playerChoice = choices[`player${slot}`];
+
+    playerChoice.clearStore();
+
+    if (!team) {
+        playerChoice.disable();
+        playerChoice.setChoices([{value: '', label: 'Select player...', disabled: true}], 'value', 'label', true);
+        return;
+    }
+
+    playerChoice.setChoices([{value: '', label: 'Loading players...', disabled: true}], 'value', 'label', true);
+
+    try {
+        const res = await fetch(`/api/players/?team=${team}`);
+        const players = await res.json();
+
+        const playerOptions = [{value: '', label: 'Choose a player...', selected: true}].concat(
+            players.map(p => ({value: p.player_id, label: p.name}))
+        );
+
+        playerChoice.setChoices(playerOptions, 'value', 'label', true);
+        playerChoice.enable();
+    } catch (error) {
+        console.error('Error loading players:', error);
+        playerChoice.setChoices([{value: '', label: 'Error loading players', disabled: true}], 'value', 'label', true);
+    }
+}
+
+function updateRadar() {
+    const p1 = document.getElementById("player1").value;
+    const p2 = document.getElementById("player2").value;
+    const radarImg = document.getElementById("radar");
+    const radarContainer = document.getElementById("radarContainer");
+    const compareBtn = document.getElementById("compareBtn");
+
+    if (!p1 || !p2) {
+        alert("Please select both players to compare");
+        return;
+    }
+
+    // Show loading state
+    compareBtn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+    compareBtn.disabled = true;
+    radarImg.classList.remove('loaded');
+
+    // Load radar chart
+    radarImg.onload = function() {
+        radarImg.classList.add('loaded');
+        compareBtn.innerHTML = `
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            Compare Players
+        `;
+        compareBtn.disabled = false;
+        
+        // Hide placeholder
+        const placeholder = radarContainer.querySelector('.radar-placeholder');
+        if (placeholder) placeholder.style.display = 'none';
+    };
+
+    radarImg.onerror = function() {
+        compareBtn.innerHTML = `
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+            Compare Players
+        `;
+        compareBtn.disabled = false;
+        alert('Error generating comparison chart');
+    };
+
+    radarImg.src = `/player-comparison/radar/?p1=${p1}&p2=${p2}`;
+}
+</script>
+{% endblock %}
