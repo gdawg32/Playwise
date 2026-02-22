@@ -619,36 +619,71 @@
         gap: 1rem;
     }
     
+    /* Performance Bar Layout */
     .performance-item {
-        background: var(--gray-50);
-        border-radius: 12px;
-        padding: 1.25rem;
-        border: 1px solid var(--gray-100);
+        margin-bottom: 1.25rem;
+    }
+    
+    .perf-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.4rem;
     }
     
     .performance-label {
-        font-size: 0.8125rem;
-        color: var(--gray-500);
+        font-size: 0.85rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        color: var(--gray-600, #4b5563);
     }
     
     .performance-value {
-        font-size: 1.75rem;
-        font-weight: 800;
-        color: var(--gray-900);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--gray-900, #111827);
     }
     
-    .performance-comparison {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
-        font-size: 0.8125rem;
+    /* Bar Track */
+    .perf-bar-track {
+        width: 100%;
+        height: 8px;
+        background: var(--gray-200, #e5e7eb);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 0.3rem;
     }
     
+    /* Bar Fill */
+    .perf-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 2px; /* always show a sliver if value exists */
+    }
+    
+    .perf-bar-attack {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    }
+    
+    .perf-bar-defense {
+        background: linear-gradient(90deg, #ef4444, #f97316);
+    }
+    
+    .perf-bar-clean {
+        background: linear-gradient(90deg, #10b981, #06b6d4);
+    }
+    
+    .perf-bar-conversion {
+        background: linear-gradient(90deg, #f59e0b, #10b981);
+    }
+    
+    /* Sublabel */
+    .perf-sublabel {
+        font-size: 0.72rem;
+        color: var(--gray-400, #9ca3af);
+        font-weight: 500;
+    }
+        
     .comparison-bar {
         flex: 1;
         height: 6px;
@@ -1681,48 +1716,68 @@
             </div>
             <div class="card-body">
                 <div class="performance-overview">
+
+                    <!-- xG For -->
                     <div class="performance-item">
-                        <div class="performance-label">Average xG For</div>
-                        <div class="performance-value">{{ avg_xg_for|default:"—" }}</div>
-                        <div class="performance-comparison">
-                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Attack</span>
-                            <div class="comparison-bar">
-                                <div class="comparison-fill" style="width: {% if avg_xg_for %}{{ avg_xg_for|floatformat:0|add:"0" }}%{% else %}0%{% endif %};"></div>
+                        <div class="perf-row">
+                            <span class="performance-label">Avg xG For</span>
+                            <span class="performance-value">{{ avg_xg_for|default:"—" }}</span>
+                        </div>
+                        <div class="perf-bar-track">
+                            <!-- xG For typically ranges 0–3.5, so max=3.5 → multiply by ~28.57 to get % -->
+                            <div class="perf-bar-fill perf-bar-attack"
+                                style="width: {% if avg_xg_for %}{% widthratio avg_xg_for 3.5 100 %}%{% else %}0%{% endif %};">
                             </div>
                         </div>
+                        <div class="perf-sublabel">Attack · out of 3.5 max</div>
                     </div>
-                    
+
+                    <!-- xG Against -->
                     <div class="performance-item">
-                        <div class="performance-label">Average xG Against</div>
-                        <div class="performance-value">{{ avg_xg_against|default:"—" }}</div>
-                        <div class="performance-comparison">
-                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Defense</span>
-                            <div class="comparison-bar">
-                                <div class="comparison-fill" style="width: {% if avg_xg_against %}{{ avg_xg_against|floatformat:0|add:"0" }}%{% else %}0%{% endif %}; background: linear-gradient(90deg, var(--danger), var(--warning));"></div>
+                        <div class="perf-row">
+                            <span class="performance-label">Avg xG Against</span>
+                            <span class="performance-value">{{ avg_xg_against|default:"—" }}</span>
+                        </div>
+                        <div class="perf-bar-track">
+                            <!-- Lower is better for defense, but we still show the raw value -->
+                            <div class="perf-bar-fill perf-bar-defense"
+                                style="width: {% if avg_xg_against %}{% widthratio avg_xg_against 3.5 100 %}%{% else %}0%{% endif %};">
                             </div>
                         </div>
+                        <div class="perf-sublabel">Defense · lower is better</div>
                     </div>
-                    
+
+                    <!-- Clean Sheets -->
                     <div class="performance-item">
-                        <div class="performance-label">Clean Sheets</div>
-                        <div class="performance-value">{{ clean_sheets }}</div>
-                        <div class="performance-comparison">
-                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">{{ clean_sheets_home }}H / {{ clean_sheets_away }}A</span>
+                        <div class="perf-row">
+                            <span class="performance-label">Clean Sheets</span>
+                            <span class="performance-value">{{ clean_sheets }}</span>
                         </div>
-                    </div>
-                    
-                    <div class="performance-item">
-                        <div class="performance-label">Conversion Rate</div>
-                        <div class="performance-value">{{ conversion_rate|default:"—" }}</div>
-                        <div class="performance-comparison">
-                            <span style="font-size: 0.75rem; color: var(--gray-500); font-weight: 600;">Efficiency</span>
-                            <div class="comparison-bar">
-                                <div class="comparison-fill" style="width: {% if conversion_rate %}{{ conversion_rate|cut:"%"|floatformat:0 }}%{% else %}0%{% endif %}; background: linear-gradient(90deg, var(--success), var(--accent));"></div>
+                        <div class="perf-bar-track">
+                            <!-- Out of total played matches -->
+                            <div class="perf-bar-fill perf-bar-clean"
+                                style="width: {% if played_count and played_count > 0 %}{% widthratio clean_sheets played_count 100 %}%{% else %}0%{% endif %};">
                             </div>
                         </div>
+                        <div class="perf-sublabel">{{ clean_sheets_home }}H / {{ clean_sheets_away }}A · out of {{ played_count }} played</div>
                     </div>
+
+                    <!-- Conversion Rate -->
+                    <div class="performance-item">
+                        <div class="perf-row">
+                            <span class="performance-label">Conversion Rate</span>
+                            <span class="performance-value">{{ conversion_rate|default:"—" }}</span>
+                        </div>
+                        <div class="perf-bar-track">
+                            <div class="perf-bar-fill perf-bar-conversion"
+                                style="width: {% if conversion_rate %}{{ conversion_rate|cut:"%" }}%{% else %}0%{% endif %};">
+                            </div>
+                        </div>
+                        <div class="perf-sublabel">Efficiency · shot-to-goal %</div>
+                    </div>
+
                 </div>
-                
+
                 {% if played_count > 0 %}
                 <div class="insight-box">
                     <div class="insight-title">
@@ -1732,7 +1787,8 @@
                         Season Insights
                     </div>
                     <p class="insight-text">
-                        This season, the team has played {{ played_count }} matches with a record of {{ wins }}W-{{ draws }}D-{{ losses }}L, earning {{ points }} points ({{ ppg }} PPG).
+                        This season, the team has played {{ played_count }} matches with a record of
+                        {{ wins }}W-{{ draws }}D-{{ losses }}L, earning {{ points }} points ({{ ppg }} PPG).
                         {% if streak and streak_type %}
                             Currently on a {{ streak }} match {{ streak_type }} streak.
                         {% endif %}
@@ -1744,7 +1800,7 @@
                 {% endif %}
             </div>
         </section>
-        
+
         <!-- Quick Actions -->
         <section aria-labelledby="actions-heading">
             <h2 id="actions-heading" class="sr-only">Quick Actions</h2>
