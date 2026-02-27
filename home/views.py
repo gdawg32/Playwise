@@ -4,7 +4,6 @@ import json
 from .models import *
 from django.conf import settings
 from .utils.xi_pitch import draw_xi
-import soccerdata as sd
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -1303,86 +1302,6 @@ def minute_to_int(m):
     return int(m)
 
 
-def match_detail(request, match_id):
-    match = get_object_or_404(Match, id=match_id)
-
-    # -------- result text --------
-    if match.home_goals is None or match.away_goals is None:
-        result_text = "Unplayed"
-    elif match.home_goals > match.away_goals:
-        result_text = f"{match.home_team} won"
-    elif match.home_goals < match.away_goals:
-        result_text = f"{match.away_team} won"
-    else:
-        result_text = "Draw"
-
-    # -------- xG delta --------
-    home_overperformance = (
-        round(match.home_goals - match.home_xg, 2)
-        if match.home_goals is not None and match.home_xg is not None
-        else None
-    )
-    away_overperformance = (
-        round(match.away_goals - match.away_xg, 2)
-        if match.away_goals is not None and match.away_xg is not None
-        else None
-    )
-
-    # -------- FBref (EXACT WORKING CALL) --------
-    fb_events = []
-    home_lineup = []
-    away_lineup = []
-    fb_error = None
-
-    try:
-        fbref = sd.FBref(
-            leagues="ENG-Premier League",
-            seasons=2025,
-        )
-
-        events_df = fbref.read_events(match_id=match.game_id)
-        lineup_df = fbref.read_lineup(match_id=match.game_id)
-
-        # events
-        if events_df is not None and not events_df.empty:
-            fb_events = events_df.to_dict(orient="records")
-            for e in fb_events:
-                e["minute_int"] = minute_to_int(e.get("minute"))
-
-        # lineup
-        if lineup_df is not None and not lineup_df.empty:
-            lineup = lineup_df.to_dict(orient="records")
-
-            home_team_norm = normalize_team_name(match.home_team.name)
-            away_team_norm = normalize_team_name(match.away_team.name)
-
-            for p in lineup:
-                fb_team_norm = normalize_team_name(p.get("team"))
-
-                if fb_team_norm == home_team_norm:
-                    home_lineup.append(p)
-                elif fb_team_norm == away_team_norm:
-                    away_lineup.append(p)
-
-
-    
-    except Exception as exc:
-        fb_error = str(exc)
-    
-    context = {
-        "match": match,
-        "result_text": result_text,
-
-        "home_overperformance": home_overperformance,
-        "away_overperformance": away_overperformance,
-
-        "fb_events": fb_events,
-        "home_lineup": home_lineup,
-        "away_lineup": away_lineup,
-        "fb_error": fb_error,
-    }
-
-    return render(request, "match_detail.html", context)
 
 def admin_login(request):
 

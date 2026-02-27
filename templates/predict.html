@@ -1,216 +1,673 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 mt-12">
-  <h1 class="text-2xl sm:text-3xl font-semibold text-center mt-12">Match Outcome Predictor</h1>
 
-  <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 lg:p-8">
-    <!-- hidden csrf form to ensure CSRF cookie is set -->
-    <form style="display:none;">{% csrf_token %}</form>
+<style>
+  /* ── Playwise brand tokens ── */
+  :root {
+    --pw-purple: #7c3aed;
+    --pw-purple-light: #a78bfa;
+    --pw-blue: #2563eb;
+    --pw-blue-light: #60a5fa;
+    --pw-gradient: linear-gradient(135deg, var(--pw-purple), var(--pw-blue));
+    --pw-gradient-text: linear-gradient(90deg, var(--pw-purple), var(--pw-blue-light));
+    --surface: #ffffff;
+    --surface-2: #f8f7ff;
+    --border: #e5e7f0;
+    --text-primary: #0f0e17;
+    --text-secondary: #6b7280;
+    --radius: 1rem;
+  }
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
-      <div>
-        <label for="home_team" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Home team</label>
-        <select id="home_team" class="w-full rounded-md border-gray-300 focus:ring-2 focus:ring-blue-400 p-2">
-          <option value="">-- select home team --</option>
-          {% for team in teams %}
-            <option value="{{ team.name }}">{{ team.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
+  /* ── Page shell ── */
+  .predictor-page {
+    min-height: 80vh;
+    padding: 5rem 1.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
 
-      <div>
-        <label for="away_team" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Away team</label>
-        <select id="away_team" class="w-full rounded-md border-gray-300 focus:ring-2 focus:ring-blue-400 p-2">
-          <option value="">-- select away team --</option>
-          {% for team in teams %}
-            <option value="{{ team.name }}">{{ team.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
+  /* Subtle grid background */
+  .predictor-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-      <div class="sm:col-span-2 text-center">
-        <button id="predict_btn"
-                class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-md transition"
-                onclick="getPrediction()">
-          <svg id="btn-spinner" class="hidden animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" stroke="white" stroke-opacity="0.25" stroke-width="4"></circle>
-            <path d="M4 12a8 8 0 018-8" stroke="white" stroke-width="4" stroke-linecap="round"></path>
-          </svg>
-          <span id="btn-text">Predict</span>
-        </button>
-      </div>
+  /* Ambient glow blob */
+  .predictor-page::after {
+    content: "";
+    position: fixed;
+    top: -15%;
+    right: -10%;
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(124,58,237,.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .predictor-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .predictor-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(124,58,237,.1), rgba(37,99,235,.1));
+    border: 1px solid rgba(124,58,237,.2);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pw-purple);
+    margin-bottom: 1.25rem;
+  }
+
+  .predictor-eyebrow svg {
+    width: 14px; height: 14px;
+  }
+
+  .predictor-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .predictor-title span {
+    background: var(--pw-gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .predictor-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  /* ── Main card ── */
+  .predictor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,.06),
+      0 8px 32px rgba(124,58,237,.07),
+      0 0 0 1px rgba(124,58,237,.04);
+    animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── VS matchup selector ── */
+  .matchup-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: end;
+    margin-bottom: 1.75rem;
+  }
+
+  .team-selector label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .team-selector select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1.5px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .team-selector select:focus {
+    outline: none;
+    border-color: var(--pw-purple);
+    box-shadow: 0 0 0 3px rgba(124,58,237,.12);
+  }
+
+  .team-selector.home select:focus { border-color: var(--pw-purple); }
+  .team-selector.away select:focus { border-color: var(--pw-blue); }
+
+  /* VS badge */
+  .vs-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--pw-gradient);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(124,58,237,.35);
+  }
+
+  /* ── Predict button ── */
+  .predict-btn {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    background: var(--pw-gradient);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    box-shadow: 0 4px 18px rgba(124,58,237,.35);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .predict-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(255,255,255,.15), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .predict-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,58,237,.45); }
+  .predict-btn:hover::after { opacity: 1; }
+  .predict-btn:active { transform: translateY(0); }
+  .predict-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  .predict-btn svg {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── Alert ── */
+  .pw-alert {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pw-alert.show { display: flex; }
+
+  .pw-alert svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ── Results panel ── */
+  .results-panel {
+    display: none;
+    margin-top: 1.75rem;
+    animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .results-panel.show { display: block; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Divider with label */
+  .results-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .results-divider::before,
+  .results-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .results-divider span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  /* Fixture label */
+  .fixture-label {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .fixture-label .fixture-vs {
+    font-size: 0.7rem;
+    font-weight: 800;
+    background: var(--pw-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.08em;
+  }
+
+  /* Probability bars */
+  .prob-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prob-item {
+    display: grid;
+    grid-template-columns: 7rem 1fr 3.5rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .prob-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .prob-track {
+    height: 10px;
+    background: #f0eeff;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .prob-fill {
+    height: 100%;
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .prob-fill.home  { background: linear-gradient(90deg, var(--pw-purple), var(--pw-purple-light)); }
+  .prob-fill.draw  { background: linear-gradient(90deg, #6b7280, #9ca3af); }
+  .prob-fill.away  { background: linear-gradient(90deg, var(--pw-blue), var(--pw-blue-light)); }
+
+  .prob-value {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-align: right;
+    color: var(--text-primary);
+  }
+
+  /* Predicted outcome highlight */
+  .predicted-outcome {
+    background: linear-gradient(135deg, rgba(124,58,237,.06), rgba(37,99,235,.06));
+    border: 1.5px solid rgba(124,58,237,.15);
+    border-radius: 0.875rem;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .predicted-outcome .po-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+  }
+
+  .predicted-outcome .po-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: var(--pw-gradient-text);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .predicted-outcome .po-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    background: var(--pw-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(124,58,237,.3);
+  }
+
+  .predicted-outcome .po-icon svg {
+    width: 18px; height: 18px; color: #fff;
+  }
+
+  /* Close link */
+  .results-close {
+    text-align: right;
+    margin-top: 1rem;
+  }
+
+  .results-close button {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0;
+    transition: color 0.15s;
+  }
+
+  .results-close button:hover { color: var(--pw-purple); }
+
+  /* spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin { animation: spin 0.75s linear infinite; }
+
+  /* Google Font – Syne for display */
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap');
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .matchup-grid { grid-template-columns: 1fr; }
+    .vs-badge { display: none; }
+    .prob-item { grid-template-columns: 6rem 1fr 3rem; }
+  }
+</style>
+
+<!-- hidden csrf -->
+<form style="display:none;">{% csrf_token %}</form>
+
+<div class="predictor-page">
+  <div class="predictor-inner">
+
+    <!-- Header -->
+    <div class="predictor-eyebrow">
+
     </div>
 
-    <div id="alert" class="mt-4 hidden p-3 rounded-md bg-red-50 text-red-800" role="alert"></div>
+    <h1 class="predictor-title">
+      Match <span>Outcome</span><br>Predictor
+    </h1>
+    <p class="predictor-subtitle">
+      Select any two teams and let the model crunch season stats to forecast win probabilities.
+    </p>
 
-    <!-- Results -->
-    <div id="results" class="mt-6 hidden">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-md shadow-sm">
-          <h2 class="text-lg font-semibold mb-2" id="fixture-title">Home vs Away</h2>
+    <!-- Card -->
+    <div class="predictor-card">
 
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-600">Home win</div>
-              <div class="text-lg font-bold" id="home_win">0%</div>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-600">Draw</div>
-              <div class="text-lg font-bold" id="draw">0%</div>
-            </div>
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-600">Away win</div>
-              <div class="text-lg font-bold" id="away_win">0%</div>
-            </div>
-            <hr class="my-2">
-            <div class="flex items-center justify-between">
-              <div class="text-sm text-gray-600">Expected goals</div>
-              <div class="text-sm font-medium" id="xg">0.00 - 0.00</div>
-            </div>
+      <!-- Team selectors -->
+      <div class="matchup-grid">
+        <div class="team-selector home">
+          <label for="home_team">Home Team</label>
+          <select id="home_team">
+            <option value="">Select home…</option>
+            {% for team in teams %}
+              <option value="{{ team.name }}">{{ team.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="vs-badge">VS</div>
+
+        <div class="team-selector away">
+          <label for="away_team">Away Team</label>
+          <select id="away_team">
+            <option value="">Select away…</option>
+            {% for team in teams %}
+              <option value="{{ team.name }}">{{ team.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <!-- Predict button -->
+      <button class="predict-btn" id="predict_btn" onclick="getPrediction(event)">
+        <svg id="btn-spinner" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+          <path d="M4 12a8 8 0 018-8" stroke-linecap="round"/>
+        </svg>
+        <svg id="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span id="btn-text">Run Prediction</span>
+      </button>
+
+      <!-- Alert -->
+      <div class="pw-alert" id="alert" role="alert">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+        </svg>
+        <span id="alert-text"></span>
+      </div>
+
+      <!-- Results -->
+      <div class="results-panel" id="results">
+
+        <div class="results-divider"><span>Prediction</span></div>
+
+        <!-- Fixture title -->
+        <div class="fixture-label">
+          <span id="home-name">—</span>
+          <span class="fixture-vs">VS</span>
+          <span id="away-name">—</span>
+        </div>
+
+        <!-- Probability bars -->
+        <div class="prob-list">
+          <div class="prob-item">
+            <span class="prob-label">Home Win</span>
+            <div class="prob-track"><div class="prob-fill home" id="bar-home"></div></div>
+            <span class="prob-value" id="val-home">—</span>
+          </div>
+          <div class="prob-item">
+            <span class="prob-label">Draw</span>
+            <div class="prob-track"><div class="prob-fill draw" id="bar-draw"></div></div>
+            <span class="prob-value" id="val-draw">—</span>
+          </div>
+          <div class="prob-item">
+            <span class="prob-label">Away Win</span>
+            <div class="prob-track"><div class="prob-fill away" id="bar-away"></div></div>
+            <span class="prob-value" id="val-away">—</span>
           </div>
         </div>
 
-        <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-md shadow-sm">
-          <h3 class="text-lg font-semibold mb-2">Top scorelines</h3>
-          <ul id="top_scores" class="list-disc pl-5 text-sm space-y-1 text-gray-700"></ul>
-
-          <h3 class="text-lg font-semibold mt-4 mb-2">Goal difference (skellam)</h3>
-          <div id="skellam" class="text-sm text-gray-700 space-y-1"></div>
+        <!-- Predicted outcome -->
+        <div class="predicted-outcome">
+          <div>
+            <div class="po-label">Predicted Outcome</div>
+            <div class="po-value" id="predicted_result">—</div>
+          </div>
+          <div class="po-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
         </div>
-      </div>
 
-      <div class="mt-4 text-right">
-        <button class="text-sm text-gray-500 hover:underline" onclick="hideResults()">Close</button>
-      </div>
-    </div>
+        <div class="results-close">
+          <button onclick="hideResults()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+            Clear results
+          </button>
+        </div>
+
+      </div><!-- /results -->
+    </div><!-- /card -->
+
   </div>
 </div>
 
 <script>
-/* CSRF helper: read cookie and set axios header. */
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + "=")) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
+  function getCookie(name) {
+    let v = null;
+    if (document.cookie) {
+      document.cookie.split(";").forEach(c => {
+        c = c.trim();
+        if (c.startsWith(name + "=")) v = decodeURIComponent(c.slice(name.length + 1));
+      });
+    }
+    return v;
+  }
+
+  if (typeof axios !== "undefined") {
+    axios.defaults.headers.common['X-CSRFToken'] = getCookie('csrftoken');
+  }
+
+  function showAlert(msg) {
+    const el = document.getElementById("alert");
+    document.getElementById("alert-text").innerText = msg;
+    el.classList.add("show");
+  }
+
+  function hideAlert() {
+    document.getElementById("alert").classList.remove("show");
+  }
+
+  function showSpinner(on) {
+    const spinner = document.getElementById("btn-spinner");
+    const icon    = document.getElementById("btn-icon");
+    const text    = document.getElementById("btn-text");
+    const btn     = document.getElementById("predict_btn");
+    if (on) {
+      spinner.classList.remove("hidden");
+      spinner.classList.add("spin");
+      icon.classList.add("hidden");
+      text.innerText = "Predicting…";
+      btn.disabled = true;
+    } else {
+      spinner.classList.add("hidden");
+      spinner.classList.remove("spin");
+      icon.classList.remove("hidden");
+      text.innerText = "Run Prediction";
+      btn.disabled = false;
     }
   }
-  return cookieValue;
-}
-if (typeof axios !== "undefined") {
-  axios.defaults.headers.common['X-CSRFToken'] = getCookie('csrftoken');
-}
 
-/* UI helpers */
-function showAlert(msg) {
-  const a = document.getElementById("alert");
-  a.innerText = msg;
-  a.classList.remove("hidden");
-}
-function hideAlert() {
-  const a = document.getElementById("alert");
-  a.classList.add("hidden");
-}
-function showSpinner(on=true) {
-  const s = document.getElementById("btn-spinner");
-  const t = document.getElementById("btn-text");
-  if (on) {
-    s.classList.remove("hidden");
-    t.innerText = "Predicting..."
-  } else {
-    s.classList.add("hidden");
-    t.innerText = "Predict"
-  }
-}
-function hideResults() {
-  document.getElementById("results").classList.add("hidden");
-}
-
-/* main request */
-function getPrediction() {
-  hideAlert();
-  const home = document.getElementById("home_team").value;
-  const away = document.getElementById("away_team").value;
-
-  if (!home || !away) {
-    showAlert("Please select both home and away teams.");
-    return;
-  }
-  if (home === away) {
-    showAlert("Home and away teams must be different.");
-    return;
-  }
-
-  showSpinner(true);
-  // payload as JSON (your view accepts JSON or form data)
-  const payload = { home_team: home, away_team: away };
-
-  axios.post("{% url 'predict_api' %}", payload)
-    .then(function (resp) {
-      showSpinner(false);
-      const data = resp.data;
-      if (data.error) {
-        showAlert(data.error);
-        return;
-      }
-
-      // set header/title
-      document.getElementById("fixture-title").innerText = `${data.home_team}  vs  ${data.away_team}`;
-
-      // probabilities
-      document.getElementById("home_win").innerText = (data.home_win_prob).toFixed(2) + "%";
-      document.getElementById("draw").innerText = (data.draw_prob).toFixed(2) + "%";
-      document.getElementById("away_win").innerText = (data.away_win_prob).toFixed(2) + "%";
-
-      // expected goals
-      document.getElementById("xg").innerText = `${data.expected_goals[0].toFixed(2)} - ${data.expected_goals[1].toFixed(2)}`;
-
-      // top scores
-      const ul = document.getElementById("top_scores");
-      ul.innerHTML = "";
-      if (Array.isArray(data.top_scores)) {
-        data.top_scores.forEach(function (s) {
-          // s may be ["1-0", 0.12] or ["1-0", 0.1245]
-          const prob = (s[1] > 1 ? s[1] : s[1])  // keep raw
-          const li = document.createElement("li");
-          li.innerHTML = `<span class="font-medium">${s[0]}</span> — ${(prob * 100).toFixed(2)}%`;
-          ul.appendChild(li);
-        });
-      }
-
-      // skellam
-      const skDiv = document.getElementById("skellam");
-      skDiv.innerHTML = "";
-      if (data.skellam_center) {
-        // show sorted from -2..2 or keys present
-        const keys = Object.keys(data.skellam_center).map(k => parseInt(k)).sort((a,b)=>a-b);
-        keys.forEach(function (k) {
-          const p = data.skellam_center[k] ?? data.skellam_center[String(k)];
-          const row = document.createElement("div");
-          row.className = "flex items-center justify-between";
-          row.innerHTML = `<div class="text-sm text-gray-600">${k >= 0 ? "+"+k : k}</div><div class="text-sm font-medium">${(p*100).toFixed(2)}%</div>`;
-          skDiv.appendChild(row);
-        });
-      }
-
-      document.getElementById("results").classList.remove("hidden");
-      window.scrollTo({ top: document.getElementById("results").offsetTop - 20, behavior: "smooth" });
-    })
-    .catch(function (err) {
-      showSpinner(false);
-      console.error(err);
-      if (err.response && err.response.data && err.response.data.error) {
-        showAlert("Error: " + err.response.data.error);
-      } else {
-        showAlert("Server error — could not fetch prediction.");
-      }
+  function hideResults() {
+    const panel = document.getElementById("results");
+    panel.classList.remove("show");
+    // Reset bars
+    ["bar-home","bar-draw","bar-away"].forEach(id => {
+      document.getElementById(id).style.width = "0%";
     });
-}
+  }
+
+  function setBar(barId, valId, pct) {
+    document.getElementById(valId).innerText = pct.toFixed(1) + "%";
+    // Defer so CSS transition fires
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.getElementById(barId).style.width = pct + "%";
+      });
+    });
+  }
+
+  function getPrediction(e) {
+    e.preventDefault();
+    hideAlert();
+
+    const home = document.getElementById("home_team").value;
+    const away = document.getElementById("away_team").value;
+
+    if (!home || !away)      return showAlert("Please select both teams.");
+    if (home === away)        return showAlert("Home and away teams must be different.");
+
+    showSpinner(true);
+    hideResults();
+
+    axios.post("{% url 'predict_api' %}", { home_team: home, away_team: away })
+      .then(resp => {
+        showSpinner(false);
+        const d = resp.data;
+        if (d.error) return showAlert(d.error);
+
+        document.getElementById("home-name").innerText = d.home_team;
+        document.getElementById("away-name").innerText = d.away_team;
+
+        setBar("bar-home", "val-home", d.home_win_prob);
+        setBar("bar-draw", "val-draw", d.draw_prob);
+        setBar("bar-away", "val-away", d.away_win_prob);
+
+        const labels = { H: "Home Win", D: "Draw", A: "Away Win" };
+        document.getElementById("predicted_result").innerText = labels[d.predicted] || d.predicted;
+
+        document.getElementById("results").classList.add("show");
+        window.scrollTo({ top: document.getElementById("results").offsetTop - 24, behavior: "smooth" });
+      })
+      .catch(() => {
+        showSpinner(false);
+        showAlert("Server error — could not fetch prediction.");
+      });
+  }
 </script>
+
 {% endblock %}

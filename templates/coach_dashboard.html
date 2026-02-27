@@ -1636,7 +1636,7 @@
                 <div class="card-body">
                     {% if recent %}
                         {% for m in recent|slice:":5" %}
-                        <a href="{% url 'match_detail' m.id %}" class="match-item">
+                        <a href="" class="match-item">
                             <div class="match-status">
                                 <div class="match-date">{{ m.date|date:"d" }}</div>
                                 <div class="match-month">{{ m.date|date:"M" }}</div>
