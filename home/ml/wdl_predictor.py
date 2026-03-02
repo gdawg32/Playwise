@@ -32,7 +32,7 @@ def predict_match(home_team: str, away_team: str) -> dict:
 
     h = last_row(home_team)
     a = last_row(away_team)
-
+    
     def pick(r, t, hf, af):
         return r[hf] if r["home_team"] == t else r[af]
 

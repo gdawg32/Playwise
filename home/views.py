@@ -739,11 +739,7 @@ def predict_api(request):
 
 @login_required(login_url="manager_login")
 def coach_dashboard(request):
-    """
-    Coach dashboard view — adapted to the new Match model fields.
-    Preserves original variable names (y_home_goals, result, matchweek, xg_home, ...)
-    by computing/attaching them on each Match instance so templates remain unchanged.
-    """
+
     try:
         coach = Coach.objects.get(user=request.user)
     except Coach.DoesNotExist:
@@ -752,8 +748,6 @@ def coach_dashboard(request):
     team = coach.team
     today = date.today()
 
-    # --- Upcoming (unplayed) fixtures
-    # New model has no 'played' field; treat matches with both goals NULL as unplayed
     upcoming_qs = Match.objects.filter(
         Q(home_team=team) | Q(away_team=team),
         home_goals__isnull=True,
@@ -1032,6 +1026,8 @@ def coach_dashboard(request):
     chart_xg = [x if x is not None else 0 for x in recent_xg]
     chart_goals_xg = {"labels": recent_labels, "goals": chart_goals, "xg": chart_xg}
 
+
+    print( next_pred)
     # Context
     context = {
         "coach": coach,
